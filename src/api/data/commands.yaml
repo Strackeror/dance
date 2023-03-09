@@ -1064,6 +1064,106 @@ seek:
       | Extend to character (included)           | `included.extend`          | `f` (helix: visual)     | `[".seek", { include: true, shift: "extend"               , ... }]` |
       | Extend to character (included, backward) | `included.extend.backward` | `s-f` (helix: visual)   | `[".seek", { include: true, shift: "extend", direction: -1, ... }]` |
 
+seek.askObject:
+  title:
+    en: Select whole object
+
+  commands: |-
+    [".openMenu", { menu: "object", title: "Select whole object..." }]
+
+  keys:
+    qwerty: ""
+
+seek.askObject.end:
+  title:
+    en: Select to whole object end
+
+  commands: |-
+    [".openMenu", { menu: "object", pass: [{ where: "end" }] }]
+
+  keys:
+    qwerty: ""
+
+seek.askObject.end.extend:
+  title:
+    en: Extend to whole object end
+
+  commands: |-
+    [".openMenu", { menu: "object", pass: [{ where: "end" , shift: "extend" }] }]
+
+  keys:
+    qwerty: ""
+
+seek.askObject.inner:
+  title:
+    en: Select inner object
+
+  commands: |-
+    [".openMenu", { menu: "object", pass: [{ inner: true }], title: "Select inner object..." }]
+
+  keys:
+    qwerty: ""
+
+seek.askObject.inner.end:
+  title:
+    en: Select to inner object end
+
+  commands: |-
+    [".openMenu", { menu: "object", pass: [{ inner: true, where: "end" }] }]
+
+  keys:
+    qwerty: ""
+
+seek.askObject.inner.end.extend:
+  title:
+    en: Extend to inner object end
+
+  commands: |-
+    [".openMenu", { menu: "object", pass: [{ inner: true, where: "end" , shift: "extend" }] }]
+
+  keys:
+    qwerty: ""
+
+seek.askObject.inner.start:
+  title:
+    en: Select to inner object start
+
+  commands: |-
+    [".openMenu", { menu: "object", pass: [{ inner: true, where: "start" }] }]
+
+  keys:
+    qwerty: ""
+
+seek.askObject.inner.start.extend:
+  title:
+    en: Extend to inner object start
+
+  commands: |-
+    [".openMenu", { menu: "object", pass: [{ inner: true, where: "start", shift: "extend" }] }]
+
+  keys:
+    qwerty: ""
+
+seek.askObject.start:
+  title:
+    en: Select to whole object start
+
+  commands: |-
+    [".openMenu", { menu: "object", pass: [{ where: "start" }] }]
+
+  keys:
+    qwerty: ""
+
+seek.askObject.start.extend:
+  title:
+    en: Extend to whole object start
+
+  commands: |-
+    [".openMenu", { menu: "object", pass: [{ where: "start", shift: "extend" }] }]
+
+  keys:
+    qwerty: ""
+
 seek.backward:
   title:
     en: Select to character (excluded, backward)
@@ -1217,6 +1317,43 @@ seek.leap.backward:
 
   commands: |-
     [".seek.leap", { direction: -1, $exclude: [] }]
+
+seek.object:
+  title:
+    en: Select object
+
+  doc:
+    en: |
+      Select object.
+
+
+      #### Object patterns
+
+      - Pairs: `<regexp>(?#inner)<regexp>`.
+
+      - Character sets: `[<characters>]+`.
+
+        - Can be preceded by `(?<before>[<characters>]+)` and followed by
+          `(?<after>[<character>]+)` for whole objects.
+
+      - Matches that may only span a single line: `(?#singleline)<regexp>`.
+
+      - Predefined: `(?#predefined=<argument | paragraph | sentence>)`.
+
+      #### Variants
+
+      | Title                        | Identifier                     | Keybinding                                       | Command                                                                                       |
+      | ---------------------------- | ------------------------------ | ------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+      | Select whole object          | `askObject`                    |                                                  | `[".openMenu", { menu: "object",                          title: "Select whole object..." }]` |
+      | Select inner object          | `askObject.inner`              |                                                  | `[".openMenu", { menu: "object", pass: [{ inner: true }], title: "Select inner object..." }]` |
+      | Select to whole object start | `askObject.start`              |                                                  | `[".openMenu", { menu: "object", pass: [{              where: "start"                  }] }]` |
+      | Extend to whole object start | `askObject.start.extend`       |                                                  | `[".openMenu", { menu: "object", pass: [{              where: "start", shift: "extend" }] }]` |
+      | Select to inner object start | `askObject.inner.start`        |                                                  | `[".openMenu", { menu: "object", pass: [{ inner: true, where: "start"                  }] }]` |
+      | Extend to inner object start | `askObject.inner.start.extend` |                                                  | `[".openMenu", { menu: "object", pass: [{ inner: true, where: "start", shift: "extend" }] }]` |
+      | Select to whole object end   | `askObject.end`                |                                                  | `[".openMenu", { menu: "object", pass: [{              where: "end"                    }] }]` |
+      | Extend to whole object end   | `askObject.end.extend`         |                                                  | `[".openMenu", { menu: "object", pass: [{              where: "end"  , shift: "extend" }] }]` |
+      | Select to inner object end   | `askObject.inner.end`          |                                                  | `[".openMenu", { menu: "object", pass: [{ inner: true, where: "end"                    }] }]` |
+      | Extend to inner object end   | `askObject.inner.end.extend`   |                                                  | `[".openMenu", { menu: "object", pass: [{ inner: true, where: "end"  , shift: "extend" }] }]` |
 
 seek.selectExpand:
   title:

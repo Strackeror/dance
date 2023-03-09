@@ -220,6 +220,7 @@ import {
 import {
   enclosing as seek_enclosing,
   leap as seek_leap,
+  object as seek_object,
   seek as seek,
   selectExpand as seek_selectExpand,
   selectShrink as seek_selectShrink,
@@ -506,6 +507,11 @@ export const commands: Commands = function () {
     "dance.seek.leap": new CommandDescriptor(
       "dance.seek.leap",
       (_, argument) => _.runAsync((_) => seek_leap(_, getDirection(argument), argument["labels"])),
+      CommandDescriptor.Flags.RequiresActiveEditor,
+    ),
+    "dance.seek.object": new CommandDescriptor(
+      "dance.seek.object",
+      (_, argument) => _.runAsync((_) => seek_object(_, getInputOr("input", argument), argument["inner"], argument["where"], getShift(argument))),
       CommandDescriptor.Flags.RequiresActiveEditor,
     ),
     "dance.seek.selectExpand": new CommandDescriptor(
@@ -1036,6 +1042,66 @@ export const commands: Commands = function () {
     "dance.seek.wordEnd.ws.extend",
     CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
     [[".seek.word", { stopAtEnd: true, ws: true, shift: "extend" , $exclude: [] }]],
+  );
+  describeAdditionalCommand(
+    commands,
+    "dance.seek.askObject",
+    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
+    [[".openMenu", { menu: "object", title: "Select whole object..." }]],
+  );
+  describeAdditionalCommand(
+    commands,
+    "dance.seek.askObject.inner",
+    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
+    [[".openMenu", { menu: "object", pass: [{ inner: true }], title: "Select inner object..." }]],
+  );
+  describeAdditionalCommand(
+    commands,
+    "dance.seek.askObject.start",
+    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
+    [[".openMenu", { menu: "object", pass: [{ where: "start" }] }]],
+  );
+  describeAdditionalCommand(
+    commands,
+    "dance.seek.askObject.start.extend",
+    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
+    [[".openMenu", { menu: "object", pass: [{ where: "start", shift: "extend" }] }]],
+  );
+  describeAdditionalCommand(
+    commands,
+    "dance.seek.askObject.inner.start",
+    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
+    [[".openMenu", { menu: "object", pass: [{ inner: true, where: "start" }] }]],
+  );
+  describeAdditionalCommand(
+    commands,
+    "dance.seek.askObject.inner.start.extend",
+    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
+    [[".openMenu", { menu: "object", pass: [{ inner: true, where: "start", shift: "extend" }] }]],
+  );
+  describeAdditionalCommand(
+    commands,
+    "dance.seek.askObject.end",
+    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
+    [[".openMenu", { menu: "object", pass: [{ where: "end" }] }]],
+  );
+  describeAdditionalCommand(
+    commands,
+    "dance.seek.askObject.end.extend",
+    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
+    [[".openMenu", { menu: "object", pass: [{ where: "end" , shift: "extend" }] }]],
+  );
+  describeAdditionalCommand(
+    commands,
+    "dance.seek.askObject.inner.end",
+    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
+    [[".openMenu", { menu: "object", pass: [{ inner: true, where: "end" }] }]],
+  );
+  describeAdditionalCommand(
+    commands,
+    "dance.seek.askObject.inner.end.extend",
+    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
+    [[".openMenu", { menu: "object", pass: [{ inner: true, where: "end" , shift: "extend" }] }]],
   );
   describeAdditionalCommand(
     commands,

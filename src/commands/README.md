@@ -103,9 +103,20 @@ selections are empty</td><td></td></tr>
 <tr><td><a href="./search.ts#L160"><code>search.previous.add</code></a></td><td>Add previous match</td><td><code>Shift+Alt+N</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+N</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
 <tr><td><a href="./search.ts#L90"><code>search.selection.smart</code></a></td><td>Search current selection (smart)</td><td><code>Shift+8</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>NumPad_Multiply</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+8</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)<code>NumPad_Multiply</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
 <tr><td><a href="#search.selection"><code>search.selection</code></a></td><td>Search current selection</td><td><code>Shift+Alt+8</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+NumPad_Multiply</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
-<tr><td rowspan=28><a href="#seek"><code>seek</code></a></td><td><a href="#seek.enclosing"><code>seek.enclosing</code></a></td><td>Select to next enclosing character</td><td><code>Shift+M</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td rowspan=39><a href="#seek"><code>seek</code></a></td><td><a href="#seek.enclosing"><code>seek.enclosing</code></a></td><td>Select to next enclosing character</td><td><code>Shift+M</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#seek.leap"><code>seek.leap</code></a></td><td>Leap forward</td><td></td></tr>
+<tr><td><a href="#seek.object"><code>seek.object</code></a></td><td>Select object</td><td></td></tr>
 <tr><td><a href="#seek.seek"><code>seek.seek</code></a></td><td>Select to character (excluded)</td><td><code>T</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="./seek.ts#L270"><code>seek.askObject</code></a></td><td>Select whole object</td><td></td></tr>
+<tr><td><a href="./seek.ts#L276"><code>seek.askObject.end</code></a></td><td>Select to whole object end</td><td></td></tr>
+<tr><td><a href="./seek.ts#L277"><code>seek.askObject.end.extend</code></a></td><td>Extend to whole object end</td><td></td></tr>
+<tr><td><a href="./seek.ts#L271"><code>seek.askObject.inner</code></a></td><td>Select inner object</td><td></td></tr>
+<tr><td><a href="./seek.ts#L278"><code>seek.askObject.inner.end</code></a></td><td>Select to inner object end</td><td></td></tr>
+<tr><td><a href="./seek.ts#L279"><code>seek.askObject.inner.end.extend</code></a></td><td>Extend to inner object end</td><td></td></tr>
+<tr><td><a href="./seek.ts#L274"><code>seek.askObject.inner.start</code></a></td><td>Select to inner object start</td><td></td></tr>
+<tr><td><a href="./seek.ts#L275"><code>seek.askObject.inner.start.extend</code></a></td><td>Extend to inner object start</td><td></td></tr>
+<tr><td><a href="./seek.ts#L272"><code>seek.askObject.start</code></a></td><td>Select to whole object start</td><td></td></tr>
+<tr><td><a href="./seek.ts#L273"><code>seek.askObject.start.extend</code></a></td><td>Extend to whole object start</td><td></td></tr>
 <tr><td><a href="./seek.ts#L24"><code>seek.backward</code></a></td><td>Select to character (excluded, backward)</td><td><code>Shift+T</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="./seek.ts#L90"><code>seek.enclosing.backward</code></a></td><td>Select to previous enclosing character</td><td><code>Alt+M</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="./seek.ts#L89"><code>seek.enclosing.extend</code></a></td><td>Extend to next enclosing character</td><td><code>Shift+M</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
@@ -1118,6 +1129,46 @@ This command:
 - takes an argument `ws` of type `boolean`.
 
 Default keybinding: `w` (helix: normal)
+
+<a name="seek.object" />
+
+### [`seek.object`](./seek.ts#L248-L288)
+
+Select object.
+
+
+#### Object patterns
+
+- Pairs: `<regexp>(?#inner)<regexp>`.
+
+- Character sets: `[<characters>]+`.
+
+  - Can be preceded by `(?<before>[<characters>]+)` and followed by
+    `(?<after>[<character>]+)` for whole objects.
+
+- Matches that may only span a single line: `(?#singleline)<regexp>`.
+
+- Predefined: `(?#predefined=<argument | paragraph | sentence>)`.
+
+#### Variants
+
+| Title                        | Identifier                     | Keybinding                                       | Command                                                                                       |
+| ---------------------------- | ------------------------------ | ------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| Select whole object          | `askObject`                    |                                                  | `[".openMenu", { menu: "object",                          title: "Select whole object..." }]` |
+| Select inner object          | `askObject.inner`              |                                                  | `[".openMenu", { menu: "object", pass: [{ inner: true }], title: "Select inner object..." }]` |
+| Select to whole object start | `askObject.start`              |                                                  | `[".openMenu", { menu: "object", pass: [{              where: "start"                  }] }]` |
+| Extend to whole object start | `askObject.start.extend`       |                                                  | `[".openMenu", { menu: "object", pass: [{              where: "start", shift: "extend" }] }]` |
+| Select to inner object start | `askObject.inner.start`        |                                                  | `[".openMenu", { menu: "object", pass: [{ inner: true, where: "start"                  }] }]` |
+| Extend to inner object start | `askObject.inner.start.extend` |                                                  | `[".openMenu", { menu: "object", pass: [{ inner: true, where: "start", shift: "extend" }] }]` |
+| Select to whole object end   | `askObject.end`                |                                                  | `[".openMenu", { menu: "object", pass: [{              where: "end"                    }] }]` |
+| Extend to whole object end   | `askObject.end.extend`         |                                                  | `[".openMenu", { menu: "object", pass: [{              where: "end"  , shift: "extend" }] }]` |
+| Select to inner object end   | `askObject.inner.end`          |                                                  | `[".openMenu", { menu: "object", pass: [{ inner: true, where: "end"                    }] }]` |
+| Extend to inner object end   | `askObject.inner.end.extend`   |                                                  | `[".openMenu", { menu: "object", pass: [{ inner: true, where: "end"  , shift: "extend" }] }]` |
+
+This command:
+- takes an argument `inner` of type `boolean`.
+- takes an argument `where` of type `"start" | "end"`.
+- takes an input `input` of type `string`.
 
 <a name="seek.selectExpand" />
 

@@ -1497,6 +1497,56 @@
         "category": "Dance"
       },
       {
+        "command": "dance.seek.askObject",
+        "title": "Select whole object",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.askObject.end",
+        "title": "Select to whole object end",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.askObject.end.extend",
+        "title": "Extend to whole object end",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.askObject.inner",
+        "title": "Select inner object",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.askObject.inner.end",
+        "title": "Select to inner object end",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.askObject.inner.end.extend",
+        "title": "Extend to inner object end",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.askObject.inner.start",
+        "title": "Select to inner object start",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.askObject.inner.start.extend",
+        "title": "Extend to inner object start",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.askObject.start",
+        "title": "Select to whole object start",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.askObject.start.extend",
+        "title": "Extend to whole object start",
+        "category": "Dance"
+      },
+      {
         "command": "dance.seek.backward",
         "title": "Select to character (excluded, backward)",
         "category": "Dance"
@@ -1559,6 +1609,11 @@
       {
         "command": "dance.seek.leap.backward",
         "title": "Leap backward",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.object",
+        "title": "Select object",
         "category": "Dance"
       },
       {
@@ -2381,6 +2436,46 @@
           "when": "dance.mode == 'normal'"
         },
         {
+          "command": "dance.seek.askObject",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.seek.askObject.end",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.seek.askObject.end.extend",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.seek.askObject.inner",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.seek.askObject.inner.end",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.seek.askObject.inner.end.extend",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.seek.askObject.inner.start",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.seek.askObject.inner.start.extend",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.seek.askObject.start",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.seek.askObject.start.extend",
+          "when": "dance.mode == 'normal'"
+        },
+        {
           "command": "dance.seek.backward",
           "when": "dance.mode == 'normal'"
         },
@@ -2430,6 +2525,10 @@
         },
         {
           "command": "dance.seek.leap.backward",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.seek.object",
           "when": "dance.mode == 'normal'"
         },
         {
