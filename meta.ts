@@ -476,11 +476,17 @@ export function parseKeys(keys: string) {
     return [];
   }
 
-  return keys.replace("\n", ", ").split(/ *, (?=`)/g).map((keyString) => {
-    const [,, rawKeybinding, rawMetadata] = /^(`+)(.+?)\1 \((.+?)\)$/.exec(keyString)!,
-          keybinding = rawKeybinding.trim().replace(
-            specialCharacterRegExp, (m) => (specialCharacterMapping as Record<string, string>)[m]),
-          [, category, tags] = /(\w+): (.+)/.exec(rawMetadata)!;
+  let split = keys.replace(/\n/g, ", ").split(/ *, (?=`)/g)
+  return split.map((keyString) => {
+    const match = /^(`+)(.+?)\1 \((.+?)\)$/.exec(keyString)!;
+    const [, , rawKeybinding, rawMetadata] = match;
+    const keybinding = rawKeybinding
+      .trim()
+      .replace(
+        specialCharacterRegExp,
+        (m) => (specialCharacterMapping as Record<string, string>)[m]
+      );
+    const [, category, tags] = /(\w+): (.+)/.exec(rawMetadata)!;
 
     // Reorder to match Ctrl+Shift+Alt+_
     let key = "";

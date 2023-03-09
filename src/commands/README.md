@@ -103,7 +103,7 @@ selections are empty</td><td></td></tr>
 <tr><td><a href="./search.ts#L160"><code>search.previous.add</code></a></td><td>Add previous match</td><td><code>Shift+Alt+N</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+N</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
 <tr><td><a href="./search.ts#L90"><code>search.selection.smart</code></a></td><td>Search current selection (smart)</td><td><code>Shift+8</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>NumPad_Multiply</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+8</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)<code>NumPad_Multiply</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
 <tr><td><a href="#search.selection"><code>search.selection</code></a></td><td>Search current selection</td><td><code>Shift+Alt+8</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+NumPad_Multiply</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
-<tr><td rowspan=27><a href="#seek"><code>seek</code></a></td><td><a href="#seek.enclosing"><code>seek.enclosing</code></a></td><td>Select to next enclosing character</td><td><code>Shift+M</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td rowspan=28><a href="#seek"><code>seek</code></a></td><td><a href="#seek.enclosing"><code>seek.enclosing</code></a></td><td>Select to next enclosing character</td><td><code>Shift+M</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#seek.leap"><code>seek.leap</code></a></td><td>Leap forward</td><td></td></tr>
 <tr><td><a href="#seek.seek"><code>seek.seek</code></a></td><td>Select to character (excluded)</td><td><code>T</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="./seek.ts#L24"><code>seek.backward</code></a></td><td>Select to character (excluded, backward)</td><td><code>Shift+T</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
@@ -116,7 +116,7 @@ selections are empty</td><td></td></tr>
 <tr><td><a href="./seek.ts#L26"><code>seek.included.backward</code></a></td><td>Select to character (included, backward)</td><td><code>Shift+F</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="./seek.ts#L29"><code>seek.included.extend</code></a></td><td>Extend to character (included)</td><td><code>F</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
 <tr><td><a href="./seek.ts#L30"><code>seek.included.extend.backward</code></a></td><td>Extend to character (included, backward)</td><td><code>Shift+F</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
-<tr><td><a href="./seek.ts#L518"><code>seek.leap.backward</code></a></td><td>Leap backward</td><td></td></tr>
+<tr><td><a href="./seek.ts#L523"><code>seek.leap.backward</code></a></td><td>Leap backward</td><td></td></tr>
 <tr><td><a href="./seek.ts#L185"><code>seek.word.backward</code></a></td><td>Select to previous word start</td><td><code>B</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="./seek.ts#L191"><code>seek.word.backward.extend</code></a></td><td>Extend to previous word start</td><td><code>B</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
 <tr><td><a href="./seek.ts#L189"><code>seek.word.extend</code></a></td><td>Extend to next word start</td><td><code>W</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
@@ -128,7 +128,8 @@ selections are empty</td><td></td></tr>
 <tr><td><a href="./seek.ts#L193"><code>seek.wordEnd.extend</code></a></td><td>Extend to next word end</td><td><code>E</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
 <tr><td><a href="./seek.ts#L188"><code>seek.wordEnd.ws</code></a></td><td>Select to next WORD end</td><td><code>Shift+E</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="./seek.ts#L194"><code>seek.wordEnd.ws.extend</code></a></td><td>Extend to next WORD end</td><td><code>Shift+E</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
-<tr><td><a href="#seek.selectExpand"><code>seek.selectExpand</code></a></td><td>Expand selection</td><td><code>Alt+O</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+O</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
+<tr><td><a href="#seek.selectExpand"><code>seek.selectExpand</code></a></td><td>Expand selection</td><td><code>Alt+O</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+O</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)<code>Alt+Up</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+Up</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
+<tr><td><a href="#seek.selectShrink"><code>seek.selectShrink</code></a></td><td>Shrink selection</td><td><code>Alt+I</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+I</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)<code>Alt+Down</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+Down</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
 <tr><td><a href="#seek.word"><code>seek.word</code></a></td><td>Select to next word start</td><td><code>W</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td rowspan=41><a href="#select"><code>select</code></a></td><td><a href="#select.buffer"><code>select.buffer</code></a></td><td>Select whole buffer</td><td><code>Shift+5</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+5</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
 <tr><td><a href="#select.firstVisibleLine"><code>select.firstVisibleLine</code></a></td><td>Select to first visible line</td><td></td></tr>
@@ -1129,10 +1130,26 @@ This command:
 
 Default keybinding: `a-o` (helix: normal)
 `a-o` (helix: visual)
+`a-up` (helix: normal)
+`a-up` (helix: visual)
+
+<a name="seek.selectShrink" />
+
+### [`seek.selectShrink`](./seek.ts#L505-L509)
+
+Shrink selection
+
+This command:
+- does not require an active text editor.
+
+Default keybinding: `a-i` (helix: normal)
+`a-i` (helix: visual)
+`a-down` (helix: normal)
+`a-down` (helix: visual)
 
 <a name="seek.leap" />
 
-### [`seek.leap`](./seek.ts#L509-L525)
+### [`seek.leap`](./seek.ts#L514-L530)
 
 Leap forward.
 
