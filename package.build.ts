@@ -84,7 +84,7 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
   // Common package.json properties.
   // ==========================================================================
 
-  name: "dancehelix",
+  name: "dancehelix-local",
   description: "Fork of Dance with helix keybindings (Unfinished)",
   version,
   license: "ISC",
@@ -150,7 +150,7 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
   // ==========================================================================
 
   displayName: "Dance - Helix Alpha",
-  publisher: "silverquark",
+  publisher: "strackeror",
   categories: ["Keymaps", "Other"],
   readme: "README.md",
   icon: "assets/dance.png",

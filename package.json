@@ -1,5 +1,5 @@
 {
-  "name": "dancehelix",
+  "name": "dancehelix-local",
   "description": "Fork of Dance with helix keybindings (Unfinished)",
   "version": "0.5.13",
   "license": "ISC",
@@ -55,7 +55,7 @@
     "yaml": "^2.1.1"
   },
   "displayName": "Dance - Helix Alpha",
-  "publisher": "silverquark",
+  "publisher": "strackeror",
   "categories": [
     "Keymaps",
     "Other"
@@ -1497,56 +1497,6 @@
         "category": "Dance"
       },
       {
-        "command": "dance.seek.askObject",
-        "title": "Select whole object",
-        "category": "Dance"
-      },
-      {
-        "command": "dance.seek.askObject.end",
-        "title": "Select to whole object end",
-        "category": "Dance"
-      },
-      {
-        "command": "dance.seek.askObject.end.extend",
-        "title": "Extend to whole object end",
-        "category": "Dance"
-      },
-      {
-        "command": "dance.seek.askObject.inner",
-        "title": "Select inner object",
-        "category": "Dance"
-      },
-      {
-        "command": "dance.seek.askObject.inner.end",
-        "title": "Select to inner object end",
-        "category": "Dance"
-      },
-      {
-        "command": "dance.seek.askObject.inner.end.extend",
-        "title": "Extend to inner object end",
-        "category": "Dance"
-      },
-      {
-        "command": "dance.seek.askObject.inner.start",
-        "title": "Select to inner object start",
-        "category": "Dance"
-      },
-      {
-        "command": "dance.seek.askObject.inner.start.extend",
-        "title": "Extend to inner object start",
-        "category": "Dance"
-      },
-      {
-        "command": "dance.seek.askObject.start",
-        "title": "Select to whole object start",
-        "category": "Dance"
-      },
-      {
-        "command": "dance.seek.askObject.start.extend",
-        "title": "Extend to whole object start",
-        "category": "Dance"
-      },
-      {
         "command": "dance.seek.backward",
         "title": "Select to character (excluded, backward)",
         "category": "Dance"
@@ -1612,8 +1562,13 @@
         "category": "Dance"
       },
       {
-        "command": "dance.seek.object",
-        "title": "Select object",
+        "command": "dance.seek.selectExpand",
+        "title": "Expand selection",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.selectShrink",
+        "title": "Shrink selection",
         "category": "Dance"
       },
       {
@@ -2426,46 +2381,6 @@
           "when": "dance.mode == 'normal'"
         },
         {
-          "command": "dance.seek.askObject",
-          "when": "dance.mode == 'normal'"
-        },
-        {
-          "command": "dance.seek.askObject.end",
-          "when": "dance.mode == 'normal'"
-        },
-        {
-          "command": "dance.seek.askObject.end.extend",
-          "when": "dance.mode == 'normal'"
-        },
-        {
-          "command": "dance.seek.askObject.inner",
-          "when": "dance.mode == 'normal'"
-        },
-        {
-          "command": "dance.seek.askObject.inner.end",
-          "when": "dance.mode == 'normal'"
-        },
-        {
-          "command": "dance.seek.askObject.inner.end.extend",
-          "when": "dance.mode == 'normal'"
-        },
-        {
-          "command": "dance.seek.askObject.inner.start",
-          "when": "dance.mode == 'normal'"
-        },
-        {
-          "command": "dance.seek.askObject.inner.start.extend",
-          "when": "dance.mode == 'normal'"
-        },
-        {
-          "command": "dance.seek.askObject.start",
-          "when": "dance.mode == 'normal'"
-        },
-        {
-          "command": "dance.seek.askObject.start.extend",
-          "when": "dance.mode == 'normal'"
-        },
-        {
           "command": "dance.seek.backward",
           "when": "dance.mode == 'normal'"
         },
@@ -2518,7 +2433,11 @@
           "when": "dance.mode == 'normal'"
         },
         {
-          "command": "dance.seek.object",
+          "command": "dance.seek.selectExpand",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.seek.selectShrink",
           "when": "dance.mode == 'normal'"
         },
         {
@@ -3067,7 +2986,7 @@
         "command": "dance.edit.join"
       },
       {
-        "key": "Shift+Alt+J",
+        "key": "Alt+J",
         "when": "editorTextFocus && dance.mode == 'normal'",
         "title": "Join lines and select inserted separators",
         "command": "dance.edit.join.select"
@@ -3973,78 +3892,6 @@
         "command": "dance.seek"
       },
       {
-        "key": "Alt+A",
-        "when": "editorTextFocus && dance.mode == 'normal'",
-        "title": "Select whole object",
-        "command": "dance.seek.askObject"
-      },
-      {
-        "key": "Alt+A",
-        "when": "editorTextFocus && dance.mode == 'insert'",
-        "title": "Select whole object",
-        "command": "dance.seek.askObject"
-      },
-      {
-        "key": "]",
-        "when": "editorTextFocus && dance.mode == 'normal'",
-        "title": "Select to whole object end",
-        "command": "dance.seek.askObject.end"
-      },
-      {
-        "key": "Shift+]",
-        "when": "editorTextFocus && dance.mode == 'normal'",
-        "title": "Extend to whole object end",
-        "command": "dance.seek.askObject.end.extend"
-      },
-      {
-        "key": "Alt+I",
-        "when": "editorTextFocus && dance.mode == 'normal'",
-        "title": "Select inner object",
-        "command": "dance.seek.askObject.inner"
-      },
-      {
-        "key": "Alt+I",
-        "when": "editorTextFocus && dance.mode == 'insert'",
-        "title": "Select inner object",
-        "command": "dance.seek.askObject.inner"
-      },
-      {
-        "key": "Alt+]",
-        "when": "editorTextFocus && dance.mode == 'normal'",
-        "title": "Select to inner object end",
-        "command": "dance.seek.askObject.inner.end"
-      },
-      {
-        "key": "Shift+Alt+]",
-        "when": "editorTextFocus && dance.mode == 'normal'",
-        "title": "Extend to inner object end",
-        "command": "dance.seek.askObject.inner.end.extend"
-      },
-      {
-        "key": "Alt+[",
-        "when": "editorTextFocus && dance.mode == 'normal'",
-        "title": "Select to inner object start",
-        "command": "dance.seek.askObject.inner.start"
-      },
-      {
-        "key": "Shift+Alt+[",
-        "when": "editorTextFocus && dance.mode == 'normal'",
-        "title": "Extend to inner object start",
-        "command": "dance.seek.askObject.inner.start.extend"
-      },
-      {
-        "key": "[",
-        "when": "editorTextFocus && dance.mode == 'normal'",
-        "title": "Select to whole object start",
-        "command": "dance.seek.askObject.start"
-      },
-      {
-        "key": "Shift+[",
-        "when": "editorTextFocus && dance.mode == 'normal'",
-        "title": "Extend to whole object start",
-        "command": "dance.seek.askObject.start.extend"
-      },
-      {
         "key": "Shift+T",
         "when": "editorTextFocus && dance.mode == 'normal'",
         "title": "Select to character (excluded, backward)",
@@ -4109,6 +3956,54 @@
         "when": "editorTextFocus && dance.mode == 'visual'",
         "title": "Extend to character (included, backward)",
         "command": "dance.seek.included.extend.backward"
+      },
+      {
+        "key": "Alt+O",
+        "when": "editorTextFocus && dance.mode == 'normal'",
+        "title": "Expand selection",
+        "command": "dance.seek.selectExpand"
+      },
+      {
+        "key": "Alt+O",
+        "when": "editorTextFocus && dance.mode == 'visual'",
+        "title": "Expand selection",
+        "command": "dance.seek.selectExpand"
+      },
+      {
+        "key": "Alt+Up",
+        "when": "editorTextFocus && dance.mode == 'normal'",
+        "title": "Expand selection",
+        "command": "dance.seek.selectExpand"
+      },
+      {
+        "key": "Alt+Up",
+        "when": "editorTextFocus && dance.mode == 'visual'",
+        "title": "Expand selection",
+        "command": "dance.seek.selectExpand"
+      },
+      {
+        "key": "Alt+I",
+        "when": "editorTextFocus && dance.mode == 'normal'",
+        "title": "Shrink selection",
+        "command": "dance.seek.selectShrink"
+      },
+      {
+        "key": "Alt+I",
+        "when": "editorTextFocus && dance.mode == 'visual'",
+        "title": "Shrink selection",
+        "command": "dance.seek.selectShrink"
+      },
+      {
+        "key": "Alt+Down",
+        "when": "editorTextFocus && dance.mode == 'normal'",
+        "title": "Shrink selection",
+        "command": "dance.seek.selectShrink"
+      },
+      {
+        "key": "Alt+Down",
+        "when": "editorTextFocus && dance.mode == 'visual'",
+        "title": "Shrink selection",
+        "command": "dance.seek.selectShrink"
       },
       {
         "key": "W",

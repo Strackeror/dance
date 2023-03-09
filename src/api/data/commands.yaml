@@ -248,7 +248,7 @@ edit.join.select:
 
   keys:
     qwerty: |-
-      `s-a-j` (kakoune: normal)
+      `a-j` (helix: normal)
 
   doc:
     en: |+
@@ -1064,118 +1064,6 @@ seek:
       | Extend to character (included)           | `included.extend`          | `f` (helix: visual)     | `[".seek", { include: true, shift: "extend"               , ... }]` |
       | Extend to character (included, backward) | `included.extend.backward` | `s-f` (helix: visual)   | `[".seek", { include: true, shift: "extend", direction: -1, ... }]` |
 
-seek.askObject:
-  title:
-    en: Select whole object
-
-  commands: |-
-    [".openMenu", { menu: "object", title: "Select whole object..." }]
-
-  keys:
-    qwerty: |-
-      `a-a` (kakoune: normal)
-      `a-a` (kakoune: insert)
-
-seek.askObject.end:
-  title:
-    en: Select to whole object end
-
-  commands: |-
-    [".openMenu", { menu: "object", pass: [{ where: "end" }] }]
-
-  keys:
-    qwerty: |-
-      `]` (kakoune: normal)
-
-seek.askObject.end.extend:
-  title:
-    en: Extend to whole object end
-
-  commands: |-
-    [".openMenu", { menu: "object", pass: [{ where: "end" , shift: "extend" }] }]
-
-  keys:
-    qwerty: |-
-      `}` (kakoune: normal)
-
-seek.askObject.inner:
-  title:
-    en: Select inner object
-
-  commands: |-
-    [".openMenu", { menu: "object", pass: [{ inner: true }], title: "Select inner object..." }]
-
-  keys:
-    qwerty: |-
-      `a-i` (kakoune: normal)
-      `a-i` (kakoune: insert)
-
-seek.askObject.inner.end:
-  title:
-    en: Select to inner object end
-
-  commands: |-
-    [".openMenu", { menu: "object", pass: [{ inner: true, where: "end" }] }]
-
-  keys:
-    qwerty: |-
-      `a-]` (kakoune: normal)
-
-seek.askObject.inner.end.extend:
-  title:
-    en: Extend to inner object end
-
-  commands: |-
-    [".openMenu", { menu: "object", pass: [{ inner: true, where: "end" , shift: "extend" }] }]
-
-  keys:
-    qwerty: |-
-      `a-}` (kakoune: normal)
-
-seek.askObject.inner.start:
-  title:
-    en: Select to inner object start
-
-  commands: |-
-    [".openMenu", { menu: "object", pass: [{ inner: true, where: "start" }] }]
-
-  keys:
-    qwerty: |-
-      `a-[` (kakoune: normal)
-
-seek.askObject.inner.start.extend:
-  title:
-    en: Extend to inner object start
-
-  commands: |-
-    [".openMenu", { menu: "object", pass: [{ inner: true, where: "start", shift: "extend" }] }]
-
-  keys:
-    qwerty: |-
-      `a-{` (kakoune: normal)
-
-seek.askObject.start:
-  title:
-    en: Select to whole object start
-
-  commands: |-
-    [".openMenu", { menu: "object", pass: [{ where: "start" }] }]
-
-  keys:
-    qwerty: |-
-      `[` (kakoune: normal)
-
-seek.askObject.start.extend:
-  title:
-    en: Extend to whole object start
-
-  commands: |-
-    [".openMenu", { menu: "object", pass: [{ where: "start", shift: "extend" }] }]
-
-  keys:
-    qwerty: |-
-      `{` (kakoune: normal)
-
 seek.backward:
   title:
     en: Select to character (excluded, backward)
@@ -1330,42 +1218,35 @@ seek.leap.backward:
   commands: |-
     [".seek.leap", { direction: -1, $exclude: [] }]
 
-seek.object:
+seek.selectExpand:
   title:
-    en: Select object
+    en: Expand selection
+
+  keys:
+    qwerty: |-
+      `a-o` (helix: normal)
+      `a-o` (helix: visual)
+      `a-up` (helix: normal)
+      `a-up` (helix: visual)
 
   doc:
     en: |
-      Select object.
+      Expand selection
 
+seek.selectShrink:
+  title:
+    en: Shrink selection
 
-      #### Object patterns
+  keys:
+    qwerty: |-
+      `a-i` (helix: normal)
+      `a-i` (helix: visual)
+      `a-down` (helix: normal)
+      `a-down` (helix: visual)
 
-      - Pairs: `<regexp>(?#inner)<regexp>`.
-
-      - Character sets: `[<characters>]+`.
-
-        - Can be preceded by `(?<before>[<characters>]+)` and followed by
-          `(?<after>[<character>]+)` for whole objects.
-
-      - Matches that may only span a single line: `(?#singleline)<regexp>`.
-
-      - Predefined: `(?#predefined=<argument | paragraph | sentence>)`.
-
-      #### Variants
-
-      | Title                        | Identifier                     | Keybinding                                       | Command                                                                                       |
-      | ---------------------------- | ------------------------------ | ------------------------------------------------ | --------------------------------------------------------------------------------------------- |
-      | Select whole object          | `askObject`                    | `a-a` (kakoune: normal), `a-a` (kakoune: insert) | `[".openMenu", { menu: "object",                          title: "Select whole object..." }]` |
-      | Select inner object          | `askObject.inner`              | `a-i` (kakoune: normal), `a-i` (kakoune: insert) | `[".openMenu", { menu: "object", pass: [{ inner: true }], title: "Select inner object..." }]` |
-      | Select to whole object start | `askObject.start`              | `[` (kakoune: normal)                            | `[".openMenu", { menu: "object", pass: [{              where: "start"                  }] }]` |
-      | Extend to whole object start | `askObject.start.extend`       | `{` (kakoune: normal)                            | `[".openMenu", { menu: "object", pass: [{              where: "start", shift: "extend" }] }]` |
-      | Select to inner object start | `askObject.inner.start`        | `a-[` (kakoune: normal)                          | `[".openMenu", { menu: "object", pass: [{ inner: true, where: "start"                  }] }]` |
-      | Extend to inner object start | `askObject.inner.start.extend` | `a-{` (kakoune: normal)                          | `[".openMenu", { menu: "object", pass: [{ inner: true, where: "start", shift: "extend" }] }]` |
-      | Select to whole object end   | `askObject.end`                | `]` (kakoune: normal)                            | `[".openMenu", { menu: "object", pass: [{              where: "end"                    }] }]` |
-      | Extend to whole object end   | `askObject.end.extend`         | `}` (kakoune: normal)                            | `[".openMenu", { menu: "object", pass: [{              where: "end"  , shift: "extend" }] }]` |
-      | Select to inner object end   | `askObject.inner.end`          | `a-]` (kakoune: normal)                          | `[".openMenu", { menu: "object", pass: [{ inner: true, where: "end"                    }] }]` |
-      | Extend to inner object end   | `askObject.inner.end.extend`   | `a-}` (kakoune: normal)                          | `[".openMenu", { menu: "object", pass: [{ inner: true, where: "end"  , shift: "extend" }] }]` |
+  doc:
+    en: |
+      Shrink selection
 
 seek.word:
   title:

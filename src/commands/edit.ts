@@ -142,7 +142,7 @@ export function join(_: Context, separator?: Argument<string>) {
 /**
  * Join lines and select inserted separators.
  *
- * @keys `s-a-j` (kakoune: normal)
+ * @keys `a-j` (helix: normal)
  */
 export async function join_select(_: Context, separator?: Argument<string>) {
   Selections.set(await joinLines(Selections.lines(), separator));
