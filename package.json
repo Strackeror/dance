@@ -4943,11 +4943,6 @@
       },
       {
         "command": "dance.ignore",
-        "key": "Space",
-        "when": "editorTextFocus && dance.mode == 'normal'"
-      },
-      {
-        "command": "dance.ignore",
         "key": "NumPad_Add",
         "when": "editorTextFocus && dance.mode == 'normal'"
       },
@@ -5038,6 +5033,11 @@
       },
       {
         "command": "dance.ignore",
+        "key": "Tab",
+        "when": "editorTextFocus && dance.mode == 'visual'"
+      },
+      {
+        "command": "dance.ignore",
         "key": "NumPad_Add",
         "when": "editorTextFocus && dance.mode == 'visual'"
       },
@@ -5049,6 +5049,11 @@
       {
         "command": "dance.ignore",
         "key": "Shift+=",
+        "when": "editorTextFocus && dance.mode == 'visual'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+Tab",
         "when": "editorTextFocus && dance.mode == 'visual'"
       },
       {
