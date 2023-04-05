@@ -614,10 +614,6 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
                   command: "dance.select.lineEnd",
                   args: [{ count: 2 ** 31 - 1 }],
                 },
-                "f": {
-                  text: "to file whose name is selected",
-                  command: "dance.selections.open",
-                },
                 "h": {
                   text: "to line start",
                   command: "dance.select.lineStart",
@@ -663,18 +659,21 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
                   text: "to last accessed buffer",
                   command: "workbench.action.openPreviousRecentlyUsedEditorInGroup",
                 },
-                // Currently not possible
-                // "m": {
-                //   text: "to last modified buffer",
-                //   command: "",
-                // },
-                "n": {
-                  text: "to next buffer",
-                  command: "workbench.action.nextEditor",
+                "A": {
+                  text: "to last buffer...",
+                  command: "workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup",
                 },
                 "p": {
                   text: "to previous buffer",
                   command: "workbench.action.previousEditor",
+                },
+                "n": {
+                  text: "to next buffer",
+                  command: "workbench.action.nextEditor",
+                },
+                "f": {
+                  text: "to file whose name is selected",
+                  command: "dance.selections.open",
                 },
                 ".": {
                   text: "to last buffer modification position",
