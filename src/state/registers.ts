@@ -1,7 +1,9 @@
 import * as vscode from "vscode";
 
+import type { Extension } from "./extension";
 import type { Recording } from "./recorder";
 import { Context, prompt, SelectionBehavior, Selections } from "../api";
+import { availableClipboardRegisters } from "../utils/constants";
 import { ArgumentError, assert, EditNotAppliedError, EditorRequiredError } from "../utils/errors";
 import { noUndoStops } from "../utils/misc";
 import type * as TrackedSelection from "../utils/tracked-selection";
@@ -173,7 +175,7 @@ export abstract class Register {
   }
 }
 
-export declare namespace Register {
+export /* enum */ namespace Register {
   /**
    * Flags describing the capabilities of a `Register`.
    */
@@ -195,6 +197,14 @@ export declare namespace Register {
     CanReadWriteMacros = 16,
   }
 
+  export const enum ChangeKind {
+    Contents,
+    Selections,
+    Recording,
+  }
+}
+
+export declare namespace Register {
   /**
    * Given an array of `Flags` types, returns what interfaces correspond to
    * these flags.
@@ -234,12 +244,6 @@ export declare namespace Register {
   export interface ReadableWriteableMacros {
     getRecording(): Recording | undefined;
     setRecording(recording: Recording): void;
-  }
-
-  export const enum ChangeKind {
-    Contents,
-    Selections,
-    Recording,
   }
 }
 
@@ -415,6 +419,12 @@ export abstract class RegisterSet implements vscode.Disposable {
 
   private _lastMatches: readonly (readonly string[])[] = [];
 
+  /*
+   * The system clipboard register set with the
+   * `dance.systemClipboardRegister` setting.
+   */
+  private _systemClipboardRegister: string | undefined = undefined;
+
   /**
    * The set of registers.
    */
@@ -430,11 +440,12 @@ export abstract class RegisterSet implements vscode.Disposable {
   }
 
   /**
-   * The '"' (`dquote`) register, mapped to the system clipboard and default
-   * register for edit operations.
+   * The '"' (`dquote`) register, default register for edit operations and
+   * mapped to the system clipboard by default.
    */
-  public readonly dquote = new ClipboardRegister();
-
+  public get dquote(): Register {
+    return this._named.get("dquote")!;
+  }
   /**
    * The "/" (`slash`) register, default register for search / regex operations.
    */
@@ -553,7 +564,7 @@ export abstract class RegisterSet implements vscode.Disposable {
     () => Promise.resolve(),
   );
 
-  public constructor() {
+  public constructor(extension?: Extension) {
     for (const [longName, register] of [
       ["dquote", this.dquote] as const,
       ["slash", this.slash] as const,
@@ -583,6 +594,33 @@ export abstract class RegisterSet implements vscode.Disposable {
 
     this._named.set("", this.null);
     this._named.set("null", this.null);
+
+    // Watch systemClipboardRegister setting and update binding
+    if (extension !== undefined) {
+      extension.observePreference<string | null>(
+        ".systemClipboardRegister",
+        (value, validator) => {
+          if (!["dquote", null, ...availableClipboardRegisters].includes(value)) {
+            value = null;
+            validator.reportInvalidSetting(`Invalid systemClipboardRegister value: ${value}`);
+          }
+
+          // Reset old value to be a GeneralRegister
+          if (this._systemClipboardRegister !== undefined) {
+            const icon = this._systemClipboardRegister === "dquote" ? "copy" : "clippy";
+            this._named.set(this._systemClipboardRegister, new GeneralPurposeRegister(this._systemClipboardRegister, icon));
+          }
+
+          // Set new value to be a ClipboardRegister
+          if (value !== null) {
+            this._named.set(value, new ClipboardRegister());
+          }
+
+          this._systemClipboardRegister = value ?? undefined;
+        },
+        true,
+      );
+    }
   }
 
   public dispose() {

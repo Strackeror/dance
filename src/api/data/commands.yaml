@@ -1385,6 +1385,51 @@ seek.selectShrink:
     en: |
       Shrink selection
 
+seek.syntax.child.experimental:
+  title:
+    en: Select child syntax object
+
+  commands: |-
+    [".seek.syntax.experimental", { where: "child" }]
+
+seek.syntax.experimental:
+  title:
+    en: Select syntax object
+
+  doc:
+    en: |
+      Select syntax object.
+
+      #### Variants
+
+      | Title                         | Identifier                     | Command                                                |
+      | ----------------------------- | ------------------------------ | ------------------------------------------------------ |
+      | Select next syntax object     | `syntax.next.experimental`     | `[".seek.syntax.experimental", { where: "next"     }]` |
+      | Select previous syntax object | `syntax.previous.experimental` | `[".seek.syntax.experimental", { where: "previous" }]` |
+      | Select parent syntax object   | `syntax.parent.experimental`   | `[".seek.syntax.experimental", { where: "parent"   }]` |
+      | Select child syntax object    | `syntax.child.experimental`    | `[".seek.syntax.experimental", { where: "child"    }]` |
+
+seek.syntax.next.experimental:
+  title:
+    en: Select next syntax object
+
+  commands: |-
+    [".seek.syntax.experimental", { where: "next" }]
+
+seek.syntax.parent.experimental:
+  title:
+    en: Select parent syntax object
+
+  commands: |-
+    [".seek.syntax.experimental", { where: "parent" }]
+
+seek.syntax.previous.experimental:
+  title:
+    en: Select previous syntax object
+
+  commands: |-
+    [".seek.syntax.experimental", { where: "previous" }]
+
 seek.word:
   title:
     en: Select to next word start

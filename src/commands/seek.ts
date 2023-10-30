@@ -6,6 +6,7 @@ import { CharSet } from "../utils/charset";
 import { ArgumentError, assert } from "../utils/errors";
 import { escapeForRegExp, execRange } from "../utils/regexp";
 import * as TrackedSelection from "../utils/tracked-selection";
+import { SyntaxNode, Tree, TreeSitter } from "../utils/tree-sitter";
 
 /**
  * Update selections based on the text surrounding them.
@@ -512,6 +513,59 @@ export async function selectShrink() {
 
 
 /**
+ * Select syntax object.
+ *
+ * #### Variants
+ *
+ * | Title                         | Identifier                     | Command                                                |
+ * | ----------------------------- | ------------------------------ | ------------------------------------------------------ |
+ * | Select next syntax object     | `syntax.next.experimental`     | `[".seek.syntax.experimental", { where: "next"     }]` |
+ * | Select previous syntax object | `syntax.previous.experimental` | `[".seek.syntax.experimental", { where: "previous" }]` |
+ * | Select parent syntax object   | `syntax.parent.experimental`   | `[".seek.syntax.experimental", { where: "parent"   }]` |
+ * | Select child syntax object    | `syntax.child.experimental`    | `[".seek.syntax.experimental", { where: "child"    }]` |
+ */
+export function syntax_experimental(
+  _: Context,
+
+  treeSitter: TreeSitter,
+  documentTree: Tree,
+
+  where: Argument<"next" | "previous" | "parent" | "child"> = "next",
+): void {
+  const rootNode = documentTree.rootNode;
+
+  Selections.updateByIndex((_, selection) => {
+    const activeNode =
+      rootNode.namedDescendantForPosition(treeSitter.fromPosition(selection.active));
+    let newNode: SyntaxNode | null;
+
+    switch (where) {
+    case "next":
+      newNode = activeNode.nextNamedSibling;
+      break;
+
+    case "previous":
+      newNode = activeNode.previousNamedSibling;
+      break;
+
+    case "child":
+      newNode = activeNode.firstNamedChild;
+      break;
+
+    case "parent":
+      newNode = activeNode.parent;
+      break;
+    }
+
+    if (newNode == null) {
+      return selection;
+    }
+
+    return Selections.fromRange(treeSitter.toRange(newNode));
+  }, _);
+}
+
+/**
  * Leap forward.
  *
  * Inspired by [`leap.nvim`](https://github.com/ggandor/leap.nvim).
@@ -533,7 +587,8 @@ export async function leap(
   labels = labels.toLowerCase();
 
   ArgumentError.validate(
-    "labels", new Set(labels).size === [...labels].length, "must not reuse characters");
+    "labels",
+    new Set(labels as Iterable<string>).size === [...labels].length, "must not reuse characters");
 
   const editor = _.editor,
         doc = _.document,

@@ -283,49 +283,51 @@ export async function replaceCharacters(
  *
  * @keys `&` (helix: normal), `&` (helix: visual)
  */
-export function align(
-  _: Context,
-  selections: readonly vscode.Selection[],
-  fill: Argument<string> = " ",
-) {
+export function align(_: Context, fill: Argument<string> = " ") {
   return edit((builder, selections) => {
-    const sortedSelections = sort(Direction.Forward, [...selections]);
+    const sortedSelections = Selections.sort(Direction.Forward, [
+      ...selections,
+    ]);
 
-    // Group selections by 'column', nth column being nth selections of each line
-    let selectionByColumn: vscode.Selection[][] = [];
-    let currentLine = undefined;
+    // Build groups of selections that should be aligned together, each group
+    // containing the nth selection of each line.
+    const selectionGroups: vscode.Selection[][] = [];
+    let currentLine = -1;
     let currentColumn = 0;
-    for (let selection of sortedSelections) {
-      if (selection.start.line != currentLine) {
+    for (const selection of sortedSelections) {
+      if (selection.start.line !== selection.end.line) {
+        throw new Error("cannot align selections that span multiple lines");
+      }
+
+      if (selection.start.line !== currentLine) {
         currentLine = selection.start.line;
         currentColumn = 0;
       }
 
-      selectionByColumn[currentColumn] = [
-        ...(selectionByColumn[currentColumn] ?? []),
-        selection,
-      ];
-      currentColumn += 1;
+      if (currentColumn === selectionGroups.length) {
+        selectionGroups.push([]);
+      }
+
+      selectionGroups[currentColumn].push(selection);
+      currentColumn++;
     }
 
     // Selections aren't updated as we fill each line, so we keep track of how
-    // many characters we added to each line as we go
-    let forwardCounters = new Map();
-    const getForwardCounter = (sel: vscode.Selection) =>
-      forwardCounters.get(sel.start.line) ?? 0;
+    // many characters we added to each line as we go.
+    const lineFillCounters = new Map<number, number>();
+    const getAlignChar = (sel: vscode.Selection) =>
+      sel.active.character + (lineFillCounters.get(sel.active.line) ?? 0);
 
-    for (let selections of selectionByColumn) {
-      const startChar = selections.reduce(
-        (max, sel) =>
-          Math.max(sel.start.character + getForwardCounter(sel), max),
-        0
-      );
-      for (let selection of selections) {
-        const addCount =
-          startChar - selection.start.character - getForwardCounter(selection);
-        const line = selection.start.line;
+    for (const selectionsInGroup of selectionGroups) {
+      const furthestChar = Math.max(...selectionsInGroup.map(getAlignChar));
+      for (const selection of selectionsInGroup) {
+        const addCount = furthestChar - getAlignChar(selection);
         builder.insert(selection.start, fill.repeat(addCount));
-        forwardCounters.set(line, getForwardCounter(selection) + addCount);
+        const line = selection.start.line;
+        lineFillCounters.set(
+          line,
+          (lineFillCounters.get(line) ?? 0) + addCount,
+        );
       }
     }
   });

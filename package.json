@@ -11,25 +11,27 @@
     "type": "git",
     "url": "https://github.com/Silverquark/dance.git"
   },
-  "main": "./out/src/extension.js",
-  "browser": "./out/web/extension.js",
+  "main": "./out/extension.js",
+  "browser": "./out/web-extension.js",
   "engines": {
     "vscode": "^1.63.0"
   },
   "scripts": {
-    "check": "eslint . && depcruise -v .dependency-cruiser.js src",
+    "check": "tsc -p ./ && eslint . && depcruise -v .dependency-cruiser.js src",
     "format": "eslint . --fix",
     "generate": "ts-node ./meta.ts",
     "generate:watch": "ts-node ./meta.ts --watch",
+    "compile": "esbuild src/extension.ts --bundle --external:vscode --external:child_process --target=es2021 --format=cjs --minify --keep-names --outfile=out/extension.js",
+    "compile:watch": "esbuild src/extension.ts --bundle --external:vscode --external:child_process --target=es2021 --format=cjs --minify --keep-names --outfile=out/extension.js --watch --sourcemap",
+    "compile-web": "esbuild src/extension.ts --bundle --external:vscode --external:child_process --target=es2021 --format=cjs --minify --keep-names --outfile=out/web-extension.js --define:process.platform=\\\"web\\\" --define:process.env={}",
+    "compile-web:watch": "esbuild src/extension.ts --bundle --external:vscode --external:child_process --target=es2021 --format=cjs --minify --keep-names --outfile=out/web-extension.js --define:process.platform=\\\"web\\\" --define:process.env={} --watch --sourcemap",
+    "compile-tests": "globstar -- esbuild \"{src,test}/**/*.ts\" --target=es2021 --format=cjs --outdir=out --outbase=. --sourcemap",
+    "test": "yarn run compile --sourcemap && yarn run compile-tests && node ./out/test/run.js",
     "vscode:prepublish": "yarn run generate && yarn run compile && yarn run compile-web",
-    "compile": "tsc -p ./",
-    "compile:watch": "tsc -watch -p ./",
-    "compile-web": "webpack --mode production --devtool hidden-source-map --config ./webpack.web.config.js",
-    "compile-web:watch": "webpack --watch --config ./webpack.web.config.js",
-    "test": "yarn run compile && node ./out/test/run.js",
     "package": "vsce package --allow-star-activation",
     "publish": "vsce publish --allow-star-activation",
-    "publish:pre": "vsce publish --allow-star-activation --pre-release --no-git-tag-version --no-update-package-json 0.5.13001"
+    "package:pre": "vsce package --allow-star-activation --pre-release --no-git-tag-version --no-update-package-json 0.5.13004",
+    "publish:pre": "vsce publish --allow-star-activation --pre-release --no-git-tag-version --no-update-package-json 0.5.13004"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",
@@ -41,8 +43,10 @@
     "@vscode/test-electron": "^2.1.3",
     "chokidar": "^3.5.3",
     "dependency-cruiser": "^11.7.0",
+    "esbuild": "^0.18.4",
     "eslint": "^8.15.0",
     "glob": "^8.0.3",
+    "globstar": "^1.0.0",
     "mocha": "^10.0.0",
     "source-map-support": "^0.5.21",
     "ts-loader": "^9.3.1",
@@ -50,8 +54,7 @@
     "typescript": "^4.8.4",
     "unexpected": "^13.0.0",
     "vsce": "^2.7.0",
-    "webpack": "^5.72.1",
-    "webpack-cli": "^4.9.2",
+    "web-tree-sitter": "^0.20.8",
     "yaml": "^2.1.1"
   },
   "displayName": "Dance - Helix Alpha",
@@ -958,6 +961,44 @@
             }
           }
         },
+        "dance.systemClipboardRegister": {
+          "enum": [
+            "dquote",
+            null,
+            "b",
+            "e",
+            "f",
+            "g",
+            "i",
+            "j",
+            "k",
+            "l",
+            "m",
+            "n",
+            "o",
+            "p",
+            "q",
+            "r",
+            "t",
+            "v",
+            "w",
+            "x",
+            "y",
+            "z",
+            "*",
+            "+"
+          ],
+          "enumItemLabels": [
+            "\"",
+            "None"
+          ],
+          "enumDescriptions": [
+            "The default yank register",
+            "Disables using the system clipboard"
+          ],
+          "default": "dquote",
+          "description": "Controls which register maps to the system clipboard."
+        },
         "dance.enabled": {
           "type": "boolean",
           "default": true,
@@ -1628,6 +1669,31 @@
       {
         "command": "dance.seek.selectShrink",
         "title": "Shrink selection",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.syntax.child.experimental",
+        "title": "Select child syntax object",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.syntax.experimental",
+        "title": "Select syntax object",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.syntax.next.experimental",
+        "title": "Select next syntax object",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.syntax.parent.experimental",
+        "title": "Select parent syntax object",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.seek.syntax.previous.experimental",
+        "title": "Select previous syntax object",
         "category": "Dance"
       },
       {
@@ -2542,6 +2608,26 @@
         {
           "command": "dance.seek.selectShrink",
           "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.seek.syntax.child.experimental",
+          "when": "dance.mode == 'normal' && tree-sitter.activeEditorIsSupported"
+        },
+        {
+          "command": "dance.seek.syntax.experimental",
+          "when": "dance.mode == 'normal' && tree-sitter.activeEditorIsSupported"
+        },
+        {
+          "command": "dance.seek.syntax.next.experimental",
+          "when": "dance.mode == 'normal' && tree-sitter.activeEditorIsSupported"
+        },
+        {
+          "command": "dance.seek.syntax.parent.experimental",
+          "when": "dance.mode == 'normal' && tree-sitter.activeEditorIsSupported"
+        },
+        {
+          "command": "dance.seek.syntax.previous.experimental",
+          "when": "dance.mode == 'normal' && tree-sitter.activeEditorIsSupported"
         },
         {
           "command": "dance.seek.word",
@@ -4983,6 +5069,11 @@
       },
       {
         "command": "dance.ignore",
+        "key": "Shift+G",
+        "when": "editorTextFocus && dance.mode == 'visual'"
+      },
+      {
+        "command": "dance.ignore",
         "key": "Shift+H",
         "when": "editorTextFocus && dance.mode == 'visual'"
       },
@@ -4999,6 +5090,11 @@
       {
         "command": "dance.ignore",
         "key": "Shift+Y",
+        "when": "editorTextFocus && dance.mode == 'visual'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+1",
         "when": "editorTextFocus && dance.mode == 'visual'"
       },
       {
@@ -5085,6 +5181,111 @@
         "command": "workbench.action.navigateForward",
         "key": "Ctrl+I",
         "when": "canNavigateForward"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+D",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+G",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+H",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+L",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+V",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+Y",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+1",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+2",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+3",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+6",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "'",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "-",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "=",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Tab",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "NumPad_Add",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "NumPad_Subtract",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+=",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+Tab",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+Space",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+NumPad_Add",
+        "when": "editorTextFocus && dance.mode == 'select'"
+      },
+      {
+        "command": "dance.ignore",
+        "key": "Shift+NumPad_Subtract",
+        "when": "editorTextFocus && dance.mode == 'select'"
       }
     ]
   }

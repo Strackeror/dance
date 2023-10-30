@@ -1,7 +1,12 @@
 import type { Builder } from "./meta";
+import { availableClipboardRegisters } from "./src/utils/constants";
 
 // Shared values
 // ============================================================================
+
+const esbuildBase = "esbuild src/extension.ts --bundle --external:vscode --external:child_process --target=es2021 --format=cjs --minify --keep-names";
+const esbuildNode = `${esbuildBase} --outfile=out/extension.js`;
+const esbuildWeb = `${esbuildBase} --outfile=out/web-extension.js --define:process.platform=\\"web\\" --define:process.env={}`;
 
 const commandType = {
   type: "array",
@@ -77,7 +82,7 @@ const selectionDecorationType = {
 // ============================================================================
 
 const version = "0.5.13",
-      preRelease = 1;
+      preRelease = 4;
 
 export const pkg = (modules: Builder.ParsedModule[]) => ({
 
@@ -99,26 +104,32 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
     url: "https://github.com/Silverquark/dance.git",
   },
 
-  main: "./out/src/extension.js",
-  browser: "./out/web/extension.js",
+  main: "./out/extension.js",
+  browser: "./out/web-extension.js",
 
   engines: {
     vscode: "^1.63.0",
   },
 
   scripts: {
-    "check": "eslint . && depcruise -v .dependency-cruiser.js src",
+    "check": "tsc -p ./ && eslint . && depcruise -v .dependency-cruiser.js src",
     "format": "eslint . --fix",
+
     "generate": "ts-node ./meta.ts",
     "generate:watch": "ts-node ./meta.ts --watch",
+
+    "compile": esbuildNode,
+    "compile:watch": `${esbuildNode} --watch --sourcemap`,
+    "compile-web": esbuildWeb,
+    "compile-web:watch": `${esbuildWeb} --watch --sourcemap`,
+    "compile-tests": "globstar -- esbuild \"{src,test}/**/*.ts\" --target=es2021 --format=cjs --outdir=out --outbase=. --sourcemap",
+
+    "test": "yarn run compile --sourcemap && yarn run compile-tests && node ./out/test/run.js",
+
     "vscode:prepublish": "yarn run generate && yarn run compile && yarn run compile-web",
-    "compile": "tsc -p ./",
-    "compile:watch": "tsc -watch -p ./",
-    "compile-web": "webpack --mode production --devtool hidden-source-map --config ./webpack.web.config.js",
-    "compile-web:watch": "webpack --watch --config ./webpack.web.config.js",
-    "test": "yarn run compile && node ./out/test/run.js",
     "package": "vsce package --allow-star-activation",
     "publish": "vsce publish --allow-star-activation",
+    "package:pre": `vsce package --allow-star-activation --pre-release --no-git-tag-version --no-update-package-json ${version.replace(/\d+$/, "$&" + preRelease.toString().padStart(3, "0"))}`,
     "publish:pre": `vsce publish --allow-star-activation --pre-release --no-git-tag-version --no-update-package-json ${version.replace(/\d+$/, "$&" + preRelease.toString().padStart(3, "0"))}`,
   },
 
@@ -132,8 +143,10 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
     "@vscode/test-electron": "^2.1.3",
     "chokidar": "^3.5.3",
     "dependency-cruiser": "^11.7.0",
+    "esbuild": "^0.18.4",
     "eslint": "^8.15.0",
     "glob": "^8.0.3",
+    "globstar": "^1.0.0",
     "mocha": "^10.0.0",
     "source-map-support": "^0.5.21",
     "ts-loader": "^9.3.1",
@@ -141,8 +154,7 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
     "typescript": "^4.8.4",
     "unexpected": "^13.0.0",
     "vsce": "^2.7.0",
-    "webpack": "^5.72.1",
-    "webpack-cli": "^4.9.2",
+    "web-tree-sitter": "^0.20.8",
     "yaml": "^2.1.1",
   },
 
@@ -799,6 +811,14 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
                       { items: Record<string, { text: string; command: string; args?: any[] }>}>,
         },
 
+        "dance.systemClipboardRegister": {
+          enum: ["dquote", null, ...availableClipboardRegisters],
+          enumItemLabels: ['"', "None"],
+          enumDescriptions:["The default yank register", "Disables using the system clipboard"],
+          default: "dquote",
+          description: "Controls which register maps to the system clipboard.",
+        },
+
         // Deprecated configuration:
         "dance.enabled": {
           type: "boolean",
@@ -942,6 +962,7 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
       command: x.id,
       title: x.title,
       category: "Dance",
+      enablement: x.enablement,
     }))),
 
     menus: {
@@ -967,25 +988,26 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
               ...symbols.map((x) => `Shift+${x}`),
             ]);
 
-      const normalKeys = keysToAssign;
-      const visualKeys = keysToAssign;
+      const keysToAssignForNormal = new Set(keysToAssign);
+      const keysToAssignForVisual = new Set(keysToAssign);
+
       for (const keybinding of keybindings) {
-        if (keybinding.when.includes("normal")) {
-          normalKeys.delete(keybinding.key);
+        if (keybinding.when.includes("dance.mode == 'normal'")) {
+          keysToAssignForNormal.delete(keybinding.key);
         }
-        if (keybinding.when.includes("visual")) {
-          visualKeys.delete(keybinding.key);
+        if (keybinding.when.includes("dance.mode == 'visual'")) {
+          keysToAssignForVisual.delete(keybinding.key);
         }
       }
 
-      for (const keyToAssign of normalKeys) {
+      for (const keyToAssign of keysToAssignForNormal) {
         keybindings.push({
           command: "dance.ignore",
           key: keyToAssign,
           when: "editorTextFocus && dance.mode == 'normal'",
         });
       }
-      for (const keyToAssign of visualKeys) {
+      for (const keyToAssign of keysToAssignForVisual) {
         keybindings.push({
           command: "dance.ignore",
           key: keyToAssign,
@@ -1009,6 +1031,14 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
         key: "Ctrl+I",
         when: "canNavigateForward",
       });
+
+      for (const keyToAssign of keysToAssignForVisual) {
+        keybindings.push({
+          command: "dance.ignore",
+          key: keyToAssign,
+          when: "editorTextFocus && dance.mode == 'select'",
+        });
+      }
 
       return keybindings;
     })(),
