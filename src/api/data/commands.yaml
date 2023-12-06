@@ -2417,7 +2417,7 @@ selections.rotate.both:
 
   keys:
     qwerty: |-
-      `a-(` (kakoune: normal)
+      `a-)` (kakoune: normal)
 
   doc:
     en: |
@@ -2428,7 +2428,7 @@ selections.rotate.both:
 
       | Title                               | Identifier     | Keybinding              | Command                                          |
       | ----------------------------------- | -------------- | ----------------------- | ------------------------------------------------ |
-      | Rotate selections counter-clockwise | `both.reverse` | `a-)` (kakoune: normal) | `[".selections.rotate.both", { reverse: true }]` |
+      | Rotate selections counter-clockwise | `both.reverse` | `a-(` (kakoune: normal) | `[".selections.rotate.both", { reverse: true }]` |
 
 selections.rotate.both.reverse:
   title:
@@ -2439,7 +2439,7 @@ selections.rotate.both.reverse:
 
   keys:
     qwerty: |-
-      `a-)` (kakoune: normal)
+      `a-(` (kakoune: normal)
 
 selections.rotate.contents:
   title:
@@ -2474,8 +2474,6 @@ selections.rotate.selections:
   doc:
     en: |
       Rotate selections clockwise (selections only).
-
-      TODO: ( seems to be broken. Fix it...
 
 
       The following keybinding is also available:
@@ -2747,7 +2745,7 @@ anonymous:
 
     keys:
       qwerty: |-
-        `m` (normal)
+        `m` (helix: normal)
 
   - title:
       en: Show match menu
@@ -2866,9 +2864,6 @@ anonymous:
       [".updateCount", { addDigits: 0 }]
 
     keys:
-      azerty: |-
-        `s-0` (core: normal)
-        `NumPad0` (core: normal)
       qwerty: |-
         `0` (helix: normal)
         `NumPad0` (helix: normal)
@@ -2882,9 +2877,6 @@ anonymous:
       [".updateCount", { addDigits: 1 }]
 
     keys:
-      azerty: |-
-        `s-1` (core: normal)
-        `NumPad1` (core: normal)
       qwerty: |-
         `1` (helix: normal)
         `NumPad1` (helix: normal)
@@ -2898,9 +2890,6 @@ anonymous:
       [".updateCount", { addDigits: 2 }]
 
     keys:
-      azerty: |-
-        `s-2` (core: normal)
-        `NumPad2` (core: normal)
       qwerty: |-
         `2` (helix: normal)
         `NumPad2` (helix: normal)
@@ -2914,9 +2903,6 @@ anonymous:
       [".updateCount", { addDigits: 3 }]
 
     keys:
-      azerty: |-
-        `s-3` (core: normal)
-        `NumPad3` (core: normal)
       qwerty: |-
         `3` (helix: normal)
         `NumPad3` (helix: normal)
@@ -2930,9 +2916,6 @@ anonymous:
       [".updateCount", { addDigits: 4 }]
 
     keys:
-      azerty: |-
-        `s-4` (core: normal)
-        `NumPad4` (core: normal)
       qwerty: |-
         `4` (helix: normal)
         `NumPad4` (helix: normal)
@@ -2946,9 +2929,6 @@ anonymous:
       [".updateCount", { addDigits: 5 }]
 
     keys:
-      azerty: |-
-        `s-5` (core: normal)
-        `NumPad5` (core: normal)
       qwerty: |-
         `5` (helix: normal)
         `NumPad5` (helix: normal)
@@ -2962,9 +2942,6 @@ anonymous:
       [".updateCount", { addDigits: 6 }]
 
     keys:
-      azerty: |-
-        `s-6` (core: normal)
-        `NumPad6` (core: normal)
       qwerty: |-
         `6` (helix: normal)
         `NumPad6` (helix: normal)
@@ -2978,9 +2955,6 @@ anonymous:
       [".updateCount", { addDigits: 7 }]
 
     keys:
-      azerty: |-
-        `s-7` (core: normal)
-        `NumPad7` (core: normal)
       qwerty: |-
         `7` (helix: normal)
         `NumPad7` (helix: normal)
@@ -2994,9 +2968,6 @@ anonymous:
       [".updateCount", { addDigits: 8 }]
 
     keys:
-      azerty: |-
-        `s-8` (core: normal)
-        `NumPad8` (core: normal)
       qwerty: |-
         `8` (helix: normal)
         `NumPad8` (helix: normal)
@@ -3010,9 +2981,6 @@ anonymous:
       [".updateCount", { addDigits: 9 }]
 
     keys:
-      azerty: |-
-        `s-9` (core: normal)
-        `NumPad9` (core: normal)
       qwerty: |-
         `9` (helix: normal)
         `NumPad9` (helix: normal)

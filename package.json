@@ -1,7 +1,7 @@
 {
   "name": "dancehelix-local",
   "description": "Fork of Dance with helix keybindings (Unfinished)",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "license": "ISC",
   "author": {
     "name": "Leo",
@@ -21,17 +21,19 @@
     "format": "eslint . --fix",
     "generate": "ts-node ./meta.ts",
     "generate:watch": "ts-node ./meta.ts --watch",
-    "compile": "esbuild src/extension.ts --bundle --external:vscode --external:child_process --target=es2021 --format=cjs --minify --keep-names --outfile=out/extension.js",
-    "compile:watch": "esbuild src/extension.ts --bundle --external:vscode --external:child_process --target=es2021 --format=cjs --minify --keep-names --outfile=out/extension.js --watch --sourcemap",
-    "compile-web": "esbuild src/extension.ts --bundle --external:vscode --external:child_process --target=es2021 --format=cjs --minify --keep-names --outfile=out/web-extension.js --define:process.platform=\\\"web\\\" --define:process.env={}",
-    "compile-web:watch": "esbuild src/extension.ts --bundle --external:vscode --external:child_process --target=es2021 --format=cjs --minify --keep-names --outfile=out/web-extension.js --define:process.platform=\\\"web\\\" --define:process.env={} --watch --sourcemap",
+    "compile-base": "esbuild src/extension.ts --bundle --external:vscode --external:child_process --target=es2021 --format=cjs --minify --keep-names",
+    "compile": "yarn run compile-base --outfile=out/extension.js",
+    "compile:watch": "yarn run compile --watch --sourcemap",
+    "compile-web": "yarn run compile-base --outfile=out/web-extension.js --define:process.platform=\\\"web\\\" --define:process.env={}",
+    "compile-web:watch": "yarn run compile-web --watch --sourcemap",
     "compile-tests": "globstar -- esbuild \"{src,test}/**/*.ts\" --target=es2021 --format=cjs --outdir=out --outbase=. --sourcemap",
+    "compile-tests:watch": "yarn run compile-tests --watch",
     "test": "yarn run compile --sourcemap && yarn run compile-tests && node ./out/test/run.js",
     "vscode:prepublish": "yarn run generate && yarn run compile && yarn run compile-web",
     "package": "vsce package --allow-star-activation",
     "publish": "vsce publish --allow-star-activation",
-    "package:pre": "vsce package --allow-star-activation --pre-release --no-git-tag-version --no-update-package-json 0.5.13001",
-    "publish:pre": "vsce publish --allow-star-activation --pre-release --no-git-tag-version --no-update-package-json 0.5.13001"
+    "package:pre": "vsce package --allow-star-activation --pre-release --no-git-tag-version --no-update-package-json 0.5.14002",
+    "publish:pre": "vsce publish --allow-star-activation --pre-release --no-git-tag-version --no-update-package-json 0.5.14002"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",
@@ -4858,13 +4860,13 @@
         "command": "dance.selections.trimWhitespace"
       },
       {
-        "key": "Shift+Alt+9",
+        "key": "Shift+Alt+0",
         "when": "editorTextFocus && dance.mode == 'normal'",
         "title": "Rotate selections clockwise",
         "command": "dance.selections.rotate.both"
       },
       {
-        "key": "Shift+Alt+0",
+        "key": "Shift+Alt+9",
         "when": "editorTextFocus && dance.mode == 'normal'",
         "title": "Rotate selections counter-clockwise",
         "command": "dance.selections.rotate.both.reverse"

@@ -127,11 +127,11 @@ selections are empty</td><td></td></tr>
 <tr><td><a href="./seek.ts#L27"><code>seek.included.backward</code></a></td><td>Select to character (included, backward)</td><td><code>Shift+F</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="./seek.ts#L30"><code>seek.included.extend</code></a></td><td>Extend to character (included)</td><td><code>F</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
 <tr><td><a href="./seek.ts#L31"><code>seek.included.extend.backward</code></a></td><td>Extend to character (included, backward)</td><td><code>Shift+F</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
-<tr><td><a href="./seek.ts#L577"><code>seek.leap.backward</code></a></td><td>Leap backward</td><td></td></tr>
-<tr><td><a href="./seek.ts#L525"><code>seek.syntax.child.experimental</code></a></td><td>Select child syntax object</td><td></td></tr>
-<tr><td><a href="./seek.ts#L522"><code>seek.syntax.next.experimental</code></a></td><td>Select next syntax object</td><td></td></tr>
-<tr><td><a href="./seek.ts#L524"><code>seek.syntax.parent.experimental</code></a></td><td>Select parent syntax object</td><td></td></tr>
-<tr><td><a href="./seek.ts#L523"><code>seek.syntax.previous.experimental</code></a></td><td>Select previous syntax object</td><td></td></tr>
+<tr><td><a href="./seek.ts#L643"><code>seek.leap.backward</code></a></td><td>Leap backward</td><td></td></tr>
+<tr><td><a href="./seek.ts#L591"><code>seek.syntax.child.experimental</code></a></td><td>Select child syntax object</td><td></td></tr>
+<tr><td><a href="./seek.ts#L588"><code>seek.syntax.next.experimental</code></a></td><td>Select next syntax object</td><td></td></tr>
+<tr><td><a href="./seek.ts#L590"><code>seek.syntax.parent.experimental</code></a></td><td>Select parent syntax object</td><td></td></tr>
+<tr><td><a href="./seek.ts#L589"><code>seek.syntax.previous.experimental</code></a></td><td>Select previous syntax object</td><td></td></tr>
 <tr><td><a href="./seek.ts#L186"><code>seek.word.backward</code></a></td><td>Select to previous word start</td><td><code>B</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="./seek.ts#L192"><code>seek.word.backward.extend</code></a></td><td>Extend to previous word start</td><td><code>B</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
 <tr><td><a href="./seek.ts#L190"><code>seek.word.extend</code></a></td><td>Extend to next word start</td><td><code>W</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
@@ -225,12 +225,12 @@ selections are empty</td><td></td></tr>
 <tr><td><a href="#selections.toggleIndices"><code>selections.toggleIndices</code></a></td><td>Toggle selection indices</td><td><code>Enter</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Enter</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
 <tr><td><a href="#selections.trimLines"><code>selections.trimLines</code></a></td><td>Trim lines</td><td><code>Alt+X</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#selections.trimWhitespace"><code>selections.trimWhitespace</code></a></td><td>Trim whitespace</td><td><code>Shift+-</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+-</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
-<tr><td rowspan=6><a href="#selections.rotate"><code>selections.rotate</code></a></td><td><a href="#selections.rotate.both"><code>selections.rotate.both</code></a></td><td>Rotate selections clockwise</td><td><code>Shift+Alt+9</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td rowspan=6><a href="#selections.rotate"><code>selections.rotate</code></a></td><td><a href="#selections.rotate.both"><code>selections.rotate.both</code></a></td><td>Rotate selections clockwise</td><td><code>Shift+Alt+0</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#selections.rotate.contents"><code>selections.rotate.contents</code></a></td><td>Rotate selections clockwise (contents only)</td><td></td></tr>
 <tr><td><a href="#selections.rotate.selections"><code>selections.rotate.selections</code></a></td><td>Rotate selections clockwise (selections only)</td><td><code>Shift+9</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+9</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
-<tr><td><a href="./selections.rotate.ts#L18"><code>selections.rotate.both.reverse</code></a></td><td>Rotate selections counter-clockwise</td><td><code>Shift+Alt+0</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="./selections.rotate.ts#L18"><code>selections.rotate.both.reverse</code></a></td><td>Rotate selections counter-clockwise</td><td><code>Shift+Alt+9</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="./selections.rotate.ts#L35"><code>selections.rotate.contents.reverse</code></a></td><td>Rotate selections counter-clockwise (contents only)</td><td></td></tr>
-<tr><td><a href="./selections.rotate.ts#L56"><code>selections.rotate.selections.reverse</code></a></td><td>Rotate selections counter-clockwise (selections only)</td><td><code>Shift+0</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+0</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
+<tr><td><a href="./selections.rotate.ts#L54"><code>selections.rotate.selections.reverse</code></a></td><td>Rotate selections counter-clockwise (selections only)</td><td><code>Shift+0</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+0</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
 <tr><td rowspan=1><a href="#view"><code>view</code></a></td><td><a href="#view.line"><code>view.line</code></a></td><td>Reveals a position based on the main cursor</td><td></td></tr>
 <tr><td rowspan=1><a href="#window"><code>window</code></a></td><td><a href="./window.ts#L13"><code>window.windowMenu</code></a></td><td>Show window menu</td><td><code>Ctrl+W</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Ctrl+W</code> (<code>editorTextFocus && dance.mode == 'visual'</code>)</td></tr>
 </tbody>
@@ -1137,7 +1137,7 @@ Default keybinding: `w` (helix: normal)
 
 <a name="seek.object" />
 
-### [`seek.object`](./seek.ts#L249-L289)
+### [`seek.object`](./seek.ts#L249-L291)
 
 Select object.
 
@@ -1177,7 +1177,7 @@ This command:
 
 <a name="seek.selectExpand" />
 
-### [`seek.selectExpand`](./seek.ts#L498-L502)
+### [`seek.selectExpand`](./seek.ts#L564-L568)
 
 Expand selection
 
@@ -1191,7 +1191,7 @@ Default keybinding: `a-o` (helix: normal)
 
 <a name="seek.selectShrink" />
 
-### [`seek.selectShrink`](./seek.ts#L506-L510)
+### [`seek.selectShrink`](./seek.ts#L572-L576)
 
 Shrink selection
 
@@ -1205,7 +1205,7 @@ Default keybinding: `a-i` (helix: normal)
 
 <a name="seek.syntax.experimental" />
 
-### [`seek.syntax.experimental`](./seek.ts#L515-L534)
+### [`seek.syntax.experimental`](./seek.ts#L581-L600)
 
 Select syntax object.
 
@@ -1223,7 +1223,7 @@ This command:
 
 <a name="seek.leap" />
 
-### [`seek.leap`](./seek.ts#L568-L584)
+### [`seek.leap`](./seek.ts#L634-L650)
 
 Leap forward.
 
@@ -1809,13 +1809,13 @@ The following keybinding is also available:
 
 | Title                               | Identifier     | Keybinding              | Command                                          |
 | ----------------------------------- | -------------- | ----------------------- | ------------------------------------------------ |
-| Rotate selections counter-clockwise | `both.reverse` | `a-)` (kakoune: normal) | `[".selections.rotate.both", { reverse: true }]` |
+| Rotate selections counter-clockwise | `both.reverse` | `a-(` (kakoune: normal) | `[".selections.rotate.both", { reverse: true }]` |
 
 This command:
 - may be repeated with a given number of repetitions.
 - takes an argument `reverse` of type `boolean`.
 
-Default keybinding: `a-(` (kakoune: normal)
+Default keybinding: `a-)` (kakoune: normal)
 
 <a name="selections.rotate.contents" />
 
@@ -1835,11 +1835,9 @@ This command:
 
 <a name="selections.rotate.selections" />
 
-### [`selections.rotate.selections`](./selections.rotate.ts#L45-L58)
+### [`selections.rotate.selections`](./selections.rotate.ts#L45-L56)
 
 Rotate selections clockwise (selections only).
-
-TODO: ( seems to be broken. Fix it...
 
 
 The following keybinding is also available:
