@@ -220,3 +220,47 @@ export function closestSurroundedBy(
 
   return new vscode.Selection(anchor, active);
 }
+
+
+export function getSurroundingPairs(document: vscode.TextDocument): [string, string][] | undefined {
+  // Find bracket pairs for current language, if any.
+  const languageConfig = vscode.workspace.getConfiguration("editor.language", document),
+        surroundingPairs = languageConfig.get<readonly [string, string][]>("surroundingPairs");
+
+  if (!Array.isArray(surroundingPairs)) {
+    return undefined;
+  }
+
+  for (const bracketPair of surroundingPairs) {
+    if (!Array.isArray(bracketPair)
+        || bracketPair.length !== 2
+        || typeof bracketPair[0] !== "string" || typeof bracketPair[1] !== "string") {
+      throw new Error("setting `editor.language.brackets` contains an invalid entry: "
+        + JSON.stringify(bracketPair));
+    }
+  }
+
+  return surroundingPairs;
+}
+
+const defaultEnclosingPatterns = [
+  "\\[", "\\]",
+  "\\(", "\\)",
+  "\\{", "\\}",
+  "/\\*", "\\*/",
+  "\\bbegin\\b", "\\bend\\b",
+];
+
+export function currentValidPairs(document: vscode.TextDocument) {
+  // Find bracket pairs for current language, if any.
+  const languageConfig = vscode.workspace.getConfiguration("editor.language", document),
+        bracketsConfig = languageConfig.get<readonly [string, string][]>("brackets");
+
+  if (Array.isArray(bracketsConfig)) {
+    const flattenedPairs: string[] = [];
+
+    return flattenedPairs;
+  } else {
+    return defaultEnclosingPatterns;
+  }
+}

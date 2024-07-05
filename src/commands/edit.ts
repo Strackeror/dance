@@ -1,9 +1,10 @@
 import * as vscode from "vscode";
 
 import type { Argument, InputOr, RegisterOr } from ".";
-import { insert as apiInsert, Context, deindentLines, Direction, edit, indentLines, insertByIndex, insertByIndexWithFullLines, insertFlagsAtEdge, joinLines, keypress, Positions, replace, replaceByIndex, Selections, Shift } from "../api";
+import { insert as apiInsert, Context, currentValidPairs, deindentLines, Direction, edit, getSurroundingPairs, indentLines, insertByIndex, insertByIndexWithFullLines, insertFlagsAtEdge, joinLines, keypress, ListPair, Menu, Positions, promptOne, replace, replaceByIndex, Selections, Shift, showMenu } from "../api";
 import type { Register } from "../state/registers";
 import { ArgumentError, LengthMismatchError } from "../utils/errors";
+import { openMenu } from "./misc";
 
 /**
  * Perform changes on the text content of the document.
@@ -475,6 +476,64 @@ function extendArrayToLength<T>(array: readonly T[], length: number) {
   } else {
     return array.slice(0, length);
   }
+}
+
+
+/**
+ * Surround each selection with a given pair
+ */
+export async function surround_add(
+  _: Context,
+
+  pair?: Argument<[string, string]>,
+) {
+  if (!pair) {
+    const pair = await openPairMenu(_);
+    if (!pair) {
+      return;
+    }
+
+    await _.edit((builder, selections, doc) => {
+      for (const selection of selections) {
+        builder.insert(selection.start, pair[0]);
+        builder.insert(selection.end, pair[1]);
+      }
+    });
+  }
+}
+
+
+export function surround(
+  _: Context,
+  repetitions: number,
+
+  action?: Argument<"add" | "delete" | "replace">,
+) {
+
+}
+
+const defaultPairs: [string, string][] = [
+  ["{", "}"],
+  ["[", "]"],
+  ["(", ")"],
+  ["'", "'"],
+  ["\"", "\""],
+  ["`", "`"],
+];
+
+async function openPairMenu(_: Context): Promise<readonly [string, string] | undefined> {
+  const pairs = getSurroundingPairs(_.document) ?? defaultPairs,
+        menu: ListPair[] = [];
+
+  for (const [first, second] of pairs) {
+    menu.push([`${first}${second}`, ""]);
+  }
+  const index = await promptOne(menu, undefined, undefined, _);
+  if (typeof index !== "number") {
+    return undefined;
+  }
+
+  return menu[index];
 }
 
 /**

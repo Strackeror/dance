@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 
 import type { Argument, InputOr } from ".";
-import { closestSurroundedBy, command, Context, Direction, keypress, Lines, moveToExcluded, moveWhileBackward, moveWhileForward, Objects, Pair, pair, Positions, prompt, search, SelectionBehavior, Selections, Shift, surroundedBy, wordBoundary } from "../api";
+import { closestSurroundedBy, command, Context, currentValidPairs, Direction, keypress, Lines, moveToExcluded, moveWhileBackward, moveWhileForward, Objects, Pair, pair, Positions, prompt, search, SelectionBehavior, Selections, Shift, surroundedBy, wordBoundary } from "../api";
 import { CharSet } from "../utils/charset";
 import { ArgumentError, assert } from "../utils/errors";
 import { escapeForRegExp, execRange } from "../utils/regexp";
@@ -70,13 +70,6 @@ export async function seek(
   });
 }
 
-const defaultEnclosingPatterns = [
-  "\\[", "\\]",
-  "\\(", "\\)",
-  "\\{", "\\}",
-  "/\\*", "\\*/",
-  "\\bbegin\\b", "\\bend\\b",
-];
 
 /**
  * Select to next enclosing character.
@@ -99,38 +92,14 @@ export function enclosing(
   open: Argument<boolean> = true,
   pairs?: Argument<readonly string[]>,
 ) {
-  if (pairs === undefined) {
-    // Find bracket pairs for current language, if any.
-    const languageConfig = vscode.workspace.getConfiguration("editor.language", _.document),
-          bracketsConfig = languageConfig.get<readonly [string, string][]>("brackets");
-
-    if (Array.isArray(bracketsConfig)) {
-      const flattenedPairs: string[] = [];
-
-      for (const bracketPair of bracketsConfig) {
-        if (!Array.isArray(bracketPair) || bracketPair.length !== 2
-            || typeof bracketPair[0] !== "string" || typeof bracketPair[1] !== "string") {
-          throw new Error("setting `editor.language.brackets` contains an invalid entry: "
-                          + JSON.stringify(bracketPair));
-        }
-
-        flattenedPairs.push(escapeForRegExp(bracketPair[0]), escapeForRegExp(bracketPair[1]));
-      }
-
-      pairs = flattenedPairs;
-    } else {
-      pairs = defaultEnclosingPatterns;
-    }
-  }
-
+  pairs = pairs ?? currentValidPairs(_.document);
   ArgumentError.validate(
     "pairs",
     (pairs.length & 1) === 0,
     "an even number of pairs must be given",
   );
 
-  const selectionBehavior = _.selectionBehavior,
-        compiledPairs = [] as Pair[];
+  const compiledPairs = [] as Pair[];
 
   for (let i = 0; i < pairs.length; i += 2) {
     compiledPairs.push(pair(new RegExp(pairs[i], "mu"), new RegExp(pairs[i + 1], "mu")));

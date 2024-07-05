@@ -590,6 +590,72 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
                 },
               },
             },
+
+            "match:helix": {
+              title: "Match",
+              items: {
+                "m": { command: "seek.enclosing", args: [], text: "Goto matching bracket" },
+                "a": { command: "dance.openMenu", args: [{ menu: "object:helix", title: "Match around" }], text: "Select around object" },
+                "i": { command: "dance.openMenu", args: [{ menu: "object:helix", title: "Match inside", pass: [{ inner: true }] }], text: "Select inside object" },
+              },
+            },
+
+            "object:helix": {
+              title: "Select object...",
+              items: ((command = "dance.seek.object") => ({
+                "()": { command, args: [{ input: "\\((?#inner)\\)" }], text: "parenthesis block" },
+                "{}": { command, args: [{ input: "\\{(?#inner)\\}" }], text: "braces block" },
+                "[]": { command, args: [{ input: "\\[(?#inner)\\]" }], text: "brackets block" },
+                "<>": { command, args: [{ input: "<(?#inner)>" }], text: "angle block" },
+                '"': { command, args: [{ input: "(?#noescape)\"(?#inner)(?#noescape)\"" }], text: "double quote string" },
+                "'": { command, args: [{ input: "(?#noescape)'(?#inner)(?#noescape)'" }], text: "single quote string" },
+                "`": { command, args: [{ input: "(?#noescape)`(?#inner)(?#noescape)`" }], text: "grave quote string" },
+                "w": { command, args: [{ input: "[\\p{L}_\\d]+(?<after>[^\\S\\n]+)" }], text: "word" },
+                "W": { command, args: [{ input: "[\\S]+(?<after>[^\\S\\n]+)" }], text: "WORD" },
+                "p": { command, args: [{ input: "(?#predefined=paragraph)" }], text: "paragraph" },
+                "a": { command, args: [{ input: "(?#predefined=argument)" }], text: "argument" },
+                "!": { command, text: "custom object desc" },
+              }))(),
+            },
+
+            "view:helix": {
+              "title": "View",
+              "items": {
+                "cz": { text: "Align view center", command: "dance.view.line", args: [{ "at": "center" }] },
+                "t": { text: "Align view top", command: "dance.view.line", args: [{ "at": "top" }] },
+                "b": { text: "Align view bottom", command: "dance.view.line", args: [{ "at": "bottom" }] },
+                "k": { text: "Scroll view up", command: "editorScroll", args: [{ "by": "line", "revealCursor": true, "to": "up" }] },
+                "j": { text: "Scroll view down", command: "editorScroll", args: [{ "by": "line", "revealCursor": true, "to": "down" }] },
+                "/": { text: "Search for regex pattern", command: "dance.search" },
+                "?": { text: "Reverse search for regex pattern", command: "dance.search.backward" },
+                "n": { text: "Select next search match", command: "dance.search.next" },
+                "N": { text: "Select previous search match", command: "dance.search.previous" },
+              },
+            },
+
+            "space:helix": {
+              "title": "Space",
+              "items": {
+                "f": { text: "Open file picker", command: "workbench.action.quickOpen" },
+                "b": { text: "Open buffer picker", command: "workbench.action.showAllEditors" },
+                "s": { text: "Open symbol picker", command: "workbench.action.gotoSymbol" },
+                "d": { text: "Open diagnostic picker", command: "workbench.actions.view.problems" },
+                "a": { text: "Perform code action", command: "editor.action.quickFix" },
+                "g": { text: "Debug", command: "dance.openMenu", args: [{ "menu": "debug-hx", "locked": true }] },
+                "w": { text: "Window", command: "dance.openMenu", args: [{ "menu": "window-hx" }] },
+                "y": { text: "Join and yank selections to clipboard", command: "dance.run", args: [{ "commands": [["dance.selections.saveText", { "register": "dquote" }], ".modes.set.normal"] }] },
+                "Y": { text: "Yank main selection to clipboard", command: "dance.run", args: [{ "commands": [["dance.selections.saveText", { "register": "dquote" }], ".modes.set.normal"] }] },
+                "p": { text: "Paste clipboard after selections", command: "dance.edit.insert", args: [{ "handleNewLine": true, "where": "end" }] },
+                "P": { text: "Paste clipboard before selections", command: "dance.edit.insert", args: [{ "handleNewLine": true, "where": "start" }] },
+                "R": { text: "Replace selections by clipboard content", command: "dance.edit.insert", args: [{ "register": "dquote" }] },
+                "/": { text: "Global search in workspace folder", command: "search.action.openEditor" },
+                "k": { text: "Show docs for item under cursor", command: "editor.action.showHover" },
+                "r": { text: "Rename symbol", command: "editor.action.rename" },
+                // "h": { text: "Select symbol references", command: "???" },
+                "?": { text: "Open command palette", command: "workbench.action.showCommands" },
+              },
+            },
+
           } as Record<string,
                       { items: Record<string, { text: string; command: string; args?: any[] }>}>,
         },

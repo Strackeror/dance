@@ -170,6 +170,7 @@ import {
   newLine_above as edit_newLine_above,
   newLine_below as edit_newLine_below,
   replaceCharacters as edit_replaceCharacters,
+  surround_add as edit_surround_add,
 } from "./edit";
 
 import {
@@ -369,6 +370,11 @@ export const commands: Commands = function () {
     "dance.edit.replaceCharacters": new CommandDescriptor(
       "dance.edit.replaceCharacters",
       (_, argument) => _.runAsync(async (_) => await edit_replaceCharacters(_, getRepetitions(_, argument), getInputOr("input", argument))),
+      CommandDescriptor.Flags.RequiresActiveEditor,
+    ),
+    "dance.edit.surround.add": new CommandDescriptor(
+      "dance.edit.surround.add",
+      (_, argument) => _.runAsync(async (_) => await edit_surround_add(_, argument["pair"])),
       CommandDescriptor.Flags.RequiresActiveEditor,
     ),
     "dance.history.recording.play": new CommandDescriptor(

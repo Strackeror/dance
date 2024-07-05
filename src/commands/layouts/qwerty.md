@@ -11,29 +11,29 @@
 <tbody>
 <tr><td rowspan=2><a href="#dev"><code>dev</code></a></td><td><a href="#dev.copyLastErrorMessage"><code>dev.copyLastErrorMessage</code></a></td><td>Copies the last encountered error message</td><td></td></tr>
 <tr><td><a href="#dev.setSelectionBehavior"><code>dev.setSelectionBehavior</code></a></td><td>Set the selection behavior of the specified mode</td><td></td></tr>
-<tr><td rowspan=31><a href="#edit"><code>edit</code></a></td><td><a href="#edit.align"><code>edit.align</code></a></td><td>Align selections</td><td><code>Shift+7</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td rowspan=32><a href="#edit"><code>edit</code></a></td><td><a href="#edit.align"><code>edit.align</code></a></td><td>Align selections</td><td><code>Shift+7</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#edit.case.swap"><code>edit.case.swap</code></a></td><td>Swap case</td><td><code>Alt+`</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+`</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'normal'</code>)<code>Shift+`</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="#edit.case.toLower"><code>edit.case.toLower</code></a></td><td>Transform to lower case</td><td><code>`</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>`</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="#edit.case.toUpper"><code>edit.case.toUpper</code></a></td><td>Transform to upper case</td><td><code>Shift+`</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Alt+`</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'normal'</code>)<code>Alt+`</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="#edit.copyIndentation"><code>edit.copyIndentation</code></a></td><td>Copy indentation</td><td><code>Shift+Alt+7</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#edit.deindent"><code>edit.deindent</code></a></td><td>Deindent selected lines</td><td><code>Shift+Alt+,</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#edit.deindent.withIncomplete"><code>edit.deindent.withIncomplete</code></a></td><td>Deindent selected lines (including incomplete indent)</td><td><code>Shift+,</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+,</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L43"><code>edit.delete</code></a></td><td>Delete</td><td><code>Alt+D</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+D</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L44"><code>edit.delete-insert</code></a></td><td>Delete and switch to Insert</td><td><code>Alt+C</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L389"><code>edit.newLine.above.insert</code></a></td><td>Insert new line above and switch to insert</td><td><code>Shift+O</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+O</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L427"><code>edit.newLine.below.insert</code></a></td><td>Insert new line below and switch to insert</td><td><code>O</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>O</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L36"><code>edit.paste.after</code></a></td><td>Paste after</td><td><code>P</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L38"><code>edit.paste.after.select</code></a></td><td>Paste after and select</td><td><code>P</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L35"><code>edit.paste.before</code></a></td><td>Paste before</td><td><code>Shift+P</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L37"><code>edit.paste.before.select</code></a></td><td>Paste before and select</td><td><code>Shift+P</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L40"><code>edit.pasteAll.after</code></a></td><td>Paste all after</td><td></td></tr>
-<tr><td><a href="../edit.ts#L42"><code>edit.pasteAll.after.select</code></a></td><td>Paste all after and select</td><td><code>Alt+P</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L39"><code>edit.pasteAll.before</code></a></td><td>Paste all before</td><td></td></tr>
-<tr><td><a href="../edit.ts#L41"><code>edit.pasteAll.before.select</code></a></td><td>Paste all before and select</td><td><code>Shift+Alt+P</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L34"><code>edit.selectRegister-insert</code></a></td><td>Pick register and replace</td><td><code>Ctrl+R</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Ctrl+R</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'insert'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L45"><code>edit.yank-delete</code></a></td><td>Copy and delete</td><td><code>D</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>D</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L46"><code>edit.yank-delete-insert</code></a></td><td>Copy, delete and switch to Insert</td><td><code>C</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>C</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L47"><code>edit.yank-replace</code></a></td><td>Copy and replace</td><td><code>Shift+R</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L44"><code>edit.delete</code></a></td><td>Delete</td><td><code>Alt+D</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+D</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L45"><code>edit.delete-insert</code></a></td><td>Delete and switch to Insert</td><td><code>Alt+C</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L390"><code>edit.newLine.above.insert</code></a></td><td>Insert new line above and switch to insert</td><td><code>Shift+O</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+O</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L428"><code>edit.newLine.below.insert</code></a></td><td>Insert new line below and switch to insert</td><td><code>O</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>O</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L37"><code>edit.paste.after</code></a></td><td>Paste after</td><td><code>P</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L39"><code>edit.paste.after.select</code></a></td><td>Paste after and select</td><td><code>P</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L36"><code>edit.paste.before</code></a></td><td>Paste before</td><td><code>Shift+P</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L38"><code>edit.paste.before.select</code></a></td><td>Paste before and select</td><td><code>Shift+P</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L41"><code>edit.pasteAll.after</code></a></td><td>Paste all after</td><td></td></tr>
+<tr><td><a href="../edit.ts#L43"><code>edit.pasteAll.after.select</code></a></td><td>Paste all after and select</td><td><code>Alt+P</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L40"><code>edit.pasteAll.before</code></a></td><td>Paste all before</td><td></td></tr>
+<tr><td><a href="../edit.ts#L42"><code>edit.pasteAll.before.select</code></a></td><td>Paste all before and select</td><td><code>Shift+Alt+P</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L35"><code>edit.selectRegister-insert</code></a></td><td>Pick register and replace</td><td><code>Ctrl+R</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Ctrl+R</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'insert'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L46"><code>edit.yank-delete</code></a></td><td>Copy and delete</td><td><code>D</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>D</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L47"><code>edit.yank-delete-insert</code></a></td><td>Copy, delete and switch to Insert</td><td><code>C</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>C</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L48"><code>edit.yank-replace</code></a></td><td>Copy and replace</td><td><code>Shift+R</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#edit.indent"><code>edit.indent</code></a></td><td>Indent selected lines</td><td><code>Shift+.</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+.</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="#edit.indent.withEmpty"><code>edit.indent.withEmpty</code></a></td><td>Indent selected lines (including empty lines)</td><td><code>Shift+Alt+.</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#edit.insert"><code>edit.insert</code></a></td><td>Insert contents of register</td><td><code>Shift+Alt+R</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
@@ -42,6 +42,7 @@
 <tr><td><a href="#edit.newLine.above"><code>edit.newLine.above</code></a></td><td>Insert new line above each selection</td><td><code>Shift+Alt+O</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#edit.newLine.below"><code>edit.newLine.below</code></a></td><td>Insert new line below each selection</td><td><code>Alt+O</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#edit.replaceCharacters"><code>edit.replaceCharacters</code></a></td><td>Replace characters</td><td><code>R</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="#edit.surround.add"><code>edit.surround.add</code></a></td><td>Surround each selection with a given pair</td><td></td></tr>
 <tr><td rowspan=11><a href="#history"><code>history</code></a></td><td><a href="../history.ts#L59"><code>history.repeat.seek</code></a></td><td>Repeat last seek</td><td><code>Alt+.</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+.</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="../history.ts#L58"><code>history.repeat.selection</code></a></td><td>Repeat last selection change</td><td></td></tr>
 <tr><td><a href="#history.recording.play"><code>history.recording.play</code></a></td><td>Replay recording</td><td><code>Q</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
@@ -89,42 +90,42 @@ selections are empty</td><td></td></tr>
 <tr><td><a href="#seek.leap"><code>seek.leap</code></a></td><td>Leap forward</td><td></td></tr>
 <tr><td><a href="#seek.object"><code>seek.object</code></a></td><td>Select object</td><td></td></tr>
 <tr><td><a href="#seek.seek"><code>seek.seek</code></a></td><td>Select to character (excluded)</td><td><code>T</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L271"><code>seek.askObject</code></a></td><td>Select whole object</td><td><code>Alt+A</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Alt+A</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'insert'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L277"><code>seek.askObject.end</code></a></td><td>Select to whole object end</td><td><code>]</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L278"><code>seek.askObject.end.extend</code></a></td><td>Extend to whole object end</td><td><code>Shift+]</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L272"><code>seek.askObject.inner</code></a></td><td>Select inner object</td><td><code>Alt+I</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Alt+I</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'insert'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L279"><code>seek.askObject.inner.end</code></a></td><td>Select to inner object end</td><td><code>Alt+]</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L280"><code>seek.askObject.inner.end.extend</code></a></td><td>Extend to inner object end</td><td><code>Shift+Alt+]</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L275"><code>seek.askObject.inner.start</code></a></td><td>Select to inner object start</td><td><code>Alt+[</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L276"><code>seek.askObject.inner.start.extend</code></a></td><td>Extend to inner object start</td><td><code>Shift+Alt+[</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L273"><code>seek.askObject.start</code></a></td><td>Select to whole object start</td><td><code>[</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L274"><code>seek.askObject.start.extend</code></a></td><td>Extend to whole object start</td><td><code>Shift+[</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L240"><code>seek.askObject</code></a></td><td>Select whole object</td><td><code>Alt+A</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Alt+A</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'insert'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L246"><code>seek.askObject.end</code></a></td><td>Select to whole object end</td><td><code>]</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L247"><code>seek.askObject.end.extend</code></a></td><td>Extend to whole object end</td><td><code>Shift+]</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L241"><code>seek.askObject.inner</code></a></td><td>Select inner object</td><td><code>Alt+I</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Alt+I</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'insert'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L248"><code>seek.askObject.inner.end</code></a></td><td>Select to inner object end</td><td><code>Alt+]</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L249"><code>seek.askObject.inner.end.extend</code></a></td><td>Extend to inner object end</td><td><code>Shift+Alt+]</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L244"><code>seek.askObject.inner.start</code></a></td><td>Select to inner object start</td><td><code>Alt+[</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L245"><code>seek.askObject.inner.start.extend</code></a></td><td>Extend to inner object start</td><td><code>Shift+Alt+[</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L242"><code>seek.askObject.start</code></a></td><td>Select to whole object start</td><td><code>[</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L243"><code>seek.askObject.start.extend</code></a></td><td>Extend to whole object start</td><td><code>Shift+[</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="../seek.ts#L26"><code>seek.backward</code></a></td><td>Select to character (excluded, backward)</td><td><code>Alt+T</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+T</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L91"><code>seek.enclosing.backward</code></a></td><td>Select to previous enclosing character</td><td><code>Alt+M</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L90"><code>seek.enclosing.extend</code></a></td><td>Extend to next enclosing character</td><td><code>Shift+M</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L92"><code>seek.enclosing.extend.backward</code></a></td><td>Extend to previous enclosing character</td><td><code>Shift+Alt+M</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L84"><code>seek.enclosing.backward</code></a></td><td>Select to previous enclosing character</td><td><code>Alt+M</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L83"><code>seek.enclosing.extend</code></a></td><td>Extend to next enclosing character</td><td><code>Shift+M</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L85"><code>seek.enclosing.extend.backward</code></a></td><td>Extend to previous enclosing character</td><td><code>Shift+Alt+M</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="../seek.ts#L25"><code>seek.extend</code></a></td><td>Extend to character (excluded)</td><td><code>Shift+T</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>T</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="../seek.ts#L27"><code>seek.extend.backward</code></a></td><td>Extend to character (excluded, backward)</td><td><code>Shift+Alt+T</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+T</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="../seek.ts#L28"><code>seek.included</code></a></td><td>Select to character (included)</td><td><code>F</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="../seek.ts#L30"><code>seek.included.backward</code></a></td><td>Select to character (included, backward)</td><td><code>Alt+F</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+F</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="../seek.ts#L29"><code>seek.included.extend</code></a></td><td>Extend to character (included)</td><td><code>Shift+F</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>F</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="../seek.ts#L31"><code>seek.included.extend.backward</code></a></td><td>Extend to character (included, backward)</td><td><code>Shift+Alt+F</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+F</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L626"><code>seek.leap.backward</code></a></td><td>Leap backward</td><td></td></tr>
-<tr><td><a href="../seek.ts#L574"><code>seek.syntax.child.experimental</code></a></td><td>Select child syntax object</td><td></td></tr>
-<tr><td><a href="../seek.ts#L571"><code>seek.syntax.next.experimental</code></a></td><td>Select next syntax object</td><td></td></tr>
-<tr><td><a href="../seek.ts#L573"><code>seek.syntax.parent.experimental</code></a></td><td>Select parent syntax object</td><td></td></tr>
-<tr><td><a href="../seek.ts#L572"><code>seek.syntax.previous.experimental</code></a></td><td>Select previous syntax object</td><td></td></tr>
-<tr><td><a href="../seek.ts#L186"><code>seek.word.backward</code></a></td><td>Select to previous word start</td><td><code>B</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L185"><code>seek.word.extend</code></a></td><td>Extend to next word start</td><td><code>Shift+W</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>W</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L187"><code>seek.word.extend.backward</code></a></td><td>Extend to previous word start</td><td><code>Shift+B</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>B</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L188"><code>seek.word.ws</code></a></td><td>Select to next non-whitespace word start</td><td><code>Alt+W</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+W</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L190"><code>seek.word.ws.backward</code></a></td><td>Select to previous non-whitespace word start</td><td><code>Alt+B</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+B</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L189"><code>seek.word.ws.extend</code></a></td><td>Extend to next non-whitespace word start</td><td><code>Shift+Alt+W</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+W</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L191"><code>seek.word.ws.extend.backward</code></a></td><td>Extend to previous non-whitespace word start</td><td><code>Shift+Alt+B</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+B</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L192"><code>seek.wordEnd</code></a></td><td>Select to next word end</td><td><code>E</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L193"><code>seek.wordEnd.extend</code></a></td><td>Extend to next word end</td><td><code>Shift+E</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>E</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L194"><code>seek.wordEnd.ws</code></a></td><td>Select to next non-whitespace word end</td><td><code>Alt+E</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+E</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../seek.ts#L195"><code>seek.wordEnd.ws.extend</code></a></td><td>Extend to next non-whitespace word end</td><td><code>Shift+Alt+E</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+E</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L595"><code>seek.leap.backward</code></a></td><td>Leap backward</td><td></td></tr>
+<tr><td><a href="../seek.ts#L543"><code>seek.syntax.child.experimental</code></a></td><td>Select child syntax object</td><td></td></tr>
+<tr><td><a href="../seek.ts#L540"><code>seek.syntax.next.experimental</code></a></td><td>Select next syntax object</td><td></td></tr>
+<tr><td><a href="../seek.ts#L542"><code>seek.syntax.parent.experimental</code></a></td><td>Select parent syntax object</td><td></td></tr>
+<tr><td><a href="../seek.ts#L541"><code>seek.syntax.previous.experimental</code></a></td><td>Select previous syntax object</td><td></td></tr>
+<tr><td><a href="../seek.ts#L155"><code>seek.word.backward</code></a></td><td>Select to previous word start</td><td><code>B</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L154"><code>seek.word.extend</code></a></td><td>Extend to next word start</td><td><code>Shift+W</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>W</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L156"><code>seek.word.extend.backward</code></a></td><td>Extend to previous word start</td><td><code>Shift+B</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>B</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L157"><code>seek.word.ws</code></a></td><td>Select to next non-whitespace word start</td><td><code>Alt+W</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+W</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L159"><code>seek.word.ws.backward</code></a></td><td>Select to previous non-whitespace word start</td><td><code>Alt+B</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+B</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L158"><code>seek.word.ws.extend</code></a></td><td>Extend to next non-whitespace word start</td><td><code>Shift+Alt+W</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+W</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L160"><code>seek.word.ws.extend.backward</code></a></td><td>Extend to previous non-whitespace word start</td><td><code>Shift+Alt+B</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+B</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L161"><code>seek.wordEnd</code></a></td><td>Select to next word end</td><td><code>E</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L162"><code>seek.wordEnd.extend</code></a></td><td>Extend to next word end</td><td><code>Shift+E</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>E</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L163"><code>seek.wordEnd.ws</code></a></td><td>Select to next non-whitespace word end</td><td><code>Alt+E</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+E</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../seek.ts#L164"><code>seek.wordEnd.ws.extend</code></a></td><td>Extend to next non-whitespace word end</td><td><code>Shift+Alt+E</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)<code>Shift+E</code> (<code>editorTextFocus && dance.behavior == 'helix' && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="#seek.syntax.experimental"><code>seek.syntax.experimental</code></a></td><td>Select syntax object</td><td></td></tr>
 <tr><td><a href="#seek.word"><code>seek.word</code></a></td><td>Select to next word start</td><td><code>W</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td rowspan=41><a href="#select"><code>select</code></a></td><td><a href="#select.buffer"><code>select.buffer</code></a></td><td>Select whole buffer</td><td><code>Shift+5</code> (<code>editorTextFocus && dance.behavior == 'kakoune' && dance.mode == 'normal'</code>)</td></tr>
@@ -248,7 +249,7 @@ See https://github.com/mawww/kakoune/blob/master/doc/pages/keys.asciidoc#changes
 
 <a name="edit.insert" />
 
-### [`edit.insert`](../edit.ts#L15-L61)
+### [`edit.insert`](../edit.ts#L16-L62)
 
 Insert contents of register.
 
@@ -296,7 +297,7 @@ Default keybinding: `s-a-r` (kakoune: normal)
 
 <a name="edit.join" />
 
-### [`edit.join`](../edit.ts#L133-L138)
+### [`edit.join`](../edit.ts#L134-L139)
 
 Join lines.
 
@@ -309,7 +310,7 @@ Default keybinding: `a-j` (core: normal)
 
 <a name="edit.join.select" />
 
-### [`edit.join.select`](../edit.ts#L142-L147)
+### [`edit.join.select`](../edit.ts#L143-L148)
 
 Join lines and select inserted separators.
 
@@ -322,7 +323,7 @@ Default keybinding: `s-a-j` (core: normal)
 
 <a name="edit.indent" />
 
-### [`edit.indent`](../edit.ts#L151-L156)
+### [`edit.indent`](../edit.ts#L152-L157)
 
 Indent selected lines.
 
@@ -335,7 +336,7 @@ Default keybinding: `>` (core: normal)
 
 <a name="edit.indent.withEmpty" />
 
-### [`edit.indent.withEmpty`](../edit.ts#L160-L165)
+### [`edit.indent.withEmpty`](../edit.ts#L161-L166)
 
 Indent selected lines (including empty lines).
 
@@ -347,7 +348,7 @@ Default keybinding: `a->` (kakoune: normal)
 
 <a name="edit.deindent" />
 
-### [`edit.deindent`](../edit.ts#L169-L174)
+### [`edit.deindent`](../edit.ts#L170-L175)
 
 Deindent selected lines.
 
@@ -359,7 +360,7 @@ Default keybinding: `a-<` (kakoune: normal)
 
 <a name="edit.deindent.withIncomplete" />
 
-### [`edit.deindent.withIncomplete`](../edit.ts#L178-L183)
+### [`edit.deindent.withIncomplete`](../edit.ts#L179-L184)
 
 Deindent selected lines (including incomplete indent).
 
@@ -372,7 +373,7 @@ Default keybinding: `<` (core: normal)
 
 <a name="edit.case.toLower" />
 
-### [`edit.case.toLower`](../edit.ts#L187-L192)
+### [`edit.case.toLower`](../edit.ts#L188-L193)
 
 Transform to lower case.
 
@@ -383,7 +384,7 @@ Default keybinding: `` ` `` (core: normal)
 
 <a name="edit.case.toUpper" />
 
-### [`edit.case.toUpper`](../edit.ts#L196-L201)
+### [`edit.case.toUpper`](../edit.ts#L197-L202)
 
 Transform to upper case.
 
@@ -395,7 +396,7 @@ Default keybinding: `` s-` `` (kakoune: normal)
 
 <a name="edit.case.swap" />
 
-### [`edit.case.swap`](../edit.ts#L205-L210)
+### [`edit.case.swap`](../edit.ts#L206-L211)
 
 Swap case.
 
@@ -407,7 +408,7 @@ Default keybinding: `` a-` `` (kakoune: normal)
 
 <a name="edit.replaceCharacters" />
 
-### [`edit.replaceCharacters`](../edit.ts#L225-L234)
+### [`edit.replaceCharacters`](../edit.ts#L226-L235)
 
 Replace characters.
 
@@ -420,7 +421,7 @@ Default keybinding: `r` (core: normal)
 
 <a name="edit.align" />
 
-### [`edit.align`](../edit.ts#L277-L285)
+### [`edit.align`](../edit.ts#L278-L286)
 
 Align selections.
 
@@ -435,7 +436,7 @@ Default keybinding: `&` (core: normal)
 
 <a name="edit.copyIndentation" />
 
-### [`edit.copyIndentation`](../edit.ts#L335-L348)
+### [`edit.copyIndentation`](../edit.ts#L336-L349)
 
 Copy indentation.
 
@@ -450,7 +451,7 @@ Default keybinding: `a-&` (kakoune: normal)
 
 <a name="edit.newLine.above" />
 
-### [`edit.newLine.above`](../edit.ts#L377-L395)
+### [`edit.newLine.above`](../edit.ts#L378-L396)
 
 Insert new line above each selection.
 
@@ -472,7 +473,7 @@ Default keybinding: `s-a-o` (kakoune: normal)
 
 <a name="edit.newLine.below" />
 
-### [`edit.newLine.below`](../edit.ts#L415-L433)
+### [`edit.newLine.below`](../edit.ts#L416-L434)
 
 Insert new line below each selection.
 
@@ -491,6 +492,15 @@ This command:
 - takes an argument `shift` of type `Shift`.
 
 Default keybinding: `a-o` (kakoune: normal)
+
+<a name="edit.surround.add" />
+
+### [`edit.surround.add`](../edit.ts#L482-L489)
+
+Surround each selection with a given pair
+
+This command:
+- takes an argument `pair` of type `[string, string]`.
 
 ## [`history`](../history.ts)
 
@@ -1026,7 +1036,7 @@ Default keybinding: `t` (core: normal)
 
 <a name="seek.enclosing" />
 
-### [`seek.enclosing`](../seek.ts#L81-L101)
+### [`seek.enclosing`](../seek.ts#L74-L94)
 
 Select to next enclosing character.
 
@@ -1047,7 +1057,7 @@ Default keybinding: `m` (kakoune: normal)
 
 <a name="seek.word" />
 
-### [`seek.word`](../seek.ts#L174-L205)
+### [`seek.word`](../seek.ts#L143-L174)
 
 Select to next word start.
 
@@ -1079,7 +1089,7 @@ Default keybinding: `w` (core: normal)
 
 <a name="seek.object" />
 
-### [`seek.object`](../seek.ts#L249-L291)
+### [`seek.object`](../seek.ts#L218-L260)
 
 Select object.
 
@@ -1119,7 +1129,7 @@ This command:
 
 <a name="seek.syntax.experimental" />
 
-### [`seek.syntax.experimental`](../seek.ts#L564-L583)
+### [`seek.syntax.experimental`](../seek.ts#L533-L552)
 
 Select syntax object.
 
@@ -1137,7 +1147,7 @@ This command:
 
 <a name="seek.leap" />
 
-### [`seek.leap`](../seek.ts#L617-L633)
+### [`seek.leap`](../seek.ts#L586-L602)
 
 Leap forward.
 
