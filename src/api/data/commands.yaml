@@ -2554,6 +2554,18 @@ selections.save:
     en: |+
       Save selections.
 
+selections.saveJoined:
+  title:
+    en: >-
+      Copy selections text, join them together with the given separator, in the order of appearance in
+
+      the document
+
+  doc:
+    en: |
+      Copy selections text, join them together with the given separator, in the order of appearance in
+      the document
+
 selections.saveText:
   title:
     en: Copy selections text

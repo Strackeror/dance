@@ -378,7 +378,7 @@ class ClipboardRegister extends Register implements Register.Readable,
     }
 
     this._lastStrings = values;
-    this._lastRawText = values.join(newline);
+    this._lastRawText = [...values].reverse().join(newline);
     this.notifyChange(Register.ChangeKind.Contents);
 
     return vscode.env.clipboard.writeText(this._lastRawText);

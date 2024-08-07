@@ -32,6 +32,26 @@ export function saveText(
 }
 
 /**
+ * Copy selections text, join them together with the given separator, in the order of appearance in
+ * the document
+ */
+export function saveJoined(
+  document: vscode.TextDocument,
+  selections: readonly vscode.Selection[],
+  register: RegisterOr<"dquote", Register.Flags.CanWrite>,
+  separator: Argument<string> = "\n",
+) {
+  register.set(
+    [
+      Selections
+        .topToBottom([...selections])
+        .map(sel => document.getText(sel))
+        .join(separator),
+    ],
+  );
+}
+
+/**
  * Save selections.
  *
  * @keys `s-z` (kakoune: normal)

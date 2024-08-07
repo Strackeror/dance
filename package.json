@@ -1891,6 +1891,11 @@
         "category": "Dance"
       },
       {
+        "command": "dance.selections.saveJoined",
+        "title": "Copy selections text, join them together with the given separator, in the order of appearance in\nthe document",
+        "category": "Dance"
+      },
+      {
         "command": "dance.selections.saveText",
         "title": "Copy selections text",
         "category": "Dance"
@@ -2729,6 +2734,10 @@
         },
         {
           "command": "dance.selections.save",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.selections.saveJoined",
           "when": "dance.mode == 'normal'"
         },
         {

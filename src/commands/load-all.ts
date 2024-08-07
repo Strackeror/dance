@@ -253,6 +253,7 @@ import {
   restore as selections_restore,
   restore_withCurrent as selections_restore_withCurrent,
   save as selections_save,
+  saveJoined as selections_saveJoined,
   saveText as selections_saveText,
   select as selections_select,
   sort as selections_sort,
@@ -662,6 +663,11 @@ export const commands: Commands = function () {
     "dance.selections.save": new CommandDescriptor(
       "dance.selections.save",
       (_, argument) => _.runAsync(async (_) => await selections_save(_, _.document, _.selections, getRegister(_, argument, "caret", Register.Flags.CanWriteSelections), argument["style"], argument["until"], argument["untilDelay"])),
+      CommandDescriptor.Flags.RequiresActiveEditor,
+    ),
+    "dance.selections.saveJoined": new CommandDescriptor(
+      "dance.selections.saveJoined",
+      (_, argument) => _.runAsync(async (_) => await selections_saveJoined(_.document, _.selections, getRegister(_, argument, "dquote", Register.Flags.CanWrite), argument["separator"])),
       CommandDescriptor.Flags.RequiresActiveEditor,
     ),
     "dance.selections.saveText": new CommandDescriptor(
