@@ -559,7 +559,9 @@ export async function surround(
 
 const decoration = vscode.window.createTextEditorDecorationType(
   {
-    backgroundColor: new vscode.ThemeColor("inputValidation.errorBackground"),
+    backgroundColor: new vscode.ThemeColor("inputValidation.infoBackground"),
+    outline: "solid 2px",
+    outlineColor: new vscode.ThemeColor("inputValidation.infoBorder"),
   },
 );
 
@@ -611,8 +613,9 @@ const defaultPairs: [string, string][] = [
 ];
 
 function getCurrentPairs(document: vscode.TextDocument): readonly [string, string][] {
-  const languageConfig = vscode.workspace.getConfiguration("editor.language", document),
+  const languageConfig = vscode.workspace.getConfiguration("", document),
         surroundingPairs = languageConfig.get<readonly [string, string][]>("surroundingPairs");
+  console.log(JSON.stringify(languageConfig));
   return surroundingPairs ?? defaultPairs;
 }
 

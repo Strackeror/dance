@@ -527,7 +527,7 @@ This command:
 
 <a name="edit.surroundReplace" />
 
-### [`edit.surroundReplace`](./edit.ts#L566-L575)
+### [`edit.surroundReplace`](./edit.ts#L568-L577)
 
 Replace the target pair with the given pair
 
