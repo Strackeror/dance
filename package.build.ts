@@ -114,7 +114,7 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
     "generate": "ts-node ./meta.ts",
     "generate:watch": "ts-node ./meta.ts --watch",
 
-    "compile-base": "esbuild src/extension.ts --bundle --external:vscode --external:child_process --target=es2021 --format=cjs --minify --keep-names",
+    "compile-base": "esbuild src/extension.ts --bundle --external:vscode --external:child_process --target=es2021 --format=cjs --keep-names",
     "compile": "yarn run compile-base --outfile=out/extension.js",
     "compile:watch": "yarn run compile --watch --sourcemap",
     "compile-web": "yarn run compile-base --outfile=out/web-extension.js --define:process.platform=\\\"web\\\" --define:process.env={}",
@@ -143,7 +143,7 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
     "@types/vscode": "^1.63.0",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
-    "@vscode/test-electron": "^2.1.3",
+    "@vscode/test-electron": "^2.4.1",
     "chokidar": "^3.5.3",
     "dependency-cruiser": "^11.7.0",
     "esbuild": "^0.18.4",

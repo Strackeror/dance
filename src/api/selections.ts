@@ -1440,6 +1440,47 @@ export function shiftTowards(
   return shift(selection, position, shiftTowards, context);
 }
 
+export function shiftTo(
+  selection: vscode.Selection,
+  position: vscode.Position,
+  shiftTo: Shift,
+  inclusive: boolean,
+  context = Context.current,
+) {
+
+  if (context.selectionBehavior === SelectionBehavior.Character) {
+    let direction = Direction.Forward;
+    if (position.isBefore(selection.anchor)) {
+      direction = Direction.Backward;
+    }
+    if (shiftTo === Shift.Jump) {
+      if (direction === Direction.Forward && inclusive === true) {
+        position = Positions.previous(position) ?? position;
+      }
+      if (direction === Direction.Backward && inclusive === false) {
+        position = Positions.previous(position) ?? position;
+      }
+    } else {
+      let activeDirection = Direction.Forward;
+      if (position.isBefore(selection.active)) {
+        activeDirection = Direction.Backward;
+      }
+
+      if (activeDirection !== direction) {
+        inclusive = !inclusive;
+      }
+
+      if (direction === Direction.Forward && inclusive === false) {
+        position = Positions.next(position) ?? position;
+      }
+      if (direction === Direction.Backward && inclusive === false) {
+        position = Positions.previous(position) ?? position;
+      }
+    }
+  }
+  return shift(selection, position, shiftTo, context);
+}
+
 /**
  * Returns whether the given selection spans an entire line.
  *

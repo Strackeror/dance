@@ -120,6 +120,7 @@ export function surroundedBy(
   searchOrigin: vscode.Position,
   open = true,
   document = Context.current.document,
+  checkNextChar = false,
 ) {
   let pair: Pair;
 
@@ -132,8 +133,15 @@ export function surroundedBy(
     );
   }
 
-  const startResult = pair.searchOpening(searchOrigin);
+  if (checkNextChar) {
+    const openRe = new RegExp("^" + pair.open.source, pair.open.flags),
+          nextCharMatch = search(Direction.Forward, openRe, searchOrigin);
+    if (nextCharMatch && nextCharMatch[0].isEqual(searchOrigin)) {
+      searchOrigin = Positions.next(searchOrigin) ?? searchOrigin;
+    }
+  }
 
+  const startResult = pair.searchOpening(searchOrigin);
   if (startResult === undefined) {
     return undefined;
   }

@@ -106,30 +106,7 @@ export function enclosing(
   open: Argument<boolean> = true,
   pairs?: Argument<readonly string[]>,
 ) {
-  if (pairs === undefined) {
-    // Find bracket pairs for current language, if any.
-    const languageConfig = vscode.workspace.getConfiguration("editor.language", _.document),
-          bracketsConfig = languageConfig.get<readonly [string, string][]>("brackets");
-
-    if (Array.isArray(bracketsConfig)) {
-      const flattenedPairs: string[] = [];
-
-      for (const bracketPair of bracketsConfig) {
-        if (!Array.isArray(bracketPair) || bracketPair.length !== 2
-            || typeof bracketPair[0] !== "string" || typeof bracketPair[1] !== "string") {
-          throw new Error("setting `editor.language.brackets` contains an invalid entry: "
-                          + JSON.stringify(bracketPair));
-        }
-
-        flattenedPairs.push(escapeForRegExp(bracketPair[0]), escapeForRegExp(bracketPair[1]));
-      }
-
-      pairs = flattenedPairs;
-    } else {
-      pairs = defaultEnclosingPatterns;
-    }
-  }
-
+  pairs = pairs ?? getEditorPairs(_.document);
   ArgumentError.validate(
     "pairs",
     (pairs.length & 1) === 0,
@@ -176,6 +153,81 @@ export function enclosing(
 
     return enclosedRange;
   });
+}
+
+/**
+ * Select next enclosing character, the helix way
+ * This selects the end of the pair we're within, not the first pair to start after the cursor
+ */
+export function enclosingSurround(
+  _: Context,
+
+  shift = Shift.Jump,
+  open: Argument<boolean> = true,
+  inner: Argument<boolean> = false,
+  pairs?: Argument<readonly string[]>,
+) {
+  pairs = pairs ?? getEditorPairs(_.document);
+  ArgumentError.validate(
+    "pairs",
+    (pairs.length & 1) === 0,
+    "an even number of pairs must be given",
+  );
+
+  const compiledPairs = [] as Pair[];
+  for (let i = 0; i < pairs.length; i += 2) {
+    compiledPairs.push(pair(new RegExp(pairs[i], "mu"), new RegExp(pairs[i + 1], "mu")));
+  }
+
+  Selections.updateByIndex((_id, selection, document) => {
+    let enclosedRange = surroundedBy(
+      compiledPairs,
+      Selections.activeStart(selection),
+      open, document, _.selectionBehavior === SelectionBehavior.Character,
+    );
+    if (enclosedRange === undefined) {
+      return selection;
+    }
+    if (inner) {
+      enclosedRange = Selections.from(
+        Positions.next(enclosedRange.anchor) ?? enclosedRange.anchor,
+        Positions.previous(enclosedRange.active) ?? enclosedRange.active,
+      );
+    }
+
+    const currentActive = Selections.activeEnd(selection, _),
+          enclosedActive = enclosedRange.active;
+    if (currentActive.isEqual(enclosedActive)) {
+      enclosedRange = Selections.backward(enclosedRange);
+    }
+    return Selections.shiftTo(selection, enclosedRange.active, shift, true);
+  });
+}
+
+/**
+ * Find bracket pairs for current language, or fallback to the default ones.
+ */
+function getEditorPairs(document: vscode.TextDocument) {
+  const languageConfig = vscode.workspace.getConfiguration("editor.language", document),
+        bracketsConfig = languageConfig.get<readonly [string, string][]>("brackets");
+
+  if (Array.isArray(bracketsConfig)) {
+    const flattenedPairs: string[] = [];
+
+    for (const bracketPair of bracketsConfig) {
+      if (!Array.isArray(bracketPair) || bracketPair.length !== 2
+       || typeof bracketPair[0] !== "string" || typeof bracketPair[1] !== "string") {
+        throw new Error("setting `editor.language.brackets` contains an invalid entry: "
+                     + JSON.stringify(bracketPair));
+      }
+
+      flattenedPairs.push(escapeForRegExp(bracketPair[0]), escapeForRegExp(bracketPair[1]));
+    }
+
+    return flattenedPairs;
+  } else {
+    return defaultEnclosingPatterns;
+  }
 }
 
 /**
@@ -340,41 +392,11 @@ export async function object(
       });
     }
 
-    if (_.selectionBehavior === SelectionBehavior.Character) {
-      const startRe = new RegExp("^" + openRe.source, openRe.flags);
-
-      return Selections.updateByIndex((_i, selection) => {
-        // If the selection behavior is character and the current character
-        // corresponds to the start of a pair, we select from here.
-        const searchStart = Selections.activeStart(selection, _),
-              searchStartResult = search(Direction.Forward, startRe, searchStart);
-
-        if (searchStartResult?.[1][0].length === 1) {
-          const start = searchStartResult[0],
-                innerStart = Positions.offset(start, searchStartResult[1][0].length, _.document)!,
-                endResult = p.searchClosing(innerStart);
-
-          if (endResult === undefined) {
-            return undefined;
-          }
-
-          if (inner) {
-            return new vscode.Selection(innerStart, endResult[0]);
-          }
-
-          return new vscode.Selection(
-            start,
-            Positions.offset(endResult[0], endResult[1][0].length, _.document)!,
-          );
-        }
-
-        // Otherwise, we select from the end of the current selection.
-        return surroundedBy([p], Selections.activeStart(selection, _), !inner, _.document);
-      });
-    }
-
+    const checkNextChar = _.selectionBehavior === SelectionBehavior.Character;
     return Selections.updateByIndex(
-      (_i, selection) => surroundedBy([p], Selections.activeStart(selection, _), !inner, _.document),
+      (_i, selection) => surroundedBy(
+        [p], Selections.activeStart(selection, _), !inner, _.document, checkNextChar,
+      ),
     );
   }
 

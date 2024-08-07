@@ -118,7 +118,7 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
           title: "Match",
           items: {
             // Should be jump in normal mode, extend in select mode, but jump for seek.enclosing is not implemented
-            "m": { command: "dance.seek.enclosing", text: "Goto matching bracket" },
+            "m": { command: "dance.seek.enclosingSurround", text: "Goto matching bracket" },
             "a": { command: "dance.openMenu", args: [{ menu: "object", title: "Match around" }], text: "Select around object" },
             "i": { command: "dance.openMenu", args: [{ menu: "object", title: "Match inside", pass: [{ inner: true }] }], text: "Select inside object" },
           },

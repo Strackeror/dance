@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 
 import type { Argument, InputOr, RegisterOr } from ".";
-import { Context, Direction, manipulateSelectionsInteractively, moveWhile, moveWhileBackward, moveWhileForward, Positions, prompt, promptOne, promptRegexpOpts, SelectionBehavior, Selections, switchRun, validateForSwitchRun } from "../api";
+import { Context, Direction, manipulateSelectionsInteractively, moveWhile, moveWhileBackward, moveWhileForward, Positions, prompt, promptOne, promptRegexpOpts, SelectionBehavior, Selections, Shift, switchRun, validateForSwitchRun } from "../api";
 import { PerEditorState } from "../state/editors";
 import { Mode } from "../state/modes";
 import type { Register } from "../state/registers";
@@ -587,59 +587,24 @@ export function reduce(
     `"where" must be "active", "anchor", "start", "end", "both", or undefined`,
   );
 
-  if (empty && _.selectionBehavior !== SelectionBehavior.Character) {
-    if (where !== "both") {
-      Selections.updateByIndex((_, selection) => Selections.empty(selection[where]));
-    } else {
-      Selections.set(_.selections.flatMap((selection) => {
-        if (selection.isEmpty) {
-          return [selection];
-        }
+  if (where === "both") {
+    Selections.set(_.selections.flatMap((selection) => {
+      if (selection.isEmpty || Selections.isNonDirectional(selection, _)) {
+        return [selection];
+      }
 
-        return [
-          Selections.empty(selection.active),
-          Selections.empty(selection.anchor),
-        ];
-      }));
-    }
-
-    return;
+      return [
+        Selections.shiftTo(selection, selection.active, Shift.Jump, true, _),
+        Selections.shiftTo(selection, selection.anchor, Shift.Jump, true, _),
+      ];
+    }));
+  } else {
+    Selections.set(
+      _.selections.map(
+        selection => Selections.shiftTo(selection, selection[where], Shift.Jump, true, _),
+      ),
+    );
   }
-
-  const takeWhere = (selection: vscode.Selection, prop: Exclude<typeof where, "both">) => {
-    if (selection.isEmpty) {
-      return selection;
-    }
-
-    let start = selection[prop],
-        end: vscode.Position;
-
-    if (start === selection.end && !start.isEqual(selection.start)) {
-      end = start;
-      start = Positions.previous(start)!;
-    } else {
-      end = Positions.next(start) ?? start;
-    }
-
-    return Selections.from(start, end);
-  };
-
-  if (where !== "both") {
-    Selections.updateByIndex((_, selection) => takeWhere(selection, where));
-
-    return;
-  }
-
-  Selections.set(_.selections.flatMap((selection) => {
-    if (selection.isEmpty || Selections.isNonDirectional(selection)) {
-      return [selection];
-    }
-
-    return [
-      takeWhere(selection, "active"),
-      takeWhere(selection, "anchor"),
-    ];
-  }));
 }
 
 /**

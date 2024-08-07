@@ -123,7 +123,7 @@
           "title": "Match",
           "items": {
             "m": {
-              "command": "dance.seek.enclosing",
+              "command": "dance.seek.enclosingSurround",
               "text": "Goto matching bracket"
             },
             "a": {

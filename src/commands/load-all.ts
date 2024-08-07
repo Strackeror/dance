@@ -213,6 +213,7 @@ import {
 
 import {
   enclosing as seek_enclosing,
+  enclosingSurround as seek_enclosingSurround,
   leap as seek_leap,
   object as seek_object,
   seek as seek,
@@ -474,6 +475,11 @@ export const commands: Commands = function () {
     "dance.seek.enclosing": new CommandDescriptor(
       "dance.seek.enclosing",
       (_, argument) => _.runAsync(async (_) => await seek_enclosing(_, getDirection(argument), getShift(argument), argument["open"], argument["pairs"])),
+      CommandDescriptor.Flags.RequiresActiveEditor,
+    ),
+    "dance.seek.enclosingSurround": new CommandDescriptor(
+      "dance.seek.enclosingSurround",
+      (_, argument) => _.runAsync(async (_) => await seek_enclosingSurround(_, getShift(argument), argument["open"], argument["inner"], argument["pairs"])),
       CommandDescriptor.Flags.RequiresActiveEditor,
     ),
     "dance.seek.leap": new CommandDescriptor(

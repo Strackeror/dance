@@ -1241,6 +1241,17 @@ seek.enclosing.extend.backward:
     qwerty: |-
       `s-a-m` (kakoune: normal)
 
+seek.enclosingSurround:
+  title:
+    en: |-
+      Select next enclosing character, the helix way
+      This selects the end of the pair we're within, not the first pair to start after the cursor
+
+  doc:
+    en: |
+      Select next enclosing character, the helix way
+      This selects the end of the pair we're within, not the first pair to start after the cursor
+
 seek.extend:
   title:
     en: Extend to character (excluded)
