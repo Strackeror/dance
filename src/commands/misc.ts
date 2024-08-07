@@ -321,6 +321,7 @@ const menuHistory: string[] = [];
  */
 export async function openMenu(
   _: Context.WithoutActiveEditor,
+  count: number,
 
   menuOr: InputOr<"menu", string | Menu>,
   prefix?: Argument<string>,
@@ -329,6 +330,7 @@ export async function openMenu(
   delay: Argument<number> = 0,
   title?: Argument<string>,
 ) {
+  _.extension.currentCount = count;
   const menus = _.extension.menus;
 
   let menu = await menuOr(() => prompt({

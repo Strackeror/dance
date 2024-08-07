@@ -1106,6 +1106,16 @@
         "category": "Dance"
       },
       {
+        "command": "dance.edit.surround",
+        "title": "Surround selections with the given pair",
+        "category": "Dance"
+      },
+      {
+        "command": "dance.edit.surroundReplace",
+        "title": "Replace the target pair with the given pair",
+        "category": "Dance"
+      },
+      {
         "command": "dance.edit.yank-delete",
         "title": "Copy and delete",
         "category": "Dance"
@@ -2091,6 +2101,14 @@
         },
         {
           "command": "dance.edit.selectRegister-insert",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.edit.surround",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.edit.surroundReplace",
           "when": "dance.mode == 'normal'"
         },
         {

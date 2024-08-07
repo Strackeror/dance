@@ -435,6 +435,22 @@ edit.selectRegister-insert:
       `c-r` (kakoune: normal)
       `c-r` (kakoune: insert)
 
+edit.surround:
+  title:
+    en: Surround selections with the given pair
+
+  doc:
+    en: |
+      Surround selections with the given pair
+
+edit.surroundReplace:
+  title:
+    en: Replace the target pair with the given pair
+
+  doc:
+    en: |
+      Replace the target pair with the given pair
+
 edit.yank-delete:
   title:
     en: Copy and delete

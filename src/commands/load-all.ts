@@ -170,6 +170,8 @@ import {
   newLine_above as edit_newLine_above,
   newLine_below as edit_newLine_below,
   replaceCharacters as edit_replaceCharacters,
+  surround as edit_surround,
+  surroundReplace as edit_surroundReplace,
 } from "./edit";
 
 import {
@@ -372,6 +374,16 @@ export const commands: Commands = function () {
       (_, argument) => _.runAsync(async (_) => await edit_replaceCharacters(_, getRepetitions(_, argument), getInputOr("input", argument))),
       CommandDescriptor.Flags.RequiresActiveEditor,
     ),
+    "dance.edit.surround": new CommandDescriptor(
+      "dance.edit.surround",
+      (_, argument) => _.runAsync(async (_) => await edit_surround(_, argument["pair"])),
+      CommandDescriptor.Flags.RequiresActiveEditor,
+    ),
+    "dance.edit.surroundReplace": new CommandDescriptor(
+      "dance.edit.surroundReplace",
+      (_, argument) => _.runAsync(async (_) => await edit_surroundReplace(_, getRepetitions(_, argument), argument["targetPair"], argument["replacePair"])),
+      CommandDescriptor.Flags.RequiresActiveEditor,
+    ),
     "dance.history.recording.play": new CommandDescriptor(
       "dance.history.recording.play",
       (_, argument) => _.runAsync(async (_) => await history_recording_play(_, getRepetitions(_, argument), getRegister(_, argument, "arobase", Register.Flags.CanReadWriteMacros))),
@@ -444,7 +456,7 @@ export const commands: Commands = function () {
     ),
     "dance.openMenu": new CommandDescriptor(
       "dance.openMenu",
-      (_, argument) => _.runAsync(async (_) => await openMenu(_, getInputOr("menu", argument), argument["prefix"], argument["pass"], argument["locked"], argument["delay"], argument["title"])),
+      (_, argument) => _.runAsync(async (_) => await openMenu(_, getCount(_, argument), getInputOr("menu", argument), argument["prefix"], argument["pass"], argument["locked"], argument["delay"], argument["title"])),
       CommandDescriptor.Flags.DoNotReplay,
     ),
     "dance.run": new CommandDescriptor(

@@ -6,6 +6,7 @@ import * as Positions from "../positions";
 import { Direction } from "../types";
 import { ArgumentError } from "../../utils/errors";
 import { anyRegExp, escapeForRegExp } from "../../utils/regexp";
+import { from } from "../selections";
 
 /**
  * A pair of opening and closing patterns.
@@ -111,17 +112,13 @@ export function pair(open: string | RegExp, close: string | RegExp): Pair {
   return new Pair(open, close);
 }
 
-/**
- * Returns the selection enclosed in one of the given pairs and containing
- * the given position.
- */
-export function surroundedBy(
+export function surroundingPair(
   pairs: readonly Pair[],
   searchOrigin: vscode.Position,
-  open = true,
   document = Context.current.document,
-  checkNextChar = false,
-) {
+  checkStart = false,
+  count = 1,
+) : [vscode.Selection, vscode.Selection] | undefined {
   let pair: Pair;
 
   if (pairs.length === 1) {
@@ -133,34 +130,55 @@ export function surroundedBy(
     );
   }
 
-  if (checkNextChar) {
+  let startResult: search.Result;
+  if (checkStart) {
     const openRe = new RegExp("^" + pair.open.source, pair.open.flags),
-          nextCharMatch = search(Direction.Forward, openRe, searchOrigin);
-    if (nextCharMatch && nextCharMatch[0].isEqual(searchOrigin)) {
+          startMatch = search(Direction.Forward, openRe, searchOrigin);
+    if (startMatch && startMatch[0].isEqual(searchOrigin)) {
+      startResult = startMatch;
       searchOrigin = Positions.next(searchOrigin) ?? searchOrigin;
+      count -= 1;
     }
   }
-
-  const startResult = pair.searchOpening(searchOrigin);
+  if (count > 0) {
+    startResult = pair.searchOpening(searchOrigin, -count);
+  }
   if (startResult === undefined) {
     return undefined;
   }
 
   const innerStart = Positions.offset(startResult[0], startResult[1][0].length, document)!,
         endResult = pair.searchClosing(innerStart);
-
   if (endResult === undefined) {
     return undefined;
   }
+  const outerEnd = Positions.offset(endResult[0], endResult[1][0].length, document)!;
+  return [
+    from(startResult[0], innerStart),
+    from(endResult[0], outerEnd),
+  ];
+}
 
-  if (open) {
-    return new vscode.Selection(
-      startResult[0],
-      Positions.offset(endResult[0], endResult[1][0].length, document)!,
-    );
+/**
+ * Returns the selection enclosed in one of the given pairs and containing
+ * the given position.
+ */
+export function surroundedBy(
+  pairs: readonly Pair[],
+  searchOrigin: vscode.Position,
+  open = true,
+  document = Context.current.document,
+  checkNextChar = false,
+) {
+  const surrounding = surroundingPair(pairs, searchOrigin, document, checkNextChar);
+  if (surrounding === undefined) {
+    return undefined;
   }
-
-  return new vscode.Selection(innerStart, endResult[0]);
+  if (open) {
+    return new vscode.Selection(surrounding[0].start, surrounding[1].end);
+  } else {
+    return new vscode.Selection(surrounding[0].end, surrounding[1].start);
+  }
 }
 
 /**

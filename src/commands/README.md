@@ -26,7 +26,7 @@ depending on the keyboard layout. The following layouts _will be_\* supported:
 <tbody>
 <tr><td rowspan=2><a href="#dev"><code>dev</code></a></td><td><a href="#dev.copyLastErrorMessage"><code>dev.copyLastErrorMessage</code></a></td><td>Copies the last encountered error message</td><td></td></tr>
 <tr><td><a href="#dev.setSelectionBehavior"><code>dev.setSelectionBehavior</code></a></td><td>Set the selection behavior of the specified mode</td><td></td></tr>
-<tr><td rowspan=31><a href="#edit"><code>edit</code></a></td><td><a href="#edit.align"><code>edit.align</code></a></td><td>Align selections</td><td><code>Shift+7</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td rowspan=33><a href="#edit"><code>edit</code></a></td><td><a href="#edit.align"><code>edit.align</code></a></td><td>Align selections</td><td><code>Shift+7</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#edit.case.swap"><code>edit.case.swap</code></a></td><td>Swap case</td><td><code>Alt+`</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+`</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+`</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="#edit.case.toLower"><code>edit.case.toLower</code></a></td><td>Transform to lower case</td><td><code>`</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>`</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="#edit.case.toUpper"><code>edit.case.toUpper</code></a></td><td>Transform to upper case</td><td><code>Shift+`</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+`</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+`</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
@@ -57,6 +57,8 @@ depending on the keyboard layout. The following layouts _will be_\* supported:
 <tr><td><a href="#edit.newLine.above"><code>edit.newLine.above</code></a></td><td>Insert new line above each selection</td><td><code>Shift+Alt+O</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#edit.newLine.below"><code>edit.newLine.below</code></a></td><td>Insert new line below each selection</td><td><code>Alt+O</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#edit.replaceCharacters"><code>edit.replaceCharacters</code></a></td><td>Replace characters</td><td><code>R</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="#edit.surround"><code>edit.surround</code></a></td><td>Surround selections with the given pair</td><td></td></tr>
+<tr><td><a href="#edit.surroundReplace"><code>edit.surroundReplace</code></a></td><td>Replace the target pair with the given pair</td><td></td></tr>
 <tr><td rowspan=11><a href="#history"><code>history</code></a></td><td><a href="./history.ts#L59"><code>history.repeat.seek</code></a></td><td>Repeat last seek</td><td><code>Alt+.</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+.</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="./history.ts#L58"><code>history.repeat.selection</code></a></td><td>Repeat last selection change</td><td></td></tr>
 <tr><td><a href="#history.recording.play"><code>history.recording.play</code></a></td><td>Replay recording</td><td><code>Q</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
@@ -512,6 +514,26 @@ This command:
 
 Default keybinding: `a-o` (kakoune: normal)
 
+<a name="edit.surround" />
+
+### [`edit.surround`](./edit.ts#L548-L555)
+
+Surround selections with the given pair
+
+This command:
+- takes an argument `pair` of type `[string, string]`.
+
+<a name="edit.surroundReplace" />
+
+### [`edit.surroundReplace`](./edit.ts#L566-L575)
+
+Replace the target pair with the given pair
+
+This command:
+- may be repeated with a given number of repetitions.
+- takes an argument `replacePair` of type `[string, string]`.
+- takes an argument `targetPair` of type `[string, string][]`.
+
 ## [`history`](./history.ts)
 
 Interact with history.
@@ -849,7 +871,7 @@ This command:
 
 <a name="openMenu" />
 
-### [`openMenu`](./misc.ts#L309-L331)
+### [`openMenu`](./misc.ts#L309-L332)
 
 Open menu.
 
@@ -864,6 +886,7 @@ like `jj`.
 
 This command:
 - does not require an active text editor.
+- may be repeated with a given number of repetitions.
 - takes an argument `delay` of type `number`.
 - takes an argument `locked` of type `boolean`.
 - takes an argument `pass` of type `any[]`.
@@ -873,7 +896,7 @@ This command:
 
 <a name="changeInput" />
 
-### [`changeInput`](./misc.ts#L372-L386)
+### [`changeInput`](./misc.ts#L374-L388)
 
 Change current input.
 
@@ -890,7 +913,7 @@ This command:
 
 <a name="ifEmpty" />
 
-### [`ifEmpty`](./misc.ts#L396-L407)
+### [`ifEmpty`](./misc.ts#L398-L409)
 
 Executes one of the specified commands depending on whether the current
 selections are empty.

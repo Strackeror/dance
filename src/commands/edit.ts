@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 
 import type { Argument, InputOr, RegisterOr } from ".";
-import { insert as apiInsert, Context, deindentLines, Direction, edit, indentLines, insertByIndex, insertByIndexWithFullLines, insertFlagsAtEdge, joinLines, keypress, Positions, replace, replaceByIndex, Selections, Shift } from "../api";
+import { insert as apiInsert, Context, deindentLines, Direction, edit, indentLines, insertByIndex, insertByIndexWithFullLines, insertFlagsAtEdge, joinLines, keypress, ListPair, pair, Positions, promptOne, replace, replaceByIndex, SelectionBehavior, Selections, Shift, surroundingPair } from "../api";
 import type { Register } from "../state/registers";
 import { ArgumentError, LengthMismatchError } from "../utils/errors";
 
@@ -542,4 +542,86 @@ async function insertLinesNativelyAndCopySelections(
   }
 
   _.selections = selections;
+}
+
+
+/**
+ * Surround selections with the given pair
+ */
+export async function surround(
+  _: Context,
+
+  pair?: Argument<[string, string]>,
+) {
+  pair = pair ?? await promptPair(_);
+  Selections.set(await replace((text) => pair[0] + text + pair[1]));
+}
+
+const decoration = vscode.window.createTextEditorDecorationType(
+  {
+    backgroundColor: new vscode.ThemeColor("inputValidation.errorBackground"),
+  },
+);
+
+/**
+ * Replace the target pair with the given pair
+ */
+export async function surroundReplace(
+  _: Context,
+  repetitions: number,
+
+  targetPair?: Argument<[string, string][]>,
+  replacePair?: Argument<[string, string]>,
+) {
+  targetPair = targetPair ?? [await promptPair(_)];
+
+  const compiled = targetPair.map(([open, close]) => pair(open, close)),
+        surroundings = Selections
+          .mapByIndex((index, selection) => {
+            const surround = surroundingPair(
+              compiled,
+              Selections.activeStart(selection),
+              _.document,
+              _.selectionBehavior === SelectionBehavior.Character,
+              repetitions,
+            );
+            if (surround === undefined) {
+              throw new Error(`Could not find matching surround for selection #${index}`);
+            }
+            return surround;
+          })
+          .flat();
+  _.editor.setDecorations(decoration, surroundings);
+  try {
+    replacePair = replacePair ?? await promptPair(_);
+    let count = 0;
+    await replace((_) => replacePair![count++ % 2], surroundings);
+  } finally {
+    _.editor.setDecorations(decoration, []);
+  }
+}
+
+const defaultPairs: [string, string][] = [
+  ["{", "}"],
+  ["[", "]"],
+  ["(", ")"],
+  ["'", "'"],
+  ["\"", "\""],
+  ["`", "`"],
+];
+
+function getCurrentPairs(document: vscode.TextDocument): readonly [string, string][] {
+  const languageConfig = vscode.workspace.getConfiguration("editor.language", document),
+        surroundingPairs = languageConfig.get<readonly [string, string][]>("surroundingPairs");
+  return surroundingPairs ?? defaultPairs;
+}
+
+async function promptPair(context: Context): Promise<[string, string]> {
+  const pairs = getCurrentPairs(context.document),
+        menu: ListPair[] = [];
+  for (const [open, close] of pairs) {
+    menu.push([`${open}, ${close}`, `${open}/${close}`]);
+  }
+  const index = await promptOne(menu) as number;
+  return pairs[index];
 }
