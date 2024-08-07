@@ -183,6 +183,28 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
             },
           },
         },
+
+        space: {
+          title: "Space",
+          items: {
+            "f": { text: "Open file picker", command: "workbench.action.quickOpen" },
+            "b": { text: "Open buffer picker", command: "workbench.action.showAllEditors" },
+            "s": { text: "Open symbol picker", command: "workbench.action.gotoSymbol" },
+            "d": { text: "Open diagnostic picker", command: "workbench.actions.view.problems" },
+            "a": { text: "Perform code action", command: "editor.action.quickFix" },
+            "g": { text: "Debug", command: "dance.openMenu", args: [{ "menu": "debug-hx", "locked": true }] },
+            "w": { text: "Window", command: "dance.openMenu", args: [{ "menu": "window-hx" }] },
+            "y": { text: "Join and yank selections to clipboard", command: "dance.run", args: [{ "commands": [["dance.selections.saveText", { "register": "dquote" }], ".modes.set.normal"] }] },
+            "Y": { text: "Yank main selection to clipboard", command: "dance.run", args: [{ "commands": [["dance.selections.saveText", { "register": "dquote" }], ".modes.set.normal"] }] },
+            "p": { text: "Paste clipboard after selections", command: "dance.edit.insert", args: [{ "handleNewLine": true, "where": "end" }] },
+            "P": { text: "Paste clipboard before selections", command: "dance.edit.insert", args: [{ "handleNewLine": true, "where": "start" }] },
+            "R": { text: "Replace selections by clipboard content", command: "dance.edit.insert", args: [{ "register": "dquote" }] },
+            "/": { text: "Global search in workspace folder", command: "search.action.openEditor" },
+            "k": { text: "Show docs for item under cursor", command: "editor.action.showHover" },
+            "r": { text: "Rename symbol", command: "editor.action.rename" },
+            "?": { text: "Open command palette", command: "workbench.action.showCommands" },
+          },
+        },
       },
     },
 

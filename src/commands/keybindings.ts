@@ -6,6 +6,9 @@ import type { Register } from "../state/registers";
 
 /**
  * Utilities for setting up keybindings.
+ * | Title                       | Keybinding                                       | Command                            |
+ * | --------------------------- | ------------------------------------------------ | ---------------------------------- |
+ * | Open space menu             | `space` (helix: normal), `space` (helix: select) | `[".openMenu", { menu: "space" }]` |
  */
 declare module "./keybindings";
 

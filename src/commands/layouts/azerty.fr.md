@@ -644,10 +644,13 @@ Default keybinding: `escape` (kakoune: normal, recording)
 ## [`keybindings`](../keybindings.ts)
 
 Utilities for setting up keybindings.
+| Title                       | Keybinding                                       | Command                            |
+| --------------------------- | ------------------------------------------------ | ---------------------------------- |
+| Open space menu             | `space` (helix: normal), `space` (helix: select) | `[".openMenu", { menu: "space" }]` |
 
 <a name="keybindings.setup" />
 
-### [`keybindings.setup`](../keybindings.ts#L12-L15)
+### [`keybindings.setup`](../keybindings.ts#L15-L18)
 
 Set up Dance keybindings.
 

@@ -2794,6 +2794,17 @@ anonymous:
         `m` (helix: select)
 
   - title:
+      en: Open space menu
+
+    commands: |-
+      [".openMenu", { menu: "space" }]
+
+    keys:
+      qwerty: |-
+        `space` (helix: normal)
+        `space` (helix: select)
+
+  - title:
       en: Show view menu
 
     commands: |-
