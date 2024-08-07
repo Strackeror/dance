@@ -23,6 +23,8 @@ suite("API tests", function () {
   this.beforeAll(async () => {
     document = await vscode.workspace.openTextDocument();
     editor = await vscode.window.showTextDocument(document);
+    await editor.edit((edit) => edit.setEndOfLine(vscode.EndOfLine.LF));
+
     editor.options.insertSpaces = true;
     editor.options.tabSize = 2;
 

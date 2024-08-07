@@ -10,6 +10,7 @@ suite("./test/suite/commands/edit-paste.md", function () {
   this.beforeAll(async () => {
     document = await vscode.workspace.openTextDocument({ language: "plaintext" });
     editor = await vscode.window.showTextDocument(document);
+    await editor.edit((edit) => edit.setEndOfLine(vscode.EndOfLine.LF));
     editor.options.insertSpaces = true;
     editor.options.tabSize = 2;
 
