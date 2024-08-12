@@ -595,12 +595,12 @@ export async function object(
  *
  * #### Variants
  *
- * | Title                         | Identifier                     | Command                                                |
- * | ----------------------------- | ------------------------------ | ------------------------------------------------------ |
- * | Select next syntax object     | `syntax.next.experimental`     | `[".seek.syntax.experimental", { where: "next"     }]` |
- * | Select previous syntax object | `syntax.previous.experimental` | `[".seek.syntax.experimental", { where: "previous" }]` |
- * | Select parent syntax object   | `syntax.parent.experimental`   | `[".seek.syntax.experimental", { where: "parent"   }]` |
- * | Select child syntax object    | `syntax.child.experimental`    | `[".seek.syntax.experimental", { where: "child"    }]` |
+ * | Title                         | Identifier                     | Keybindings                                  | Command                                                |
+ * | ----------------------------- | ------------------------------ | -------------------------------------------- | ------------------------------------------------------ |
+ * | Select next syntax object     | `syntax.next.experimental`     | `a-n` (helix: normal), `a-n` (helix: select) | `[".seek.syntax.experimental", { where: "next"     }]` |
+ * | Select previous syntax object | `syntax.previous.experimental` | `a-p` (helix: normal), `a-p` (helix: select) | `[".seek.syntax.experimental", { where: "previous" }]` |
+ * | Select parent syntax object   | `syntax.parent.experimental`   | `a-o` (helix: normal), `a-o` (helix: select) | `[".seek.syntax.experimental", { where: "parent"   }]` |
+ * | Select child syntax object    | `syntax.child.experimental`    | `a-i` (helix: normal), `a-i` (helix: select) | `[".seek.syntax.experimental", { where: "child"    }]` |
  */
 export function syntax_experimental(
   _: Context,
@@ -612,26 +612,56 @@ export function syntax_experimental(
 ): void {
   const rootNode = documentTree.rootNode;
 
-  Selections.updateByIndex((_, selection) => {
-    const activeNode =
-      rootNode.namedDescendantForPosition(treeSitter.fromPosition(selection.active));
-    let newNode: SyntaxNode | null;
 
+  Selections.updateByIndex((_id, selection) => {
+    const position = _.selectionBehavior === SelectionBehavior.Character
+      ? Positions.previous(selection.active)!
+      : selection.active;
+    const activeNode = rootNode.descendantForPosition(treeSitter.fromPosition(position));
+
+
+    let currentNode = activeNode;
+    while (!treeSitter.toRange(currentNode).contains(selection)) {
+      if (currentNode.parent === null) {
+        return;
+      }
+      currentNode = currentNode.parent;
+    }
+
+    let newNode: SyntaxNode | null = currentNode;
     switch (where) {
     case "next":
-      newNode = activeNode.nextNamedSibling;
+      while (newNode.nextSibling == null) {
+        if (newNode.parent === null) {
+          break;
+        }
+        newNode = newNode.parent;
+      }
+      if (newNode !== null && newNode.nextSibling !== null) {
+        newNode = newNode.nextSibling;
+      }
       break;
 
     case "previous":
-      newNode = activeNode.previousNamedSibling;
+      while (newNode.previousSibling == null) {
+        if (newNode.parent === null) {
+          break;
+        }
+        newNode = newNode.parent;
+      }
+      if (newNode !== null && newNode.previousSibling !== null) {
+        newNode = newNode.previousSibling;
+      }
       break;
 
     case "child":
-      newNode = activeNode.firstNamedChild;
+      newNode = newNode.firstChild;
       break;
 
     case "parent":
-      newNode = activeNode.parent;
+      if (selection.isEqual(treeSitter.toRange(newNode)) && newNode.parent !== null) {
+        newNode = newNode.parent;
+      }
       break;
     }
 

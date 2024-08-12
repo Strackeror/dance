@@ -1447,6 +1447,54 @@
         "command": "dance.seek.included.extend.backward"
       },
       {
+        "key": "Alt+I",
+        "when": "editorTextFocus && dance.mode == 'helix/normal'",
+        "title": "Select child syntax object",
+        "command": "dance.seek.syntax.child.experimental"
+      },
+      {
+        "key": "Alt+I",
+        "when": "editorTextFocus && dance.mode == 'helix/select'",
+        "title": "Select child syntax object",
+        "command": "dance.seek.syntax.child.experimental"
+      },
+      {
+        "key": "Alt+N",
+        "when": "editorTextFocus && dance.mode == 'helix/normal'",
+        "title": "Select next syntax object",
+        "command": "dance.seek.syntax.next.experimental"
+      },
+      {
+        "key": "Alt+N",
+        "when": "editorTextFocus && dance.mode == 'helix/select'",
+        "title": "Select next syntax object",
+        "command": "dance.seek.syntax.next.experimental"
+      },
+      {
+        "key": "Alt+O",
+        "when": "editorTextFocus && dance.mode == 'helix/normal'",
+        "title": "Select parent syntax object",
+        "command": "dance.seek.syntax.parent.experimental"
+      },
+      {
+        "key": "Alt+O",
+        "when": "editorTextFocus && dance.mode == 'helix/select'",
+        "title": "Select parent syntax object",
+        "command": "dance.seek.syntax.parent.experimental"
+      },
+      {
+        "key": "Alt+P",
+        "when": "editorTextFocus && dance.mode == 'helix/normal'",
+        "title": "Select previous syntax object",
+        "command": "dance.seek.syntax.previous.experimental"
+      },
+      {
+        "key": "Alt+P",
+        "when": "editorTextFocus && dance.mode == 'helix/select'",
+        "title": "Select previous syntax object",
+        "command": "dance.seek.syntax.previous.experimental"
+      },
+      {
         "key": "W",
         "when": "editorTextFocus && dance.mode == 'helix/normal'",
         "title": "Select to next word start",
