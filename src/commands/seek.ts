@@ -305,6 +305,282 @@ export function word(
 
 let lastObjectInput: string | undefined;
 
+type InnerMatcher = {type: "inner", pair: Pair}
+type CharactersMatcher = {type: "characters", chars: RegExp, before?: RegExp, after?: RegExp}
+type SinglelineMatcher = {type: "singleline", re: RegExp}
+type PrefefinedMatcher = {type: "prefefined", object: Objects.Seek }
+type TextObjectMatcher = {type: "textobject", object: string }
+
+type ObjectMatcher = InnerMatcher | CharactersMatcher | SinglelineMatcher | PrefefinedMatcher | TextObjectMatcher
+
+function parseMatcher(input: string): ObjectMatcher | undefined {
+  let match: RegExpExecArray | null;
+  if (match = /^(.+)\(\?#inner\)(.+)$/s.exec(input)) {
+    const openRe = new RegExp(preprocessRegExp(match[1]), "u"),
+          closeRe = new RegExp(preprocessRegExp(match[2]), "u"),
+          p = pair(openRe, closeRe);
+    return { type: "inner", pair: p };
+  }
+
+  if (match = /^(?:\(\?<before>(\[.+?\])\+\))?(\[.+\])\+(?:\(\?<after>(\[.+?\])\+\))?$/.exec(input)) {
+    const re = new RegExp(match[2], "u"),
+          beforeRe = match[1] === undefined ? undefined : new RegExp(match[1], "u"),
+          afterRe = match[3] === undefined ? undefined : new RegExp(match[3], "u");
+    return { type: "characters", chars: re, before: beforeRe, after: afterRe };
+  }
+
+  if (match = /^\(\?#singleline\)(.+)$/.exec(input)) {
+    const re = new RegExp(preprocessRegExp(match[1]), "u");
+    return { type: "singleline", re };
+  }
+
+  if (match = /^\(\?#predefined=(argument|indent|paragraph|sentence)\)$/.exec(input)) {
+    let object: Objects.Seek;
+    switch (match[1]) {
+    case "argument":
+    case "indent":
+    case "paragraph":
+    case "sentence":
+      object = Objects[match[1]];
+      break;
+
+    default:
+      assert(false);
+    }
+    return { type: "prefefined", object };
+
+  }
+  if (match = /^\(\?#textobject=(\w+)\)$/.exec(input)) {
+    return { type: "textobject", object: match[1] };
+  }
+  return undefined;
+}
+
+function shiftInner(_: Context, matcher: InnerMatcher, where: "start" | "end" | undefined, inner: boolean, shift: Shift) {
+  const pair = matcher.pair;
+  if (where === "start") {
+    return Selections.updateByIndex((_i, selection) => {
+      const startResult = pair.searchOpening(Selections.activeStart(selection, _));
+
+      if (startResult === undefined) {
+        return;
+      }
+
+      const start = inner
+        ? Positions.offset(startResult[0], startResult[1][0].length, _.document) ?? startResult[0]
+        : startResult[0];
+
+      return Selections.shift(selection, start, shift, _);
+    });
+  } else if (where === "end") {
+    return Selections.updateByIndex((_i, selection) => {
+      const endResult = pair.searchClosing(Selections.activeEnd(selection, _));
+
+      if (endResult === undefined) {
+        return;
+      }
+
+      const end = inner
+        ? endResult[0]
+        : Positions.offset(endResult[0], endResult[1][0].length, _.document) ?? endResult[0];
+
+      return Selections.shift(selection, end, shift, _);
+    });
+  } else {
+    const checkNextChar = _.selectionBehavior === SelectionBehavior.Character;
+    return Selections.updateByIndex(
+      (_i, selection) => surroundedBy(
+        [pair], Selections.activeStart(selection, _), !inner, _.document, checkNextChar,
+      ) ?? selection,
+    );
+  }
+}
+
+function shiftCharacters(_: Context, matcher: CharactersMatcher, where: "start" | "end" | undefined, inner: boolean, shift: Shift) {
+  const { chars, before, after } = matcher;
+  return shiftWhere(
+    _,
+    (selection, _) => {
+      let start = moveWhileBackward((c) => chars.test(c), selection.active, _.document),
+          end = moveWhileForward((c) => chars.test(c), selection.active, _.document);
+
+      if (!inner && before !== undefined) {
+        start = moveWhileBackward((c) => before.test(c), start, _.document);
+      }
+
+      if (!inner && after !== undefined) {
+        end = moveWhileForward((c) => after.test(c), end, _.document);
+      }
+
+      return new vscode.Selection(start, end);
+    },
+    shift,
+    where,
+  );
+}
+
+function shiftSingleLine(
+  _: Context,
+  matcher: SinglelineMatcher,
+  where: "start" | "end" | undefined,
+  inner: boolean,
+  shift: Shift,
+) {
+  return shiftWhere(
+    _,
+    (selection, _) => {
+      const line = Selections.activeLine(selection),
+            lineText = _.document.lineAt(line).text,
+            matches = execRange(lineText, matcher.re);
+
+      // Find match at text position.
+      const character = Selections.activeCharacter(selection, _.document);
+
+      for (const m of matches) {
+        let [start, end] = m;
+
+        if (start <= character && character <= end) {
+          if (inner && m[2].groups !== undefined) {
+            const match = m[2];
+
+            if ("before" in match.groups!) {
+              start += match.groups["before"].length;
+            }
+            if ("after" in match.groups!) {
+              end -= match.groups["after"].length;
+            }
+          }
+
+          return new vscode.Selection(
+            new vscode.Position(line, start),
+            new vscode.Position(line, end),
+          );
+        }
+      }
+
+      return undefined;
+    },
+    shift,
+    where,
+  );
+}
+
+function shiftPredefined(
+  _: Context,
+  matcher: PrefefinedMatcher,
+  where: "start" | "end" | undefined,
+  inner: boolean,
+  shift: Shift,
+) {
+  const { object } = matcher;
+  let newSelections: vscode.Selection[];
+
+  if (where === "start") {
+    newSelections = Selections.mapByIndex((_i, selection, document) => {
+      const activePosition = Selections.activePosition(selection, _.document);
+      let shiftTo = object.start(activePosition, inner, document);
+
+      if (shiftTo.isEqual(activePosition)) {
+        const activePositionBefore = Positions.previous(activePosition, document);
+
+        if (activePositionBefore !== undefined) {
+          shiftTo = object.start(activePositionBefore, inner, document);
+        }
+      }
+
+      return Selections.shift(selection, shiftTo, shift, _);
+    });
+  } else if (where === "end") {
+    newSelections = Selections.mapByIndex((_i, selection, document) =>
+      Selections.shift(
+        selection,
+        object.end(selection.active, inner, document),
+        shift,
+        _,
+      ),
+    );
+  } else {
+    newSelections = Selections.mapByIndex((_, selection, document) =>
+      object(selection.active, inner, document),
+    );
+  }
+
+  if (_.selectionBehavior === SelectionBehavior.Character) {
+    Selections.shiftEmptyLeft(newSelections, _.document);
+  }
+
+  return Selections.set(newSelections);
+}
+
+async function shiftTextObject(
+  _: Context,
+  treeSitter: TreeSitter | undefined,
+  matcher: TextObjectMatcher,
+  inner: boolean,
+) {
+  const { object } = matcher;
+
+  if (treeSitter === undefined) {
+    throw new Error("tree-sitter is not available");
+  }
+
+  const query = await treeSitter.textObjectQueryFor(_.document);
+
+  if (query === undefined) {
+    throw new Error("no textobject query available for current document");
+  }
+
+  // Languages with queries available are a subset of supported languages, so
+  // given that we have a `query` `withDocumentTree()` will not fail.
+  const newSelections = await treeSitter.withDocumentTree(_.document, (documentTree) => {
+    const textObjectName = object + (inner ? ".inside" : ".around");
+
+    if (!query.captureNames.includes(textObjectName)) {
+      const existingValues = query.captureNames.map((name) =>
+        `"${name.replace(".inside", "").replace(".around", "")}"`,
+      ).join(", ");
+
+      throw new Error(
+        `unknown textobject ${JSON.stringify(textObjectName)}, valid values are ${existingValues}`,
+      );
+    }
+
+    // TODO(71): add helpers for checking if a VS Code Position is within a Tree
+    //   Sitter range without creating temporary objects
+    const captures = query.captures(documentTree.rootNode)
+      .filter((capture) => capture.name === textObjectName)
+      .map(({ node }) => [node, treeSitter.toRange(node)] as const);
+
+    return Selections.mapByIndex((_i, selection) => {
+      const active = selection.active;
+
+      let smallestNode: SyntaxNode | undefined;
+      const smallestNodeLength = Number.MAX_SAFE_INTEGER;
+
+      for (const [node, nodeRange] of captures) {
+        if (!nodeRange.contains(active)) {
+          continue;
+        }
+
+        const nodeLength = node.endIndex - node.startIndex;
+
+        if (nodeLength < smallestNodeLength && !nodeRange.isEqual(selection)) {
+          smallestNode = node;
+        }
+      }
+
+      return smallestNode === undefined
+        ? selection
+        : Selections.fromStartEnd(
+          treeSitter.toPosition(smallestNode.startPosition),
+          treeSitter.toPosition(smallestNode.endPosition),
+          Selections.isStrictlyReversed(selection, _));
+    });
+  });
+
+  return Selections.set(newSelections);
+}
+
 /**
  * Select object.
  *
@@ -341,7 +617,7 @@ let lastObjectInput: string | undefined;
 export async function object(
   _: Context,
 
-  inputOr: InputOr<"input", string>,
+  inputOr: InputOr<"input", string | ObjectMatcher>,
   inner: Argument<boolean> = false,
   where?: Argument<"start" | "end">,
   shift = Shift.Select,
@@ -353,238 +629,17 @@ export async function object(
     value: lastObjectInput,
   }));
 
-  let match: RegExpExecArray | null;
-
-  if (match = /^(.+)\(\?#inner\)(.+)$/s.exec(input)) {
-    const openRe = new RegExp(preprocessRegExp(match[1]), "u"),
-          closeRe = new RegExp(preprocessRegExp(match[2]), "u"),
-          p = pair(openRe, closeRe);
-
-    if (where === "start") {
-      return Selections.updateByIndex((_i, selection) => {
-        const startResult = p.searchOpening(Selections.activeStart(selection, _));
-
-        if (startResult === undefined) {
-          return;
-        }
-
-        const start = inner
-          ? Positions.offset(startResult[0], startResult[1][0].length, _.document) ?? startResult[0]
-          : startResult[0];
-
-        return Selections.shift(selection, start, shift, _);
-      });
-    }
-
-    if (where === "end") {
-      return Selections.updateByIndex((_i, selection) => {
-        const endResult = p.searchClosing(Selections.activeEnd(selection, _));
-
-        if (endResult === undefined) {
-          return;
-        }
-
-        const end = inner
-          ? endResult[0]
-          : Positions.offset(endResult[0], endResult[1][0].length, _.document) ?? endResult[0];
-
-        return Selections.shift(selection, end, shift, _);
-      });
-    }
-
-    const checkNextChar = _.selectionBehavior === SelectionBehavior.Character;
-    return Selections.updateByIndex(
-      (_i, selection) => surroundedBy(
-        [p], Selections.activeStart(selection, _), !inner, _.document, checkNextChar,
-      ),
-    );
+  const matcher = typeof input === "string" ? parseMatcher(input) : input;
+  if (!matcher) {
+    throw new Error("unknown object " + JSON.stringify(input));
   }
 
-  if (match =
-        /^(?:\(\?<before>(\[.+?\])\+\))?(\[.+\])\+(?:\(\?<after>(\[.+?\])\+\))?$/.exec(input)) {
-    const re = new RegExp(match[2], "u"),
-          beforeRe = inner || match[1] === undefined ? undefined : new RegExp(match[1], "u"),
-          afterRe = inner || match[3] === undefined ? undefined : new RegExp(match[3], "u");
-
-    return shiftWhere(
-      _,
-      (selection, _) => {
-        let start = moveWhileBackward((c) => re.test(c), selection.active, _.document),
-            end = moveWhileForward((c) => re.test(c), selection.active, _.document);
-
-        if (beforeRe !== undefined) {
-          start = moveWhileBackward((c) => beforeRe.test(c), start, _.document);
-        }
-
-        if (afterRe !== undefined) {
-          end = moveWhileForward((c) => afterRe.test(c), end, _.document);
-        }
-
-        return new vscode.Selection(start, end);
-      },
-      shift,
-      where,
-    );
-  }
-
-  if (match = /^\(\?#singleline\)(.+)$/.exec(input)) {
-    const re = new RegExp(preprocessRegExp(match[1]), "u");
-
-    return shiftWhere(
-      _,
-      (selection, _) => {
-        const line = Selections.activeLine(selection),
-              lineText = _.document.lineAt(line).text,
-              matches = execRange(lineText, re);
-
-        // Find match at text position.
-        const character = Selections.activeCharacter(selection, _.document);
-
-        for (const m of matches) {
-          let [start, end] = m;
-
-          if (start <= character && character <= end) {
-            if (inner && m[2].groups !== undefined) {
-              const match = m[2];
-
-              if ("before" in match.groups!) {
-                start += match.groups["before"].length;
-              }
-              if ("after" in match.groups!) {
-                end -= match.groups["after"].length;
-              }
-            }
-
-            return new vscode.Selection(
-              new vscode.Position(line, start),
-              new vscode.Position(line, end),
-            );
-          }
-        }
-
-        return undefined;
-      },
-      shift,
-      where,
-    );
-  }
-
-  if (match = /^\(\?#predefined=(argument|indent|paragraph|sentence)\)$/.exec(input)) {
-    let f: Objects.Seek;
-
-    switch (match[1]) {
-    case "argument":
-    case "indent":
-    case "paragraph":
-    case "sentence":
-      f = Objects[match[1]];
-      break;
-
-    default:
-      assert(false);
-    }
-
-    let newSelections: vscode.Selection[];
-
-    if (where === "start") {
-      newSelections = Selections.mapByIndex((_i, selection, document) => {
-        const activePosition = Selections.activePosition(selection, _.document);
-        let shiftTo = f.start(activePosition, inner, document);
-
-        if (shiftTo.isEqual(activePosition)) {
-          const activePositionBefore = Positions.previous(activePosition, document);
-
-          if (activePositionBefore !== undefined) {
-            shiftTo = f.start(activePositionBefore, inner, document);
-          }
-        }
-
-        return Selections.shift(selection, shiftTo, shift, _);
-      });
-    } else if (where === "end") {
-      newSelections = Selections.mapByIndex((_i, selection, document) =>
-        Selections.shift(
-          selection,
-          f.end(selection.active, inner, document),
-          shift,
-          _,
-        ),
-      );
-    } else {
-      newSelections = Selections.mapByIndex((_, selection, document) =>
-        f(selection.active, inner, document),
-      );
-    }
-
-    if (_.selectionBehavior === SelectionBehavior.Character) {
-      Selections.shiftEmptyLeft(newSelections, _.document);
-    }
-
-    return Selections.set(newSelections);
-  }
-
-  // Helix text objects:
-  //   https://github.com/helix-editor/helix/blob/master/book/src/guides/textobject.md#L1
-  if (match = /^\(\?#textobject=(\w+)\)$/.exec(input)) {
-    if (treeSitter === undefined) {
-      throw new Error("tree-sitter is not available");
-    }
-
-    const query = await treeSitter.textObjectQueryFor(_.document);
-
-    if (query === undefined) {
-      throw new Error("no textobject query available for current document");
-    }
-
-    // Languages with queries available are a subset of supported languages, so
-    // given that we have a `query` `withDocumentTree()` will not fail.
-    const newSelections = await treeSitter.withDocumentTree(_.document, (documentTree) => {
-      const textObjectName = match![1] + (inner ? ".inside" : ".around");
-
-      if (!query.captureNames.includes(textObjectName)) {
-        const existingValues = query.captureNames.map((name) =>
-          `"${name.replace(".inside", "").replace(".around", "")}"`,
-        ).join(", ");
-
-        throw new Error(
-          `unknown textobject ${JSON.stringify(textObjectName)}, valid values are ${existingValues}`,
-        );
-      }
-
-      // TODO(71): add helpers for checking if a VS Code Position is within a Tree
-      //   Sitter range without creating temporary objects
-      const captures = query.captures(documentTree.rootNode)
-        .filter((capture) => capture.name === textObjectName)
-        .map(({ node }) => [node, treeSitter.toRange(node)] as const);
-
-      return Selections.mapByIndex((_i, selection) => {
-        const active = selection.active;
-
-        let smallestNode: SyntaxNode | undefined;
-        const smallestNodeLength = Number.MAX_SAFE_INTEGER;
-
-        for (const [node, nodeRange] of captures) {
-          if (!nodeRange.contains(active)) {
-            continue;
-          }
-
-          const nodeLength = node.endIndex - node.startIndex;
-
-          if (nodeLength < smallestNodeLength && !nodeRange.isEqual(selection)) {
-            smallestNode = node;
-          }
-        }
-
-        return smallestNode === undefined
-          ? selection
-          : Selections.fromStartEnd(
-            treeSitter.toPosition(smallestNode.startPosition),
-            treeSitter.toPosition(smallestNode.endPosition),
-            Selections.isStrictlyReversed(selection, _));
-      });
-    });
-
-    return Selections.set(newSelections);
+  switch (matcher.type) {
+  case "inner": return shiftInner(_, matcher, where, inner, shift);
+  case "characters": return shiftCharacters(_, matcher, where, inner, shift);
+  case "prefefined": return shiftPredefined(_, matcher, where, inner, shift);
+  case "singleline": return shiftSingleLine(_, matcher, where, inner, shift);
+  case "textobject": return shiftTextObject(_, treeSitter, matcher, inner);
   }
 
   throw new Error("unknown object " + JSON.stringify(input));
