@@ -133,7 +133,7 @@ export function vertically(
   const newSelections = Selections.mapByIndex((i, selection) => {
     // TODO: handle tab characters
     const activeLine = isCharacterMode ? Selections.activeLine(selection) : selection.active.line,
-          targetLine = Lines.clamp(activeLine + repetitions * direction, document),
+          targetLine = Lines.nthVisibleLine(activeLine, direction, repetitions, _.editor),
           targetLineLength = Lines.columns(targetLine, _.editor);
 
     if (targetLineLength === 0) {

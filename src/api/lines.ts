@@ -1,28 +1,50 @@
 import * as vscode from "vscode";
 
-import { Context } from "./context";
+import { Context, edit } from "./context";
+import { Direction } from "./types";
+
+function *lineRange(range: vscode.Range) {
+  let line = range.start.line;
+  while (line <= range.end.line) {
+    yield line++;
+  }
+}
+
+function visibleLines(editor = Context.current.editor) {
+  return editor.visibleRanges.flatMap(r => [...lineRange(r)]);
+}
 
 /**
  * Returns the 0-based number of the first visible line in the current editor.
  */
 export function firstVisibleLine(editor = Context.current.editor) {
-  return editor.visibleRanges[0].start.line;
+  return visibleLines(editor)[0];
 }
 
 /**
  * Returns the 0-based number of the middle visible line in the current editor.
  */
 export function middleVisibleLine(editor = Context.current.editor) {
-  const range = editor.visibleRanges[0];
-
-  return ((range.start.line + range.end.line) / 2) | 0;
+  const visible = visibleLines(editor);
+  return visible[visible.length / 2];
 }
 
 /**
  * Returns the 0-based number of the last visible line in the current editor.
  */
 export function lastVisibleLine(editor = Context.current.editor) {
-  return editor.visibleRanges[0].end.line;
+  return visibleLines(editor).at(-1)!;
+}
+
+export function nthVisibleLine(startLine: number, direction: Direction, count: number, editor = Context.current.editor) {
+  const visible = visibleLines(editor),
+        index = visible.findIndex(line => line >= startLine);
+  if (index < 0) {
+    return visible[0];
+  }
+  let newIndex = index + count * direction;
+  newIndex = Math.min(Math.max(0, newIndex), visible.length);
+  return visible[newIndex];
 }
 
 /**
