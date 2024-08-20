@@ -4,6 +4,7 @@
 import { Builder, generateIgnoredKeybinds } from "../../meta";
 import * as fs from "fs/promises";
 import { extensionId } from "../../src/utils/constants";
+import { command } from "../../src/api";
 
 const version = "0.1.0",
       preRelease = 1,
@@ -153,9 +154,12 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
             "f": { text: "to file/URLs in selections", command: "dance.selections.open" },
             "h": { text: "to line start", command: "dance.select.lineStart" },
             "l": { text: "to line end", command: "dance.select.lineEnd" },
-            "i": { text: "to first non-blank in line", command: "dance.select.lineStart", args: [{ skipBlank: true }] },
+            "s": { text: "to first non-blank in line", command: "dance.select.lineStart", args: [{ skipBlank: true }] },
             "d": { text: "to definition", command: "editor.action.revealDefinition" },
+            "D": { text: "to declaration", command: "editor.action.goToDeclaration" },
+            "y": { text: "to type definition", command: "editor.action.goToTypeDefinition" },
             "r": { text: "to references", command: "editor.action.goToReferences" },
+            "i": { text: "to implementation", command: "editor.action.goToImplementation" },
             "j": { text: "to last line", command: "dance.select.lastLine" },
             "t": { text: "to window top", command: "dance.select.firstVisibleLine" },
             "c": { text: "to window center", command: "dance.select.middleVisibleLine" },

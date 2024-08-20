@@ -49,6 +49,17 @@ export function set(selections: readonly vscode.Selection[], context = Context.c
   return selections;
 }
 
+/** Checks if two lists of selections are the same */
+export function equal(
+  selections1: readonly vscode.Selection[],
+  selections2: readonly vscode.Selection[],
+) {
+  if (selections1.length !== selections2.length) {
+    return false;
+  }
+  return selections1.every((sel, index) => sel.isEqual(selections2[index]));
+}
+
 /**
  * Removes selections that do not match the given predicate.
  *

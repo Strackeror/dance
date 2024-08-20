@@ -6,7 +6,10 @@ import { CharSet } from "../utils/charset";
 import { ArgumentError, assert } from "../utils/errors";
 import { escapeForRegExp, execRange } from "../utils/regexp";
 import * as TrackedSelection from "../utils/tracked-selection";
-import { SyntaxNode, Tree, TreeSitter } from "../utils/tree-sitter";
+import { Point, SyntaxNode, Tree, TreeSitter } from "../utils/tree-sitter";
+import { PerEditorState } from "../state/editors";
+import { selection } from "./search";
+import { selections } from "../api/registers";
 
 /**
  * Update selections based on the text surrounding them.
@@ -639,10 +642,37 @@ export async function object(
   case "characters": return shiftCharacters(_, matcher, where, inner, shift);
   case "prefefined": return shiftPredefined(_, matcher, where, inner, shift);
   case "singleline": return shiftSingleLine(_, matcher, where, inner, shift);
-  case "textobject": return shiftTextObject(_, treeSitter, matcher, inner);
+  case "textobject": return await shiftTextObject(_, treeSitter, matcher, inner);
   }
 
   throw new Error("unknown object " + JSON.stringify(input));
+}
+
+
+/** Return the smallest syntax node that entirely contains the given selection */
+function nodeAround(_: Context, treeSitter: TreeSitter, documentTree: Tree, selection: vscode.Selection) {
+  let node = documentTree.rootNode.descendantForPosition(
+    treeSitter.fromPosition(Selections.activeStart(selection, _)),
+  );
+
+  while (selection.contains(treeSitter.toRange(node))) {
+    if (node.parent === null) {
+      break;
+    }
+    node = node.parent;
+  }
+  return node;
+}
+
+const shrinkSelections = PerEditorState.registerState<vscode.Selection[][]>(/* isDisposable= */ false);
+function getShrinkSelections(_: Context) {
+  const stack = _.getState().get(shrinkSelections);
+  if (stack) {
+    return stack;
+  }
+  const newStack: vscode.Selection[][] = [];
+  _.getState().store(shrinkSelections, newStack);
+  return newStack;
 }
 
 /**
@@ -650,12 +680,12 @@ export async function object(
  *
  * #### Variants
  *
- * | Title                         | Identifier                     | Keybindings                                  | Command                                                |
- * | ----------------------------- | ------------------------------ | -------------------------------------------- | ------------------------------------------------------ |
- * | Select next syntax object     | `syntax.next.experimental`     | `a-n` (helix: normal), `a-n` (helix: select) | `[".seek.syntax.experimental", { where: "next"     }]` |
- * | Select previous syntax object | `syntax.previous.experimental` | `a-p` (helix: normal), `a-p` (helix: select) | `[".seek.syntax.experimental", { where: "previous" }]` |
- * | Select parent syntax object   | `syntax.parent.experimental`   | `a-o` (helix: normal), `a-o` (helix: select) | `[".seek.syntax.experimental", { where: "parent"   }]` |
- * | Select child syntax object    | `syntax.child.experimental`    | `a-i` (helix: normal), `a-i` (helix: select) | `[".seek.syntax.experimental", { where: "child"    }]` |
+ * | Title                         | Identifier                     | Keybindings                                                                   | Command                                                |
+ * | ----------------------------- | ------------------------------ | ----------------------------------------------------------------------------- | ------------------------------------------------------ |
+ * | Select next syntax object     | `syntax.next.experimental`     | `a-n` (helix: normal; helix: select)                                          | `[".seek.syntax.experimental", { where: "next"     }]` |
+ * | Select previous syntax object | `syntax.previous.experimental` | `a-p` (helix: normal; helix: select)                                          | `[".seek.syntax.experimental", { where: "previous" }]` |
+ * | Select parent syntax object   | `syntax.parent.experimental`   | `a-o` (helix: normal; helix: select), `a-up` (helix: normal; helix: select)   | `[".seek.syntax.experimental", { where: "parent"   }]` |
+ * | Select child syntax object    | `syntax.child.experimental`    | `a-i` (helix: normal; helix: select), `a-down` (helix: normal; helix: select) | `[".seek.syntax.experimental", { where: "child"    }]` |
  */
 export function syntax_experimental(
   _: Context,
@@ -665,67 +695,61 @@ export function syntax_experimental(
 
   where: Argument<"next" | "previous" | "parent" | "child"> = "next",
 ): void {
-  const rootNode = documentTree.rootNode;
-
-
-  Selections.updateByIndex((_id, selection) => {
-    const position = _.selectionBehavior === SelectionBehavior.Character
-      ? Positions.previous(selection.active)!
-      : selection.active;
-    const activeNode = rootNode.descendantForPosition(treeSitter.fromPosition(position));
-
-
-    let currentNode = activeNode;
-    while (!treeSitter.toRange(currentNode).contains(selection)) {
-      if (currentNode.parent === null) {
-        return;
-      }
-      currentNode = currentNode.parent;
-    }
-
-    let newNode: SyntaxNode | null = currentNode;
-    switch (where) {
-    case "next":
-      while (newNode.nextSibling == null) {
-        if (newNode.parent === null) {
+  switch (where) {
+  case "next":
+  case "previous":
+    Selections.updateByIndex((_id, selection) => {
+      const field = where === "next" ? "nextSibling" : "previousSibling";
+      let node = nodeAround(_, treeSitter, documentTree, selection);
+      while (node[field] === null) {
+        if (node.parent === null) {
           break;
         }
-        newNode = newNode.parent;
+        node = node.parent;
       }
-      if (newNode !== null && newNode.nextSibling !== null) {
-        newNode = newNode.nextSibling;
+      if (node[field] !== null) {
+        node = node[field];
       }
-      break;
-
-    case "previous":
-      while (newNode.previousSibling == null) {
-        if (newNode.parent === null) {
-          break;
-        }
-        newNode = newNode.parent;
-      }
-      if (newNode !== null && newNode.previousSibling !== null) {
-        newNode = newNode.previousSibling;
-      }
-      break;
-
-    case "child":
-      newNode = newNode.firstChild;
-      break;
-
-    case "parent":
-      if (selection.isEqual(treeSitter.toRange(newNode)) && newNode.parent !== null) {
-        newNode = newNode.parent;
-      }
-      break;
+      return Selections.fromRange(treeSitter.toRange(node));
+    }, _);
+    break;
+  case "parent":
+  {
+    const shrink = getShrinkSelections(_);
+    const nextShrink = shrink.at(-1);
+    if (nextShrink == null || !Selections.equal(_.selections, nextShrink)) {
+      getShrinkSelections(_).push([..._.selections]);
     }
-
-    if (newNode == null) {
-      return selection;
+    Selections.updateByIndex((_id, selection) => {
+      let node = nodeAround(_, treeSitter, documentTree, selection);
+      if (selection.isEqual(treeSitter.toRange(node)) && node.parent) {
+        node = node.parent;
+      }
+      return Selections.fromRange(treeSitter.toRange(node));
+    });
+    break;
+  }
+  case "child":
+  {
+    const shrink = getShrinkSelections(_);
+    const nextShrink = shrink.pop();
+    if (nextShrink && nextShrink.every(
+      shrinkSel => _.selections.some(sel => sel.contains(shrinkSel)))
+    ) {
+      Selections.set(nextShrink);
+      return;
     }
-
-    return Selections.fromRange(treeSitter.toRange(newNode));
-  }, _);
+    shrink.splice(0);
+    Selections.updateByIndex((_id, selection) => {
+      let node = nodeAround(_, treeSitter, documentTree, selection);
+      if (node.firstChild) {
+        node = node.firstChild;
+      }
+      return Selections.fromRange(treeSitter.toRange(node));
+    });
+    break;
+  }
+  }
 }
 
 /**

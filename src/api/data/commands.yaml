@@ -1388,8 +1388,8 @@ seek.syntax.child.experimental:
 
   keys:
     qwerty: |-
-      `a-i` (helix: normal)
-      `a-i` (helix: select)
+      `a-i` (helix: normal; helix: select)
+      `a-down` (helix: normal; helix: select)
 
 seek.syntax.experimental:
   title:
@@ -1401,12 +1401,12 @@ seek.syntax.experimental:
 
       #### Variants
 
-      | Title                         | Identifier                     | Keybindings                                  | Command                                                |
-      | ----------------------------- | ------------------------------ | -------------------------------------------- | ------------------------------------------------------ |
-      | Select next syntax object     | `syntax.next.experimental`     | `a-n` (helix: normal), `a-n` (helix: select) | `[".seek.syntax.experimental", { where: "next"     }]` |
-      | Select previous syntax object | `syntax.previous.experimental` | `a-p` (helix: normal), `a-p` (helix: select) | `[".seek.syntax.experimental", { where: "previous" }]` |
-      | Select parent syntax object   | `syntax.parent.experimental`   | `a-o` (helix: normal), `a-o` (helix: select) | `[".seek.syntax.experimental", { where: "parent"   }]` |
-      | Select child syntax object    | `syntax.child.experimental`    | `a-i` (helix: normal), `a-i` (helix: select) | `[".seek.syntax.experimental", { where: "child"    }]` |
+      | Title                         | Identifier                     | Keybindings                                                                   | Command                                                |
+      | ----------------------------- | ------------------------------ | ----------------------------------------------------------------------------- | ------------------------------------------------------ |
+      | Select next syntax object     | `syntax.next.experimental`     | `a-n` (helix: normal; helix: select)                                          | `[".seek.syntax.experimental", { where: "next"     }]` |
+      | Select previous syntax object | `syntax.previous.experimental` | `a-p` (helix: normal; helix: select)                                          | `[".seek.syntax.experimental", { where: "previous" }]` |
+      | Select parent syntax object   | `syntax.parent.experimental`   | `a-o` (helix: normal; helix: select), `a-up` (helix: normal; helix: select)   | `[".seek.syntax.experimental", { where: "parent"   }]` |
+      | Select child syntax object    | `syntax.child.experimental`    | `a-i` (helix: normal; helix: select), `a-down` (helix: normal; helix: select) | `[".seek.syntax.experimental", { where: "child"    }]` |
 
 seek.syntax.next.experimental:
   title:
@@ -1417,8 +1417,7 @@ seek.syntax.next.experimental:
 
   keys:
     qwerty: |-
-      `a-n` (helix: normal)
-      `a-n` (helix: select)
+      `a-n` (helix: normal; helix: select)
 
 seek.syntax.parent.experimental:
   title:
@@ -1429,8 +1428,8 @@ seek.syntax.parent.experimental:
 
   keys:
     qwerty: |-
-      `a-o` (helix: normal)
-      `a-o` (helix: select)
+      `a-o` (helix: normal; helix: select)
+      `a-up` (helix: normal; helix: select)
 
 seek.syntax.previous.experimental:
   title:
@@ -1441,8 +1440,7 @@ seek.syntax.previous.experimental:
 
   keys:
     qwerty: |-
-      `a-p` (helix: normal)
-      `a-p` (helix: select)
+      `a-p` (helix: normal; helix: select)
 
 seek.word:
   title:

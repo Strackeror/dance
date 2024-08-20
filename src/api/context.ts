@@ -7,6 +7,7 @@ import type { Extension } from "../state/extension";
 import type { Mode } from "../state/modes";
 import { EditNotAppliedError, EditorRequiredError } from "../utils/errors";
 import { noUndoStops, performDummyEdit } from "../utils/misc";
+import { TreeSitter } from "../utils/tree-sitter-api";
 
 let currentContext: ContextWithoutActiveEditor | undefined;
 
