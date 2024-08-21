@@ -45,7 +45,7 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
   publisher: "gregoire",
   categories: ["Keymaps", "Other"],
   readme: "README.md",
-  icon: "assets/dance.png",
+  icon: "dance.png",
   extensionKind: ["ui", "workspace"],
 
   scripts: {
@@ -59,6 +59,21 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
     configurationDefaults: {
       "dance.defaultMode": "helix/normal",
       "dance.modes": {
+        "": {
+          hiddenSelectionsIndicatorsDecoration: {
+            after: {
+              color: "$list.warningForeground",
+            },
+            backgroundColor: "$inputValidation.warningBackground",
+            borderColor: "$inputValidation.warningBorder",
+            borderStyle: "solid",
+            borderWidth: "1px",
+            isWholeLine: true,
+          },
+        },
+        "input": {
+          cursorStyle: "underline-thin",
+        },
         "helix/insert": {
           onLeaveMode: [
             [".selections.save", {
@@ -216,6 +231,7 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
           keybindings.filter(key => key.when.includes(whenMode)),
           whenMode,
         ));
+
       }
 
       return [
@@ -223,6 +239,8 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
         ...ignoredKeybindings,
       ];
     })(),
+
+
   },
 });
 
