@@ -655,7 +655,7 @@ function nodeAround(_: Context, treeSitter: TreeSitter, documentTree: Tree, sele
     treeSitter.fromPosition(Selections.activeStart(selection, _)),
   );
 
-  while (selection.contains(treeSitter.toRange(node))) {
+  while (!treeSitter.toRange(node).contains(selection)) {
     if (node.parent === null) {
       break;
     }

@@ -4,11 +4,10 @@
 import { Builder, generateIgnoredKeybinds } from "../../meta";
 import * as fs from "fs/promises";
 import { extensionId } from "../../src/utils/constants";
-import { command } from "../../src/api";
 
 const version = "0.1.0",
       preRelease = 1,
-      preReleaseVersion = version.replace(/\d+$/, "$&" + preRelease.toString().padStart(3, "0"));
+      preReleaseVersion = `${version}-pre${preRelease}`;
 
 export const pkg = (modules: Builder.ParsedModule[]) => ({
 
