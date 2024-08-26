@@ -603,28 +603,19 @@ export async function surroundReplace(
   }
 }
 
-const defaultPairs: [string, string][] = [
+const pairCharacters: [string, string][] = [
   ["{", "}"],
   ["[", "]"],
   ["(", ")"],
-  ["'", "'"],
-  ["\"", "\""],
-  ["`", "`"],
+  ["<", ">"],
 ];
 
-function getCurrentPairs(document: vscode.TextDocument): readonly [string, string][] {
-  const languageConfig = vscode.workspace.getConfiguration("", document),
-        surroundingPairs = languageConfig.get<readonly [string, string][]>("surroundingPairs");
-  console.log(JSON.stringify(languageConfig));
-  return surroundingPairs ?? defaultPairs;
-}
-
 async function promptPair(context: Context): Promise<[string, string]> {
-  const pairs = getCurrentPairs(context.document),
-        menu: ListPair[] = [];
-  for (const [open, close] of pairs) {
-    menu.push([`${open}, ${close}`, `${open}/${close}`]);
+  const key = await keypress(context);
+  for (const pair of pairCharacters) {
+    if (pair.includes(key)) {
+      return pair;
+    }
   }
-  const index = await promptOne(menu) as number;
-  return pairs[index];
+  return [key, key];
 }
