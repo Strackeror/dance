@@ -115,6 +115,10 @@ export async function showMenu(
     return;
   }
 
+  if (choice < 0) {
+    return;
+  }
+
   const pickedItem = entries[choice][1],
         args = mergeArgs(pickedItem.args, additionalArgs);
 

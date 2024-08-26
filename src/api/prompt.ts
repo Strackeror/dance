@@ -558,8 +558,9 @@ function promptInList(
 
     for (let i = 0; i < items.length; i++) {
       const [label, description] = items[i];
-
-      quickPickItems.push({ label, description });
+      if (description !== "$HIDDEN") {
+        quickPickItems.push({ label, description });
+      }
       isCaseSignificant = isCaseSignificant || label.toLowerCase() !== label;
     }
 

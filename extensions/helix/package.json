@@ -176,69 +176,6 @@
         "object": {
           "title": "Select object...",
           "items": {
-            "()": {
-              "command": "dance.seek.object",
-              "args": [
-                {
-                  "input": "\\((?#inner)\\)"
-                }
-              ],
-              "text": "parenthesis block"
-            },
-            "{}": {
-              "command": "dance.seek.object",
-              "args": [
-                {
-                  "input": "\\{(?#inner)\\}"
-                }
-              ],
-              "text": "braces block"
-            },
-            "[]": {
-              "command": "dance.seek.object",
-              "args": [
-                {
-                  "input": "\\[(?#inner)\\]"
-                }
-              ],
-              "text": "brackets block"
-            },
-            "<>": {
-              "command": "dance.seek.object",
-              "args": [
-                {
-                  "input": "<(?#inner)>"
-                }
-              ],
-              "text": "angle block"
-            },
-            "\"": {
-              "command": "dance.seek.object",
-              "args": [
-                {
-                  "input": "(?#noescape)\"(?#inner)(?#noescape)\""
-                }
-              ],
-              "text": "double quote string"
-            },
-            "'": {
-              "command": "dance.seek.object",
-              "args": [
-                {
-                  "input": "(?#noescape)'(?#inner)(?#noescape)'"
-                }
-              ],
-              "text": "single quote string"
-            },
-            "`": {
-              "command": "dance.seek.object",
-              "args": [
-                {
-                  "input": "(?#noescape)`(?#inner)(?#noescape)`"
-                }
-              ],
-              "text": "grave quote string"
-            },
             "w": {
               "command": "dance.seek.object",
               "args": [
@@ -278,6 +215,73 @@
             "!": {
               "command": "dance.seek.object",
               "text": "custom object desc"
+            },
+            "()": {
+              "command": "dance.seek.object",
+              "args": [
+                {
+                  "input": "\\((?#inner)\\)"
+                }
+              ],
+              "text": "$HIDDEN"
+            },
+            "{}": {
+              "command": "dance.seek.object",
+              "args": [
+                {
+                  "input": "\\{(?#inner)\\}"
+                }
+              ],
+              "text": "$HIDDEN"
+            },
+            "[]": {
+              "command": "dance.seek.object",
+              "args": [
+                {
+                  "input": "\\[(?#inner)\\]"
+                }
+              ],
+              "text": "$HIDDEN"
+            },
+            "<>": {
+              "command": "dance.seek.object",
+              "args": [
+                {
+                  "input": "<(?#inner)>"
+                }
+              ],
+              "text": "$HIDDEN"
+            },
+            "\"": {
+              "command": "dance.seek.object",
+              "args": [
+                {
+                  "input": "(?#noescape)\"(?#inner)(?#noescape)\""
+                }
+              ],
+              "text": "$HIDDEN"
+            },
+            "'": {
+              "command": "dance.seek.object",
+              "args": [
+                {
+                  "input": "(?#noescape)'(?#inner)(?#noescape)'"
+                }
+              ],
+              "text": "$HIDDEN"
+            },
+            "`": {
+              "command": "dance.seek.object",
+              "args": [
+                {
+                  "input": "(?#noescape)`(?#inner)(?#noescape)`"
+                }
+              ],
+              "text": "$HIDDEN"
+            },
+            " ": {
+              "command": "dance.ignore",
+              "text": "... Or any paired character"
             }
           }
         },
@@ -465,6 +469,10 @@
             "s": {
               "text": "Open symbol picker",
               "command": "workbench.action.gotoSymbol"
+            },
+            "S": {
+              "text": "Open symbol picker",
+              "command": "workbench.action.showAllSymbols"
             },
             "d": {
               "text": "Open diagnostic picker",
