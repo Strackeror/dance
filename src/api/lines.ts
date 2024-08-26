@@ -42,8 +42,13 @@ export function nthVisibleLine(startLine: number, direction: Direction, count: n
   if (index < 0) {
     return visible[0];
   }
-  let newIndex = index + count * direction;
-  newIndex = Math.min(Math.max(0, newIndex), visible.length);
+  const newIndex = index + count * direction;
+  if (newIndex < 0) {
+    return clamp(visible[0] + newIndex);
+  }
+  if (newIndex > visible.length) {
+    return clamp(visible.at(-1)! + newIndex - visible.length);
+  }
   return visible[newIndex];
 }
 
