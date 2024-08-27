@@ -46,7 +46,7 @@ export function nthVisibleLine(startLine: number, direction: Direction, count: n
   if (newIndex < 0) {
     return clamp(visible[0] + newIndex);
   }
-  if (newIndex > visible.length) {
+  if (newIndex >= visible.length) {
     return clamp(visible.at(-1)! + newIndex - visible.length);
   }
   return visible[newIndex];
