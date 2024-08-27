@@ -183,7 +183,7 @@
                   "input": "[\\p{L}_\\d]+(?<after>[^\\S\\n]+)"
                 }
               ],
-              "text": "word"
+              "text": "Word"
             },
             "W": {
               "command": "dance.seek.object",
@@ -201,16 +201,61 @@
                   "input": "(?#predefined=paragraph)"
                 }
               ],
-              "text": "paragraph"
+              "text": "Paragraph"
+            },
+            "t": {
+              "command": "dance.seek.object",
+              "args": [
+                {
+                  "input": "(?#textobject=function)"
+                }
+              ],
+              "text": "Type definition (tree-sitter)"
+            },
+            "f": {
+              "command": "dance.seek.object",
+              "args": [
+                {
+                  "input": "(?#textobject=function)"
+                }
+              ],
+              "text": "Function (tree-sitter)"
             },
             "a": {
               "command": "dance.seek.object",
               "args": [
                 {
-                  "input": "(?#predefined=argument)"
+                  "input": "(?#textobject=parameter)"
                 }
               ],
-              "text": "argument"
+              "text": "Argument/parameter (tree-sitter)"
+            },
+            "c": {
+              "command": "dance.seek.object",
+              "args": [
+                {
+                  "input": "(?#textobject=comment)"
+                }
+              ],
+              "text": "Comment (tree-sitter)"
+            },
+            "T": {
+              "command": "dance.seek.object",
+              "args": [
+                {
+                  "input": "(?#textobject=test)"
+                }
+              ],
+              "text": "Test (tree-sitter)"
+            },
+            "e": {
+              "command": "dance.seek.object",
+              "args": [
+                {
+                  "input": "(?#textobject=entry)"
+                }
+              ],
+              "text": "Data structure entry (tree-sitter)"
             },
             "!": {
               "command": "dance.seek.object",

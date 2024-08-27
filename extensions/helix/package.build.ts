@@ -126,14 +126,18 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
             "r": { command: "dance.edit.surroundReplace", text: "Surround replace" },
           },
         },
-
         object: {
           title: "Select object...",
           items: ((command = "dance.seek.object") => ({
-            "w": { command, args: [{ input: "[\\p{L}_\\d]+(?<after>[^\\S\\n]+)" }], text: "word" },
+            "w": { command, args: [{ input: "[\\p{L}_\\d]+(?<after>[^\\S\\n]+)" }], text: "Word" },
             "W": { command, args: [{ input: "[\\S]+(?<after>[^\\S\\n]+)" }], text: "WORD" },
-            "p": { command, args: [{ input: "(?#predefined=paragraph)" }], text: "paragraph" },
-            "a": { command, args: [{ input: "(?#predefined=argument)" }], text: "argument" },
+            "p": { command, args: [{ input: "(?#predefined=paragraph)" }], text: "Paragraph" },
+            "t": { command, args: [{ input: "(?#textobject=function)" }], text: "Type definition (tree-sitter)" },
+            "f": { command, args: [{ input: "(?#textobject=function)" }], text: "Function (tree-sitter)" },
+            "a": { command, args: [{ input: "(?#textobject=parameter)" }], text: "Argument/parameter (tree-sitter)" },
+            "c" : { command, args: [{ input: "(?#textobject=comment)" }], text: "Comment (tree-sitter)" },
+            "T" : { command, args: [{ input: "(?#textobject=test)" }], text: "Test (tree-sitter)" },
+            "e" : { command, args: [{ input: "(?#textobject=entry)" }], text: "Data structure entry (tree-sitter)" },
             "!": { command, text: "custom object desc" },
             "()": { command, args: [{ input: "\\((?#inner)\\)" }], text: "$HIDDEN" },
             "{}": { command, args: [{ input: "\\{(?#inner)\\}" }], text: "$HIDDEN" },
