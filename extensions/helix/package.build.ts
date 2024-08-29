@@ -9,6 +9,12 @@ const version = "0.1.0",
       preRelease = 1,
       preReleaseVersion = `${version}-pre${preRelease}`;
 
+function run(...commands: (string | [string, {[arg: string]: any}])[]) {
+  return {
+    "command": "dance.run",
+    "args": [{ commands }],
+  };
+}
 export const pkg = (modules: Builder.ParsedModule[]) => ({
 
   // Common package.json properties.
@@ -201,10 +207,16 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
             "S": { text: "Open symbol picker", command: "workbench.action.showAllSymbols" },
             "d": { text: "Open diagnostic picker", command: "workbench.actions.view.problems" },
             "a": { text: "Perform code action", command: "editor.action.quickFix" },
-            "g": { text: "Debug", command: "dance.openMenu", args: [{ "menu": "debug-hx", "locked": true }] },
-            "w": { text: "Window", command: "dance.openMenu", args: [{ "menu": "window-hx" }] },
-            "y": { text: "Join and yank selections to clipboard", command: "dance.run", args: [{ "commands": [["dance.selections.saveText", { "register": "dquote" }], ".modes.set.normal"] }] },
-            "Y": { text: "Yank main selection to clipboard", command: "dance.run", args: [{ "commands": [["dance.selections.saveText", { "register": "dquote" }], ".modes.set.normal"] }] },
+            // "g": { text: "Debug", command: "dance.openMenu", args: [{ "menu": "debug-hx", "locked": true }] },
+            "w": { text: "Window", command: "dance.openMenu", args: [{ "menu": "window" }] },
+            "y": { text: "Join and yank selections to clipboard", ...run(
+              ["dance.selections.saveText", { "register": "dquote" }],
+              ".modes.set.normal",
+            ) },
+            "Y": { text: "Yank main selection to clipboard", ...run(
+              ["dance.selections.saveText", { "register": "dquote" }],
+              ".modes.set.normal",
+            ) },
             "p": { text: "Paste clipboard after selections", command: "dance.edit.insert", args: [{ "handleNewLine": true, "where": "end" }] },
             "P": { text: "Paste clipboard before selections", command: "dance.edit.insert", args: [{ "handleNewLine": true, "where": "start" }] },
             "R": { text: "Replace selections by clipboard content", command: "dance.edit.insert", args: [{ "register": "dquote" }] },
@@ -212,6 +224,42 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
             "k": { text: "Show docs for item under cursor", command: "editor.action.showHover" },
             "r": { text: "Rename symbol", command: "editor.action.rename" },
             "?": { text: "Open command palette", command: "workbench.action.showCommands" },
+          },
+        },
+
+        "window": {
+          "title": "View",
+          "items": {
+            w: { text: "Goto next window", command: "workbench.action.focusNextGroup" },
+            s: { text: "Horizontal bottom split", command: "workbench.action.splitEditorDown" },
+            v: { text: "Vertical right split", command: "workbench.action.splitEditor" },
+            t: { text: "Transpose splits", ...run("workbench.action.toggleEditorGroupLayout", "workbench.action.focusActiveEditorGroup") },
+            q: { text: "Close window", command: "workbench.action.closeEditorsAndGroup" },
+            o: { text: "Close windows except current", command: "workbench.action.editorLayoutSingle" },
+            h: { text: "Jump to the left split", command: "workbench.action.focusLeftGroup" },
+            j: { text: "Jump to the split below", command: "workbench.action.focusBelowGroup" },
+            k: { text: "Jump to the split above", command: "workbench.action.focusAboveGroup" },
+            l: { text: "Jump to the right split", command: "workbench.action.focusRightGroup" },
+            H: { text: "Swap with the left split", command: "workbench.action.moveActiveEditorGroupLeft" },
+            J: { text: "Swap with the split below", command: "workbench.action.moveActiveEditorGroupDown" },
+            K: { text: "Swap with the split above", command: "workbench.action.moveActiveEditorGroupUp" },
+            L: { text: "Swap with the right split", command: "workbench.action.moveActiveEditorGroupRight" },
+            n: { text: "New split scratch buffer", command: "dance.openMenu", args: [{ menu: "new-window" }] },
+          },
+        },
+        "new-window": {
+          "title": "New split scratch buffer",
+          "items": {
+            "s": { "text": "Horizontal bottom split scratch buffer", ...run(
+              "workbench.action.splitEditorDown",
+              "workbench.action.files.newUntitledFile",
+              "workbench.action.closeOtherEditors",
+            ) },
+            "v": { "text": "Vertical right split scratch buffer", ...run(
+              "workbench.action.splitEditor",
+              "workbench.action.files.newUntitledFile",
+              "workbench.action.closeOtherEditors",
+            ) },
           },
         },
       },

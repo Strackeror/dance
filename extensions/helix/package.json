@@ -527,22 +527,12 @@
               "text": "Perform code action",
               "command": "editor.action.quickFix"
             },
-            "g": {
-              "text": "Debug",
-              "command": "dance.openMenu",
-              "args": [
-                {
-                  "menu": "debug-hx",
-                  "locked": true
-                }
-              ]
-            },
             "w": {
               "text": "Window",
               "command": "dance.openMenu",
               "args": [
                 {
-                  "menu": "window-hx"
+                  "menu": "window"
                 }
               ]
             },
@@ -624,6 +614,115 @@
             "?": {
               "text": "Open command palette",
               "command": "workbench.action.showCommands"
+            }
+          }
+        },
+        "window": {
+          "title": "View",
+          "items": {
+            "w": {
+              "text": "Goto next window",
+              "command": "workbench.action.focusNextGroup"
+            },
+            "s": {
+              "text": "Horizontal bottom split",
+              "command": "workbench.action.splitEditorDown"
+            },
+            "v": {
+              "text": "Vertical right split",
+              "command": "workbench.action.splitEditor"
+            },
+            "t": {
+              "text": "Transpose splits",
+              "command": "dance.run",
+              "args": [
+                {
+                  "commands": [
+                    "workbench.action.toggleEditorGroupLayout",
+                    "workbench.action.focusActiveEditorGroup"
+                  ]
+                }
+              ]
+            },
+            "q": {
+              "text": "Close window",
+              "command": "workbench.action.closeEditorsAndGroup"
+            },
+            "o": {
+              "text": "Close windows except current",
+              "command": "workbench.action.editorLayoutSingle"
+            },
+            "h": {
+              "text": "Jump to the left split",
+              "command": "workbench.action.focusLeftGroup"
+            },
+            "j": {
+              "text": "Jump to the split below",
+              "command": "workbench.action.focusBelowGroup"
+            },
+            "k": {
+              "text": "Jump to the split above",
+              "command": "workbench.action.focusAboveGroup"
+            },
+            "l": {
+              "text": "Jump to the right split",
+              "command": "workbench.action.focusRightGroup"
+            },
+            "H": {
+              "text": "Swap with the left split",
+              "command": "workbench.action.moveActiveEditorGroupLeft"
+            },
+            "J": {
+              "text": "Swap with the split below",
+              "command": "workbench.action.moveActiveEditorGroupDown"
+            },
+            "K": {
+              "text": "Swap with the split above",
+              "command": "workbench.action.moveActiveEditorGroupUp"
+            },
+            "L": {
+              "text": "Swap with the right split",
+              "command": "workbench.action.moveActiveEditorGroupRight"
+            },
+            "n": {
+              "text": "New split scratch buffer",
+              "command": "dance.openMenu",
+              "args": [
+                {
+                  "menu": "new-window"
+                }
+              ]
+            }
+          }
+        },
+        "new-window": {
+          "title": "New split scratch buffer",
+          "items": {
+            "s": {
+              "text": "Horizontal bottom split scratch buffer",
+              "command": "dance.run",
+              "args": [
+                {
+                  "commands": [
+                    "workbench.action.splitEditorDown",
+                    "workbench.action.files.newUntitledFile",
+                    "workbench.action.closeOtherEditors"
+                  ]
+                }
+              ]
+            },
+            "v": {
+              "text": "Vertical right split scratch buffer",
+              "command": "dance.run",
+              "args": [
+                {
+                  "commands": [
+                    "workbench.action.splitEditor",
+                    "workbench.action.files.newUntitledFile",
+                    "workbench.action.closeOtherEditors"
+                  ]
+                }
+              ]
             }
           }
         }
