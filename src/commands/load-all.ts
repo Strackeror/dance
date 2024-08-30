@@ -467,7 +467,7 @@ export const commands: Commands = function () {
     ),
     "dance.search": new CommandDescriptor(
       "dance.search",
-      (_, argument) => _.runAsync(async (_) => await search(_, getRegister<[Register.Flags.CanRead, Register.Flags.CanWrite]>(_, argument, "slash", Register.Flags.CanRead | Register.Flags.CanWrite), getRepetitions(_, argument), argument["add"], getDirection(argument), argument["interactive"], getShift(argument), argument)),
+      (_, argument) => _.runAsync(async (_) => await search(_, getRegister<[Register.Flags.CanRead, Register.Flags.CanWrite]>(_, argument, "slash", Register.Flags.CanRead | Register.Flags.CanWrite), getRepetitions(_, argument), argument["add"], argument["primary"], getDirection(argument), argument["interactive"], getShift(argument), argument)),
       CommandDescriptor.Flags.RequiresActiveEditor,
     ),
     "dance.search.next": new CommandDescriptor(
@@ -883,6 +883,30 @@ export const commands: Commands = function () {
     "dance.search.backward.extend",
     CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
     [[".search", { direction: -1, shift: "extend", $exclude: [] }]],
+  );
+  describeAdditionalCommand(
+    commands,
+    "dance.search.primary",
+    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
+    [[".search", { primary: true, $exclude: [] }]],
+  );
+  describeAdditionalCommand(
+    commands,
+    "dance.search.primary.add",
+    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
+    [[".search", { add: true, primary: true, $exclude: [] }]],
+  );
+  describeAdditionalCommand(
+    commands,
+    "dance.search.backward.primary",
+    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
+    [[".search", { primary: true, direction: -1, $exclude: [] }]],
+  );
+  describeAdditionalCommand(
+    commands,
+    "dance.search.backward.primary.add",
+    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
+    [[".search", { add: true, primary: true, direction: -1, $exclude: [] }]],
   );
   describeAdditionalCommand(
     commands,

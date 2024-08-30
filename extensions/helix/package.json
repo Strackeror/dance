@@ -1462,34 +1462,16 @@
         "command": "dance.modes.set.select"
       },
       {
-        "key": "/",
-        "when": "editorTextFocus && dance.mode == 'helix/normal'",
-        "title": "Search",
-        "command": "dance.search"
-      },
-      {
-        "key": "NumPad_Divide",
-        "when": "editorTextFocus && dance.mode == 'helix/normal'",
-        "title": "Search",
-        "command": "dance.search"
-      },
-      {
         "key": "Shift+/",
         "when": "editorTextFocus && dance.mode == 'helix/normal'",
-        "title": "Search backward",
-        "command": "dance.search.backward"
+        "title": "Search backward (primary)",
+        "command": "dance.search.backward.primary"
       },
       {
         "key": "Shift+/",
         "when": "editorTextFocus && dance.mode == 'helix/select'",
-        "title": "Search backward (extend)",
-        "command": "dance.search.backward.extend"
-      },
-      {
-        "key": "/",
-        "when": "editorTextFocus && dance.mode == 'helix/select'",
-        "title": "Search (extend)",
-        "command": "dance.search.extend"
+        "title": "Search backward (primary add)",
+        "command": "dance.search.backward.primary.add"
       },
       {
         "key": "N",
@@ -1514,6 +1496,18 @@
         "when": "editorTextFocus && dance.mode == 'helix/select'",
         "title": "Add previous match",
         "command": "dance.search.previous.add"
+      },
+      {
+        "key": "/",
+        "when": "editorTextFocus && dance.mode == 'helix/normal'",
+        "title": "Search (primary)",
+        "command": "dance.search.primary"
+      },
+      {
+        "key": "/",
+        "when": "editorTextFocus && dance.mode == 'helix/select'",
+        "title": "Search (primary add)",
+        "command": "dance.search.primary.add"
       },
       {
         "key": "Shift+Alt+8",

@@ -899,19 +899,23 @@ search:
 
   keys:
     qwerty: |-
-      `/` (core: normal)
-      `NumPad_Divide` (core: normal)
+      `/` (kakoune: normal)
+      `NumPad_Divide` (kakoune: normal)
 
   doc:
     en: |
       Search.
 
 
-      | Title                    | Identifier        | Keybinding                                   | Command                                                |
-      | ------------------------ | ----------------- | -------------------------------------------- | ------------------------------------------------------ |
-      | Search (extend)          | `extend`          | `?` (kakoune: normal), `/` (helix: select)   | `[".search", {                shift: "extend", ... }]` |
-      | Search backward          | `backward`        | `a-/` (kakoune: normal), `?` (helix: normal) | `[".search", { direction: -1                 , ... }]` |
-      | Search backward (extend) | `backward.extend` | `a-?` (kakoune: normal), `?` (helix: select) | `[".search", { direction: -1, shift: "extend", ... }]` |
+      | Title                             | Identifier                 | Keybinding              | Command                                                         |
+      | --------------------------------- | -------------------------- | ----------------------- | --------------------------------------------------------------- |
+      | Search (extend)                   | `extend`                   | `?` (kakoune: normal)   | `[".search", {                shift: "extend", ... }]`          |
+      | Search backward                   | `backward`                 | `a-/` (kakoune: normal) | `[".search", { direction: -1                 , ... }]`          |
+      | Search backward (extend)          | `backward.extend`          | `a-?` (kakoune: normal) | `[".search", { direction: -1, shift: "extend", ... }]`          |
+      | Search (primary)                  | `primary`                  | `/` (helix: normal)     | `[".search", {            primary: true,                ... }]` |
+      | Search (primary add)              | `primary.add`              | `/` (helix: select)     | `[".search", { add: true, primary: true,                ... }]` |
+      | Search backward (primary)         | `backward.primary`         | `?` (helix: normal)     | `[".search", {            primary: true, direction: -1, ... }]` |
+      | Search backward (primary add)     | `backward.primary.add`     | `?` (helix: select)     | `[".search", { add: true, primary: true, direction: -1, ... }]` |
 
 search.backward:
   title:
@@ -923,7 +927,6 @@ search.backward:
   keys:
     qwerty: |-
       `a-/` (kakoune: normal)
-      `?` (helix: normal)
 
 search.backward.extend:
   title:
@@ -935,19 +938,39 @@ search.backward.extend:
   keys:
     qwerty: |-
       `a-?` (kakoune: normal)
+
+search.backward.primary:
+  title:
+    en: Search backward (primary)
+
+  commands: |-
+    [".search", { primary: true, direction: -1, $exclude: [] }]
+
+  keys:
+    qwerty: |-
+      `?` (helix: normal)
+
+search.backward.primary.add:
+  title:
+    en: Search backward (primary add)
+
+  commands: |-
+    [".search", { add: true, primary: true, direction: -1, $exclude: [] }]
+
+  keys:
+    qwerty: |-
       `?` (helix: select)
 
 search.extend:
   title:
     en: Search (extend)
 
-  commands: |-
-    [".search", { shift: "extend", $exclude: [] }]
-
   keys:
     qwerty: |-
       `?` (kakoune: normal)
-      `/` (helix: select)
+
+  commands: |-
+    [".search", { shift: "extend", $exclude: [] }]
 
 search.next:
   title:
@@ -1003,6 +1026,28 @@ search.previous.add:
     qwerty: |-
       `s-a-n` (kakoune: normal)
       `s-n` (helix: select)
+
+search.primary:
+  title:
+    en: Search (primary)
+
+  commands: |-
+    [".search", { primary: true, $exclude: [] }]
+
+  keys:
+    qwerty: |-
+      `/` (helix: normal)
+
+search.primary.add:
+  title:
+    en: Search (primary add)
+
+  commands: |-
+    [".search", { add: true, primary: true, $exclude: [] }]
+
+  keys:
+    qwerty: |-
+      `/` (helix: select)
 
 search.selection:
   title:

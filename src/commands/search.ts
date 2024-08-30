@@ -14,13 +14,17 @@ declare module "./search";
 /**
  * Search.
  *
- * @keys `/` (core: normal), `NumPad_Divide` (core: normal)
+ * @keys `/` (kakoune: normal), `NumPad_Divide` (kakoune: normal)
  *
- * | Title                    | Identifier        | Keybinding                                   | Command                                                |
- * | ------------------------ | ----------------- | -------------------------------------------- | ------------------------------------------------------ |
- * | Search (extend)          | `extend`          | `?` (kakoune: normal), `/` (helix: select)   | `[".search", {                shift: "extend", ... }]` |
- * | Search backward          | `backward`        | `a-/` (kakoune: normal), `?` (helix: normal) | `[".search", { direction: -1                 , ... }]` |
- * | Search backward (extend) | `backward.extend` | `a-?` (kakoune: normal), `?` (helix: select) | `[".search", { direction: -1, shift: "extend", ... }]` |
+ * | Title                             | Identifier                 | Keybinding              | Command                                                         |
+ * | --------------------------------- | -------------------------- | ----------------------- | --------------------------------------------------------------- |
+ * | Search (extend)                   | `extend`                   | `?` (kakoune: normal)   | `[".search", {                shift: "extend", ... }]`          |
+ * | Search backward                   | `backward`                 | `a-/` (kakoune: normal) | `[".search", { direction: -1                 , ... }]`          |
+ * | Search backward (extend)          | `backward.extend`          | `a-?` (kakoune: normal) | `[".search", { direction: -1, shift: "extend", ... }]`          |
+ * | Search (primary)                  | `primary`                  | `/` (helix: normal)     | `[".search", {            primary: true,                ... }]` |
+ * | Search (primary add)              | `primary.add`              | `/` (helix: select)     | `[".search", { add: true, primary: true,                ... }]` |
+ * | Search backward (primary)         | `backward.primary`         | `?` (helix: normal)     | `[".search", {            primary: true, direction: -1, ... }]` |
+ * | Search backward (primary add)     | `backward.primary.add`     | `?` (helix: select)     | `[".search", { add: true, primary: true, direction: -1, ... }]` |
  */
 export async function search(
   _: Context,
@@ -28,6 +32,7 @@ export async function search(
   repetitions: number,
 
   add: Argument<boolean> = false,
+  primary: Argument<boolean> = false,
   direction: Direction = Direction.Forward,
   interactive: Argument<boolean> = true,
   shift: Shift = Shift.Jump,
@@ -44,12 +49,14 @@ export async function search(
 
     register.set([re.originalSource ?? re.source]);
 
-    const newSelections = add ? selections.slice() : [],
-          regexpMatches = [] as RegExpMatchArray[];
-
-    newSelections.push(...Selections.mapByIndex((_i, selection, document) => {
+    const count = primary ? 1 : selections.length;
+    const keptSelections = selections.slice(add ? 0 : count);
+    const regexpMatches = [] as RegExpMatchArray[];
+    const searchSelections = Selections.mapByIndex((index, selection, document) => {
+      if (primary && index !== 0) {
+        return selection;
+      }
       let newSelection = selection;
-
       for (let j = 0; j < repetitions; j++) {
         const searchResult = nextImpl(
           re as RegExp, direction, newSelection, undefined, undefined, document,
@@ -69,13 +76,17 @@ export async function search(
       const position = direction === Direction.Forward ? newSelection.end : newSelection.start;
 
       return Selections.shift(selection, position, shift, _);
-    }, selections));
+    }, selections.slice(0, count));
 
-    Selections.set(newSelections);
+    if (!regexpMatches.length) {
+      Selections.set(selections);
+      return re;
+    }
+
+    Selections.set([...searchSelections, ...keptSelections]);
     _.extension.registers.updateRegExpMatches(regexpMatches);
 
     await register.set([re.originalSource ?? re.source]);
-
     return re;
   });
 }
