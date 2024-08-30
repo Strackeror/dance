@@ -26,7 +26,7 @@ export function firstVisibleLine(editor = Context.current.editor) {
  */
 export function middleVisibleLine(editor = Context.current.editor) {
   const visible = visibleLines(editor);
-  return visible[visible.length / 2];
+  return visible[Math.floor(visible.length / 2)];
 }
 
 /**
