@@ -236,6 +236,7 @@ import {
   line_below as select_line_below,
   line_below_extend as select_line_below_extend,
   middleVisibleLine as select_middleVisibleLine,
+  nthLine as select_nthLine,
   to as select_to,
   vertically as select_vertically,
 } from "./select";
@@ -573,6 +574,11 @@ export const commands: Commands = function () {
     "dance.select.middleVisibleLine": new CommandDescriptor(
       "dance.select.middleVisibleLine",
       (_, argument) => _.runAsync(async (_) => await select_middleVisibleLine(_, getShift(argument))),
+      CommandDescriptor.Flags.RequiresActiveEditor,
+    ),
+    "dance.select.nthLine": new CommandDescriptor(
+      "dance.select.nthLine",
+      (_, argument) => _.runAsync(async (_) => await select_nthLine(_, getCount(_, argument), getShift(argument))),
       CommandDescriptor.Flags.RequiresActiveEditor,
     ),
     "dance.select.to": new CommandDescriptor(

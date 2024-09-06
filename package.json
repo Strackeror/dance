@@ -1739,6 +1739,11 @@
         "category": "Dance"
       },
       {
+        "command": "dance.select.nthLine",
+        "title": "Select to nth line",
+        "category": "Dance"
+      },
+      {
         "command": "dance.select.right.extend",
         "title": "Extend right",
         "category": "Dance"
@@ -2632,6 +2637,10 @@
         },
         {
           "command": "dance.select.middleVisibleLine.jump",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.select.nthLine",
           "when": "dance.mode == 'normal'"
         },
         {

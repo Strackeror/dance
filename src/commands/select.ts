@@ -7,6 +7,13 @@ import { unsafeSelections } from "../utils/misc";
 
 /**
  * Update selections based on their position in the document.
+ *
+ * #### Keybinds
+ *
+ * | Keybinding          | Command                                                        |
+ * | ------------------- | -------------------------------------------------------------- |
+ * | `g` (helix: normal) | `[".openMenu", { menu: "goto", pass: [{ shift: "jump"   }] }]` |
+ * | `g` (helix: select) | `[".openMenu", { menu: "goto", pass: [{ shift: "extend" }] }]` |
  */
 declare module "./select";
 
@@ -295,10 +302,10 @@ export function horizontally(
  *
  * #### Variants
  *
- * | Title     | Identifier  | Keybinding                                   | Command                                    |
- * | --------- | ----------- | -------------------------------------------- | ------------------------------------------ |
- * | Go to     | `to.jump`   | `g` (core: normal)                           | `[".select.to", { shift: "jump"  , ... }]` |
- * | Extend to | `to.extend` | `s-g` (kakoune: normal), `g` (helix: select) | `[".select.to", { shift: "extend", ... }]` |
+ * | Title     | Identifier  | Keybinding              | Command                                    |
+ * | --------- | ----------- | ----------------------- | ------------------------------------------ |
+ * | Go to     | `to.jump`   | `g` (kakoune: normal)   | `[".select.to", { shift: "jump"  , ... }]` |
+ * | Extend to | `to.extend` | `s-g` (kakoune: normal) | `[".select.to", { shift: "extend", ... }]` |
  */
 export function to(
   _: Context,
@@ -546,6 +553,14 @@ export function lineEnd(
   Selections.updateByIndex((_, selection) =>
     mapSelection(selection, Selections.activeLine(selection)),
   );
+}
+
+/**
+ * Select to nth line
+ */
+export function nthLine(_: Context, count: number, shift = Shift.Select) {
+  const line = Lines.clamp(count - 1, _.document);
+  Selections.set([Selections.shift(_.mainSelection, Positions.lineStart(line), shift)]);
 }
 
 /**

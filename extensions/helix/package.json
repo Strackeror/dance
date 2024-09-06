@@ -405,7 +405,7 @@
           "items": {
             "g": {
               "text": "to line number else file start",
-              "command": "dance.select.lineStart"
+              "command": "dance.select.nthLine"
             },
             "e": {
               "text": "to last line",
@@ -422,18 +422,29 @@
             },
             "h": {
               "text": "to line start",
-              "command": "dance.select.lineStart"
+              "command": "dance.select.lineStart",
+              "args": [
+                {
+                  "count": 0
+                }
+              ]
             },
             "l": {
               "text": "to line end",
-              "command": "dance.select.lineEnd"
+              "command": "dance.select.lineEnd",
+              "args": [
+                {
+                  "count": 0
+                }
+              ]
             },
             "s": {
               "text": "to first non-blank in line",
               "command": "dance.select.lineStart",
               "args": [
                 {
-                  "skipBlank": true
+                  "skipBlank": true,
+                  "count": 0
                 }
               ]
             },
@@ -457,10 +468,6 @@
               "text": "to implementation",
               "command": "editor.action.goToImplementation"
             },
-            "j": {
-              "text": "to last line",
-              "command": "dance.select.lastLine"
-            },
             "t": {
               "text": "to window top",
               "command": "dance.select.firstVisibleLine"
@@ -476,10 +483,6 @@
             "a": {
               "text": "to last buffer",
               "command": "workbench.action.openPreviousRecentlyUsedEditorInGroup"
-            },
-            "A": {
-              "text": "to last buffer...",
-              "command": "workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup"
             },
             "n": {
               "text": "to next buffer",
@@ -1866,6 +1869,32 @@
         "command": "dance.seek.wordEnd.ws.extend"
       },
       {
+        "key": "G",
+        "when": "editorTextFocus && dance.mode == 'helix/normal'",
+        "command": "dance.openMenu",
+        "args": {
+          "menu": "goto",
+          "pass": [
+            {
+              "shift": "jump"
+            }
+          ]
+        }
+      },
+      {
+        "key": "G",
+        "when": "editorTextFocus && dance.mode == 'helix/select'",
+        "command": "dance.openMenu",
+        "args": {
+          "menu": "goto",
+          "pass": [
+            {
+              "shift": "extend"
+            }
+          ]
+        }
+      },
+      {
         "key": "Shift+5",
         "when": "editorTextFocus && dance.mode == 'helix/normal'",
         "title": "Select whole buffer",
@@ -1984,18 +2013,6 @@
         "when": "editorTextFocus && dance.mode == 'helix/normal'",
         "title": "Jump right",
         "command": "dance.select.right.jump"
-      },
-      {
-        "key": "G",
-        "when": "editorTextFocus && dance.mode == 'helix/select'",
-        "title": "Extend to",
-        "command": "dance.select.to.extend"
-      },
-      {
-        "key": "G",
-        "when": "editorTextFocus && dance.mode == 'helix/normal'",
-        "title": "Go to",
-        "command": "dance.select.to.jump"
       },
       {
         "key": "K",

@@ -2011,6 +2011,14 @@ select.middleVisibleLine.jump:
   commands: |-
     [".select.middleVisibleLine", { shift: "jump" }]
 
+select.nthLine:
+  title:
+    en: Select to nth line
+
+  doc:
+    en: |
+      Select to nth line
+
 select.right.extend:
   title:
     en: Extend right
@@ -2049,22 +2057,21 @@ select.to:
 
       #### Variants
 
-      | Title     | Identifier  | Keybinding                                   | Command                                    |
-      | --------- | ----------- | -------------------------------------------- | ------------------------------------------ |
-      | Go to     | `to.jump`   | `g` (core: normal)                           | `[".select.to", { shift: "jump"  , ... }]` |
-      | Extend to | `to.extend` | `s-g` (kakoune: normal), `g` (helix: select) | `[".select.to", { shift: "extend", ... }]` |
+      | Title     | Identifier  | Keybinding              | Command                                    |
+      | --------- | ----------- | ----------------------- | ------------------------------------------ |
+      | Go to     | `to.jump`   | `g` (kakoune: normal)   | `[".select.to", { shift: "jump"  , ... }]` |
+      | Extend to | `to.extend` | `s-g` (kakoune: normal) | `[".select.to", { shift: "extend", ... }]` |
 
 select.to.extend:
   title:
     en: Extend to
 
-  commands: |-
-    [".select.to", { shift: "extend", $exclude: [] }]
-
   keys:
     qwerty: |-
       `s-g` (kakoune: normal)
-      `g` (helix: select)
+
+  commands: |-
+    [".select.to", { shift: "extend", $exclude: [] }]
 
 select.to.jump:
   title:
@@ -2075,7 +2082,7 @@ select.to.jump:
 
   keys:
     qwerty: |-
-      `g` (core: normal)
+      `g` (kakoune: normal)
 
 select.up.extend:
   title:
@@ -2867,6 +2874,20 @@ anonymous:
       qwerty: |-
         `d` (helix: select)
 
+  - commands: |-
+      [".openMenu", { menu: "goto", pass: [{ shift: "extend" }] }]
+
+    keys:
+      qwerty: |-
+        `g` (helix: select)
+
+  - commands: |-
+      [".openMenu", { menu: "goto", pass: [{ shift: "jump" }] }]
+
+    keys:
+      qwerty: |-
+        `g` (helix: normal)
+
   - title:
       en: Open match menu
 
@@ -2963,11 +2984,25 @@ anonymous:
         `c-d` (core: normal; core: insert)
 
   - commands: |-
+      [".select.vertically", { direction: 1, by: "halfPage", shift: "jump" }]
+
+    keys:
+      qwerty: |-
+        `c-d` (core: normal; core: insert)
+
+  - commands: |-
       [".select.vertically", { direction: 1, by: "page" , shift: "extend" }]
 
     keys:
       qwerty: |-
         `c-f` (helix: select)
+
+  - commands: |-
+      [".select.vertically", { direction: 1, by: "page" , shift: "jump" }]
+
+    keys:
+      qwerty: |-
+        `c-f` (core: normal; core: insert)
 
   - commands: |-
       [".select.vertically", { direction: 1, by: "page" , shift: "jump" }]
