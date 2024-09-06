@@ -207,7 +207,7 @@
               "command": "dance.seek.object",
               "args": [
                 {
-                  "input": "(?#textobject=function)"
+                  "input": "(?#textobject=class)"
                 }
               ],
               "text": "Type definition (tree-sitter)"
@@ -601,7 +601,7 @@
             },
             "/": {
               "text": "Global search in workspace folder",
-              "command": "search.action.openEditor"
+              "command": "workbench.action.findInFiles"
             },
             "k": {
               "text": "Show docs for item under cursor",
