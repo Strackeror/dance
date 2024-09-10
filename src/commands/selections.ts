@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 
 import type { Argument, InputOr, RegisterOr } from ".";
-import { Context, Direction, manipulateSelectionsInteractively, moveWhile, moveWhileBackward, moveWhileForward, Positions, prompt, promptOne, promptRegexpOpts, SelectionBehavior, Selections, Shift, switchRun, validateForSwitchRun } from "../api";
+import { assertIsFlags, Context, Direction, manipulateSelectionsInteractively, moveWhile, moveWhileBackward, moveWhileForward, Positions, prompt, promptOne, promptRegexpOpts, SelectionBehavior, Selections, Shift, switchRun, validateForSwitchRun } from "../api";
 import { PerEditorState } from "../state/editors";
 import { Mode } from "../state/modes";
 import type { Register } from "../state/registers";
@@ -369,25 +369,33 @@ export function filter(
  *
  * #### Variants
  *
- * | Title          | Identifier      | Keybinding                        | Command                                                                                           |
- * | -------------- | --------------- | --------------------------------- | ------------------------------------------------------------------------------------------------- |
- * | Leap or select | `select.orLeap` | `s` (core: normal; helix: select) | `[".ifEmpty", { then: [[".seek.leap", { ... }]], otherwise: [[".selections.select", { ... }]] }]` |
+ * | Title          | Identifier      | Keybinding            | Command                                                                                           |
+ * | -------------- | --------------- | --------------------- | ------------------------------------------------------------------------------------------------- |
+ * | Leap or select | `select.orLeap` | `s` (kakoune: normal) | `[".ifEmpty", { then: [[".seek.leap", { ... }]], otherwise: [[".selections.select", { ... }]] }]` |
+ *
+ * Helix keybinding
+ *
+ * | Keybinding                         | Command                                                                                                              |
+ * | ---------------------------------- | -------                                                                                                              |
+ * | `s` (helix: normal; helix: select) | `[".ifEmpty", { then: [[".seek.leap", { ... }]], otherwise: [[".selections.select", { regexFlags: "imu", ... }]] }]` |
  */
 export function select(
   _: Context,
 
   interactive: Argument<boolean> = true,
   argument: { re?: string | RegExp },
+  regexFlags: Argument<string> = "mu",
 ) {
+  assertIsFlags(regexFlags);
   return manipulateSelectionsInteractively(
     _,
     "re",
     argument,
     interactive,
-    promptRegexpOpts("mu"),
+    promptRegexpOpts(regexFlags),
     (re, selections) => {
       if (typeof re === "string") {
-        re = newRegExp(re, "mu");
+        re = newRegExp(re, regexFlags);
       }
 
       Selections.set(Selections.bottomToTop(Selections.selectWithin(re, selections)));
@@ -400,7 +408,11 @@ export function select(
 /**
  * Split selections.
  *
- * @keys `s-s` (core: normal; helix: select)
+ * @keys `s-s` (kakoune: normal)
+ *
+ * | Keybinding                           | Command                                             |
+ * | ------------------------------------ | -------                                             |
+ * | `s-s` (helix: normal; helix: select) | `[".selections.split", { regexFlags: "imu", ... }]` |
  */
 export function split(
   _: Context,
@@ -408,16 +420,18 @@ export function split(
   excludeEmpty: Argument<boolean> = false,
   interactive: Argument<boolean> = true,
   argument: { re?: string | RegExp },
+  regexFlags: Argument<string> = "mu",
 ) {
+  assertIsFlags(regexFlags);
   return manipulateSelectionsInteractively(
     _,
     "re",
     argument,
     interactive,
-    promptRegexpOpts("mu"),
+    promptRegexpOpts(regexFlags),
     (re, selections) => {
       if (typeof re === "string") {
-        re = newRegExp(re, "mu");
+        re = newRegExp(re, regexFlags);
       }
 
       let split = Selections.split(re, selections);

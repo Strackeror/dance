@@ -1582,16 +1582,48 @@
         "command": "dance.modes.set.select"
       },
       {
+        "key": "/",
+        "when": "editorTextFocus && dance.mode == 'helix/normal'",
+        "command": "dance.search",
+        "args": {
+          "primary": true,
+          "regexFlags": "imu",
+          "$exclude": []
+        }
+      },
+      {
+        "key": "/",
+        "when": "editorTextFocus && dance.mode == 'helix/select'",
+        "command": "dance.search",
+        "args": {
+          "add": true,
+          "primary": true,
+          "regexFlags": "imu",
+          "$exclude": []
+        }
+      },
+      {
         "key": "Shift+/",
         "when": "editorTextFocus && dance.mode == 'helix/normal'",
-        "title": "Search backward (primary)",
-        "command": "dance.search.backward.primary"
+        "command": "dance.search",
+        "args": {
+          "primary": true,
+          "direction": -1,
+          "regexFlags": "imu",
+          "$exclude": []
+        }
       },
       {
         "key": "Shift+/",
         "when": "editorTextFocus && dance.mode == 'helix/select'",
-        "title": "Search backward (primary add)",
-        "command": "dance.search.backward.primary.add"
+        "command": "dance.search",
+        "args": {
+          "add": true,
+          "primary": true,
+          "direction": -1,
+          "regexFlags": "imu",
+          "$exclude": []
+        }
       },
       {
         "key": "N",
@@ -1601,33 +1633,43 @@
       },
       {
         "key": "N",
+        "when": "editorTextFocus && dance.mode == 'helix/normal'",
+        "command": "dance.search.next",
+        "args": {
+          "regexFlags": "imu",
+          "$exclude": []
+        }
+      },
+      {
+        "key": "N",
         "when": "editorTextFocus && dance.mode == 'helix/select'",
-        "title": "Add next match",
-        "command": "dance.search.next.add"
+        "command": "dance.search.next",
+        "args": {
+          "add": true,
+          "regexFlags": "imu",
+          "$exclude": []
+        }
       },
       {
         "key": "Shift+N",
         "when": "editorTextFocus && dance.mode == 'helix/normal'",
-        "title": "Select previous match",
-        "command": "dance.search.previous"
+        "command": "dance.search.next",
+        "args": {
+          "direction": -1,
+          "regexFlags": "imu",
+          "$exclude": []
+        }
       },
       {
         "key": "Shift+N",
         "when": "editorTextFocus && dance.mode == 'helix/select'",
-        "title": "Add previous match",
-        "command": "dance.search.previous.add"
-      },
-      {
-        "key": "/",
-        "when": "editorTextFocus && dance.mode == 'helix/normal'",
-        "title": "Search (primary)",
-        "command": "dance.search.primary"
-      },
-      {
-        "key": "/",
-        "when": "editorTextFocus && dance.mode == 'helix/select'",
-        "title": "Search (primary add)",
-        "command": "dance.search.primary.add"
+        "command": "dance.search.next",
+        "args": {
+          "direction": -1,
+          "add": true,
+          "regexFlags": "imu",
+          "$exclude": []
+        }
       },
       {
         "key": "Shift+Alt+8",
@@ -2159,6 +2201,54 @@
         }
       },
       {
+        "key": "S",
+        "when": "editorTextFocus && dance.mode == 'helix/normal'",
+        "command": "dance.ifEmpty",
+        "args": {
+          "then": [
+            [
+              ".seek.leap",
+              {
+                "$exclude": []
+              }
+            ]
+          ],
+          "otherwise": [
+            [
+              ".selections.select",
+              {
+                "regexFlags": "imu",
+                "$exclude": []
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "key": "S",
+        "when": "editorTextFocus && dance.mode == 'helix/select'",
+        "command": "dance.ifEmpty",
+        "args": {
+          "then": [
+            [
+              ".seek.leap",
+              {
+                "$exclude": []
+              }
+            ]
+          ],
+          "otherwise": [
+            [
+              ".selections.select",
+              {
+                "regexFlags": "imu",
+                "$exclude": []
+              }
+            ]
+          ]
+        }
+      },
+      {
         "key": "Y",
         "when": "editorTextFocus && dance.mode == 'helix/select'",
         "command": "dance.run",
@@ -2348,28 +2438,22 @@
         "command": "dance.selections.saveText"
       },
       {
-        "key": "S",
-        "when": "editorTextFocus && dance.mode == 'helix/normal'",
-        "title": "Leap or select",
-        "command": "dance.selections.select.orLeap"
-      },
-      {
-        "key": "S",
-        "when": "editorTextFocus && dance.mode == 'helix/select'",
-        "title": "Leap or select",
-        "command": "dance.selections.select.orLeap"
-      },
-      {
         "key": "Shift+S",
         "when": "editorTextFocus && dance.mode == 'helix/normal'",
-        "title": "Split selections",
-        "command": "dance.selections.split"
+        "command": "dance.selections.split",
+        "args": {
+          "regexFlags": "imu",
+          "$exclude": []
+        }
       },
       {
         "key": "Shift+S",
         "when": "editorTextFocus && dance.mode == 'helix/select'",
-        "title": "Split selections",
-        "command": "dance.selections.split"
+        "command": "dance.selections.split",
+        "args": {
+          "regexFlags": "imu",
+          "$exclude": []
+        }
       },
       {
         "key": "Alt+S",

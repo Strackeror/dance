@@ -269,6 +269,14 @@ export declare namespace promptRegexp {
                     | `${Flag}${Flag}${Flag}`
                     | `${Flag}${Flag}${Flag}${Flag}`;
 }
+/** Throws an error if the given string is not a series of regexp flags */
+export function assertIsFlags(str: string): asserts str is promptRegexp.Flags {
+  for (const ch of str) {
+    if (!"musyig".includes(ch)) {
+      throw new Error(`Invalid regexp flag: ${ch}`);
+    }
+  }
+}
 
 /**
  * Prompts the user for a result interactively.

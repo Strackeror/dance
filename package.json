@@ -1304,16 +1304,6 @@
         "category": "Dance"
       },
       {
-        "command": "dance.search.backward.primary",
-        "title": "Search backward (primary)",
-        "category": "Dance"
-      },
-      {
-        "command": "dance.search.backward.primary.add",
-        "title": "Search backward (primary add)",
-        "category": "Dance"
-      },
-      {
         "command": "dance.search.extend",
         "title": "Search (extend)",
         "category": "Dance"
@@ -1336,16 +1326,6 @@
       {
         "command": "dance.search.previous.add",
         "title": "Add previous match",
-        "category": "Dance"
-      },
-      {
-        "command": "dance.search.primary",
-        "title": "Search (primary)",
-        "category": "Dance"
-      },
-      {
-        "command": "dance.search.primary.add",
-        "title": "Search (primary add)",
         "category": "Dance"
       },
       {
@@ -2292,14 +2272,6 @@
           "when": "dance.mode == 'normal'"
         },
         {
-          "command": "dance.search.backward.primary",
-          "when": "dance.mode == 'normal'"
-        },
-        {
-          "command": "dance.search.backward.primary.add",
-          "when": "dance.mode == 'normal'"
-        },
-        {
           "command": "dance.search.extend",
           "when": "dance.mode == 'normal'"
         },
@@ -2317,14 +2289,6 @@
         },
         {
           "command": "dance.search.previous.add",
-          "when": "dance.mode == 'normal'"
-        },
-        {
-          "command": "dance.search.primary",
-          "when": "dance.mode == 'normal'"
-        },
-        {
-          "command": "dance.search.primary.add",
           "when": "dance.mode == 'normal'"
         },
         {

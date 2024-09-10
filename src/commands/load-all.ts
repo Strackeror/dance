@@ -468,12 +468,12 @@ export const commands: Commands = function () {
     ),
     "dance.search": new CommandDescriptor(
       "dance.search",
-      (_, argument) => _.runAsync(async (_) => await search(_, getRegister<[Register.Flags.CanRead, Register.Flags.CanWrite]>(_, argument, "slash", Register.Flags.CanRead | Register.Flags.CanWrite), getRepetitions(_, argument), argument["add"], argument["primary"], getDirection(argument), argument["interactive"], getShift(argument), argument)),
+      (_, argument) => _.runAsync(async (_) => await search(_, getRegister<[Register.Flags.CanRead, Register.Flags.CanWrite]>(_, argument, "slash", Register.Flags.CanRead | Register.Flags.CanWrite), getRepetitions(_, argument), argument["add"], argument["primary"], getDirection(argument), argument["interactive"], getShift(argument), argument, argument["regexFlags"])),
       CommandDescriptor.Flags.RequiresActiveEditor,
     ),
     "dance.search.next": new CommandDescriptor(
       "dance.search.next",
-      (_, argument) => _.runAsync(async (_) => await search_next(_, _.document, getRegister(_, argument, "slash", Register.Flags.CanRead), getRepetitions(_, argument), argument["add"], getDirection(argument))),
+      (_, argument) => _.runAsync(async (_) => await search_next(_, _.document, getRegister(_, argument, "slash", Register.Flags.CanRead), getRepetitions(_, argument), argument["add"], getDirection(argument), argument["regexFlags"])),
       CommandDescriptor.Flags.RequiresActiveEditor,
     ),
     "dance.search.selection": new CommandDescriptor(
@@ -683,7 +683,7 @@ export const commands: Commands = function () {
     ),
     "dance.selections.select": new CommandDescriptor(
       "dance.selections.select",
-      (_, argument) => _.runAsync(async (_) => await selections_select(_, argument["interactive"], argument)),
+      (_, argument) => _.runAsync(async (_) => await selections_select(_, argument["interactive"], argument, argument["regexFlags"])),
       CommandDescriptor.Flags.RequiresActiveEditor,
     ),
     "dance.selections.sort": new CommandDescriptor(
@@ -693,7 +693,7 @@ export const commands: Commands = function () {
     ),
     "dance.selections.split": new CommandDescriptor(
       "dance.selections.split",
-      (_, argument) => _.runAsync(async (_) => await selections_split(_, argument["excludeEmpty"], argument["interactive"], argument)),
+      (_, argument) => _.runAsync(async (_) => await selections_split(_, argument["excludeEmpty"], argument["interactive"], argument, argument["regexFlags"])),
       CommandDescriptor.Flags.RequiresActiveEditor,
     ),
     "dance.selections.splitLines": new CommandDescriptor(
@@ -889,30 +889,6 @@ export const commands: Commands = function () {
     "dance.search.backward.extend",
     CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
     [[".search", { direction: -1, shift: "extend", $exclude: [] }]],
-  );
-  describeAdditionalCommand(
-    commands,
-    "dance.search.primary",
-    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
-    [[".search", { primary: true, $exclude: [] }]],
-  );
-  describeAdditionalCommand(
-    commands,
-    "dance.search.primary.add",
-    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
-    [[".search", { add: true, primary: true, $exclude: [] }]],
-  );
-  describeAdditionalCommand(
-    commands,
-    "dance.search.backward.primary",
-    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
-    [[".search", { primary: true, direction: -1, $exclude: [] }]],
-  );
-  describeAdditionalCommand(
-    commands,
-    "dance.search.backward.primary.add",
-    CommandDescriptor.Flags.RequiresActiveEditor | CommandDescriptor.Flags.DoNotReplay,
-    [[".search", { add: true, primary: true, direction: -1, $exclude: [] }]],
   );
   describeAdditionalCommand(
     commands,

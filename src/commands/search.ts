@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 
 import type { Argument, RegisterOr } from ".";
-import { search as apiSearch, Context, Direction, EmptySelectionsError, manipulateSelectionsInteractively, Positions, promptRegexpOpts, Selections, Shift } from "../api";
+import { search as apiSearch, assertIsFlags, Context, Direction, EmptySelectionsError, manipulateSelectionsInteractively, Positions, promptRegexpOpts, Selections, Shift } from "../api";
 import type { Register } from "../state/registers";
 import { CharSet, getCharSetFunction } from "../utils/charset";
 import { escapeForRegExp, newRegExp } from "../utils/regexp";
@@ -21,10 +21,15 @@ declare module "./search";
  * | Search (extend)                   | `extend`                   | `?` (kakoune: normal)   | `[".search", {                shift: "extend", ... }]`          |
  * | Search backward                   | `backward`                 | `a-/` (kakoune: normal) | `[".search", { direction: -1                 , ... }]`          |
  * | Search backward (extend)          | `backward.extend`          | `a-?` (kakoune: normal) | `[".search", { direction: -1, shift: "extend", ... }]`          |
- * | Search (primary)                  | `primary`                  | `/` (helix: normal)     | `[".search", {            primary: true,                ... }]` |
- * | Search (primary add)              | `primary.add`              | `/` (helix: select)     | `[".search", { add: true, primary: true,                ... }]` |
- * | Search backward (primary)         | `backward.primary`         | `?` (helix: normal)     | `[".search", {            primary: true, direction: -1, ... }]` |
- * | Search backward (primary add)     | `backward.primary.add`     | `?` (helix: select)     | `[".search", { add: true, primary: true, direction: -1, ... }]` |
+ *
+ * Helix searches
+ *
+ * | Keybinding              | Command                                                                            |
+ * | ----------------------- | ---------------------------------------------------------------                    |
+ * | `/` (helix: normal)     | `[".search", {            primary: true,                regexFlags: "imu", ... }]` |
+ * | `/` (helix: select)     | `[".search", { add: true, primary: true,                regexFlags: "imu", ... }]` |
+ * | `?` (helix: normal)     | `[".search", {            primary: true, direction: -1, regexFlags: "imu", ... }]` |
+ * | `?` (helix: select)     | `[".search", { add: true, primary: true, direction: -1, regexFlags: "imu", ... }]` |
  */
 export async function search(
   _: Context,
@@ -38,13 +43,15 @@ export async function search(
   shift: Shift = Shift.Jump,
 
   argument: { re?: string | (RegExp & { originalSource?: string }) },
+  regexFlags: Argument<string> = "mu",
 ) {
+  assertIsFlags(regexFlags);
   return manipulateSelectionsInteractively(_, "re", argument, interactive, {
-    ...promptRegexpOpts("mu"),
+    ...promptRegexpOpts(regexFlags),
     value: (await register.get())?.[0],
   }, async (re, selections) => {
     if (typeof re === "string") {
-      re = newRegExp(re, "mu");
+      re = newRegExp(re, regexFlags);
     }
 
     register.set([re.originalSource ?? re.source]);
@@ -164,11 +171,21 @@ export function selection(
  *
  * @keys `n` (core: normal)
  *
- * | Title                 | Identifier     | Keybinding                                       | Command                                               |
- * | --------------------- | -------------- | ------------------------------------------------ | ----------------------------------------------------- |
- * | Add next match        | `next.add`     | `s-n` (kakoune: normal), `n` (helix: select)     | `[".search.next", {                add: true, ... }]` |
- * | Select previous match | `previous`     | `a-n` (kakoune: normal), `s-n` (helix: normal)   | `[".search.next", { direction: -1           , ... }]` |
- * | Add previous match    | `previous.add` | `s-a-n` (kakoune: normal), `s-n` (helix: select) | `[".search.next", { direction: -1, add: true, ... }]` |
+ * | Title                 | Identifier     | Keybinding                | Command                                               |
+ * | --------------------- | -------------- | ------------------------- | ----------------------------------------------------- |
+ * | Add next match        | `next.add`     | `s-n` (kakoune: normal)   | `[".search.next", {                add: true, ... }]` |
+ * | Select previous match | `previous`     | `a-n` (kakoune: normal)   | `[".search.next", { direction: -1           , ... }]` |
+ * | Add previous match    | `previous.add` | `s-a-n` (kakoune: normal) | `[".search.next", { direction: -1, add: true, ... }]` |
+ *
+ * Helix keybindings
+ *
+ * | Keybinding            | Command                                                                  |
+ * | ----------------------| ------------------------------------------------------------------------ |
+ * | `n` (helix: normal)   | `[".search.next", {                           regexFlags: "imu", ... }]` |
+ * | `n` (helix: select)   | `[".search.next", {                add: true, regexFlags: "imu", ... }]` |
+ * | `s-n` (helix: normal) | `[".search.next", { direction: -1           , regexFlags: "imu", ... }]` |
+ * | `s-n` (helix: select) | `[".search.next", { direction: -1, add: true, regexFlags: "imu", ... }]` |
+ *
  */
 export async function next(
   _: Context,
@@ -178,6 +195,7 @@ export async function next(
 
   add: Argument<boolean> = false,
   direction: Direction = Direction.Forward,
+  regexFlags: Argument<string> = "mu",
 ) {
   const reStrs = await register.get();
 
@@ -185,7 +203,9 @@ export async function next(
     return;
   }
 
-  const re = newRegExp(reStrs[0], "mu"),
+  assertIsFlags(regexFlags);
+
+  const re = newRegExp(reStrs[0], regexFlags),
         allRegexpMatches = [] as RegExpMatchArray[],
         selections = _.selections.slice();
   let mainSelection = selections[0];

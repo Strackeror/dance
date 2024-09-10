@@ -920,10 +920,15 @@ search:
       | Search (extend)                   | `extend`                   | `?` (kakoune: normal)   | `[".search", {                shift: "extend", ... }]`          |
       | Search backward                   | `backward`                 | `a-/` (kakoune: normal) | `[".search", { direction: -1                 , ... }]`          |
       | Search backward (extend)          | `backward.extend`          | `a-?` (kakoune: normal) | `[".search", { direction: -1, shift: "extend", ... }]`          |
-      | Search (primary)                  | `primary`                  | `/` (helix: normal)     | `[".search", {            primary: true,                ... }]` |
-      | Search (primary add)              | `primary.add`              | `/` (helix: select)     | `[".search", { add: true, primary: true,                ... }]` |
-      | Search backward (primary)         | `backward.primary`         | `?` (helix: normal)     | `[".search", {            primary: true, direction: -1, ... }]` |
-      | Search backward (primary add)     | `backward.primary.add`     | `?` (helix: select)     | `[".search", { add: true, primary: true, direction: -1, ... }]` |
+
+      Helix searches
+
+      | Keybinding              | Command                                                                            |
+      | ----------------------- | ---------------------------------------------------------------                    |
+      | `/` (helix: normal)     | `[".search", {            primary: true,                regexFlags: "imu", ... }]` |
+      | `/` (helix: select)     | `[".search", { add: true, primary: true,                regexFlags: "imu", ... }]` |
+      | `?` (helix: normal)     | `[".search", {            primary: true, direction: -1, regexFlags: "imu", ... }]` |
+      | `?` (helix: select)     | `[".search", { add: true, primary: true, direction: -1, regexFlags: "imu", ... }]` |
 
 search.backward:
   title:
@@ -947,38 +952,16 @@ search.backward.extend:
     qwerty: |-
       `a-?` (kakoune: normal)
 
-search.backward.primary:
-  title:
-    en: Search backward (primary)
-
-  commands: |-
-    [".search", { primary: true, direction: -1, $exclude: [] }]
-
-  keys:
-    qwerty: |-
-      `?` (helix: normal)
-
-search.backward.primary.add:
-  title:
-    en: Search backward (primary add)
-
-  commands: |-
-    [".search", { add: true, primary: true, direction: -1, $exclude: [] }]
-
-  keys:
-    qwerty: |-
-      `?` (helix: select)
-
 search.extend:
   title:
     en: Search (extend)
 
+  commands: |-
+    [".search", { shift: "extend", $exclude: [] }]
+
   keys:
     qwerty: |-
       `?` (kakoune: normal)
-
-  commands: |-
-    [".search", { shift: "extend", $exclude: [] }]
 
 search.next:
   title:
@@ -989,73 +972,57 @@ search.next:
       `n` (core: normal)
 
   doc:
-    en: |
+    en: |+
       Select next match.
 
 
-      | Title                 | Identifier     | Keybinding                                       | Command                                               |
-      | --------------------- | -------------- | ------------------------------------------------ | ----------------------------------------------------- |
-      | Add next match        | `next.add`     | `s-n` (kakoune: normal), `n` (helix: select)     | `[".search.next", {                add: true, ... }]` |
-      | Select previous match | `previous`     | `a-n` (kakoune: normal), `s-n` (helix: normal)   | `[".search.next", { direction: -1           , ... }]` |
-      | Add previous match    | `previous.add` | `s-a-n` (kakoune: normal), `s-n` (helix: select) | `[".search.next", { direction: -1, add: true, ... }]` |
+      | Title                 | Identifier     | Keybinding                | Command                                               |
+      | --------------------- | -------------- | ------------------------- | ----------------------------------------------------- |
+      | Add next match        | `next.add`     | `s-n` (kakoune: normal)   | `[".search.next", {                add: true, ... }]` |
+      | Select previous match | `previous`     | `a-n` (kakoune: normal)   | `[".search.next", { direction: -1           , ... }]` |
+      | Add previous match    | `previous.add` | `s-a-n` (kakoune: normal) | `[".search.next", { direction: -1, add: true, ... }]` |
+
+      Helix keybindings
+
+      | Keybinding            | Command                                                                  |
+      | ----------------------| ------------------------------------------------------------------------ |
+      | `n` (helix: normal)   | `[".search.next", {                           regexFlags: "imu", ... }]` |
+      | `n` (helix: select)   | `[".search.next", {                add: true, regexFlags: "imu", ... }]` |
+      | `s-n` (helix: normal) | `[".search.next", { direction: -1           , regexFlags: "imu", ... }]` |
+      | `s-n` (helix: select) | `[".search.next", { direction: -1, add: true, regexFlags: "imu", ... }]` |
 
 search.next.add:
   title:
     en: Add next match
 
-  commands: |-
-    [".search.next", { add: true, $exclude: [] }]
-
   keys:
     qwerty: |-
       `s-n` (kakoune: normal)
-      `n` (helix: select)
+
+  commands: |-
+    [".search.next", { add: true, $exclude: [] }]
 
 search.previous:
   title:
     en: Select previous match
 
-  commands: |-
-    [".search.next", { direction: -1 , $exclude: [] }]
-
   keys:
     qwerty: |-
       `a-n` (kakoune: normal)
-      `s-n` (helix: normal)
+
+  commands: |-
+    [".search.next", { direction: -1 , $exclude: [] }]
 
 search.previous.add:
   title:
     en: Add previous match
 
-  commands: |-
-    [".search.next", { direction: -1, add: true, $exclude: [] }]
-
   keys:
     qwerty: |-
       `s-a-n` (kakoune: normal)
-      `s-n` (helix: select)
-
-search.primary:
-  title:
-    en: Search (primary)
 
   commands: |-
-    [".search", { primary: true, $exclude: [] }]
-
-  keys:
-    qwerty: |-
-      `/` (helix: normal)
-
-search.primary.add:
-  title:
-    en: Search (primary add)
-
-  commands: |-
-    [".search", { add: true, primary: true, $exclude: [] }]
-
-  keys:
-    qwerty: |-
-      `/` (helix: select)
+    [".search.next", { direction: -1, add: true, $exclude: [] }]
 
 search.selection:
   title:
@@ -2607,9 +2574,15 @@ selections.select:
 
       #### Variants
 
-      | Title          | Identifier      | Keybinding                        | Command                                                                                           |
-      | -------------- | --------------- | --------------------------------- | ------------------------------------------------------------------------------------------------- |
-      | Leap or select | `select.orLeap` | `s` (core: normal; helix: select) | `[".ifEmpty", { then: [[".seek.leap", { ... }]], otherwise: [[".selections.select", { ... }]] }]` |
+      | Title          | Identifier      | Keybinding            | Command                                                                                           |
+      | -------------- | --------------- | --------------------- | ------------------------------------------------------------------------------------------------- |
+      | Leap or select | `select.orLeap` | `s` (kakoune: normal) | `[".ifEmpty", { then: [[".seek.leap", { ... }]], otherwise: [[".selections.select", { ... }]] }]` |
+
+      Helix keybinding
+
+      | Keybinding                         | Command                                                                                                              |
+      | ---------------------------------- | -------                                                                                                              |
+      | `s` (helix: normal; helix: select) | `[".ifEmpty", { then: [[".seek.leap", { ... }]], otherwise: [[".selections.select", { regexFlags: "imu", ... }]] }]` |
 
 selections.select.orLeap:
   title:
@@ -2620,7 +2593,7 @@ selections.select.orLeap:
 
   keys:
     qwerty: |-
-      `s` (core: normal; helix: select)
+      `s` (kakoune: normal)
 
 selections.showIndices:
   title:
@@ -2644,11 +2617,16 @@ selections.split:
 
   keys:
     qwerty: |-
-      `s-s` (core: normal; helix: select)
+      `s-s` (kakoune: normal)
 
   doc:
-    en: |+
+    en: |
       Split selections.
+
+
+      | Keybinding                           | Command                                             |
+      | ------------------------------------ | -------                                             |
+      | `s-s` (helix: normal; helix: select) | `[".selections.split", { regexFlags: "imu", ... }]` |
 
 selections.splitLines:
   title:
@@ -2875,6 +2853,13 @@ anonymous:
         `d` (helix: select)
 
   - commands: |-
+      [".ifEmpty", { then: [[".seek.leap", { $exclude: [] }]], otherwise: [[".selections.select", { regexFlags: "imu", $exclude: [] }]] }]
+
+    keys:
+      qwerty: |-
+        `s` (helix: normal; helix: select)
+
+  - commands: |-
       [".openMenu", { menu: "goto", pass: [{ shift: "extend" }] }]
 
     keys:
@@ -2940,6 +2925,62 @@ anonymous:
       qwerty: |-
         `s-v` (kakoune: normal)
         `s-z` (helix: normal; helix: select)
+
+  - commands: |-
+      [".search.next", { add: true, regexFlags: "imu", $exclude: [] }]
+
+    keys:
+      qwerty: |-
+        `n` (helix: select)
+
+  - commands: |-
+      [".search.next", { direction: -1 , regexFlags: "imu", $exclude: [] }]
+
+    keys:
+      qwerty: |-
+        `s-n` (helix: normal)
+
+  - commands: |-
+      [".search.next", { direction: -1, add: true, regexFlags: "imu", $exclude: [] }]
+
+    keys:
+      qwerty: |-
+        `s-n` (helix: select)
+
+  - commands: |-
+      [".search.next", { regexFlags: "imu", $exclude: [] }]
+
+    keys:
+      qwerty: |-
+        `n` (helix: normal)
+
+  - commands: |-
+      [".search", { add: true, primary: true, direction: -1, regexFlags: "imu", $exclude: [] }]
+
+    keys:
+      qwerty: |-
+        `?` (helix: select)
+
+  - commands: |-
+      [".search", { add: true, primary: true, regexFlags: "imu", $exclude: [] }]
+
+    keys:
+      qwerty: |-
+        `/` (helix: select)
+
+  - commands: |-
+      [".search", { primary: true, direction: -1, regexFlags: "imu", $exclude: [] }]
+
+    keys:
+      qwerty: |-
+        `?` (helix: normal)
+
+  - commands: |-
+      [".search", { primary: true, regexFlags: "imu", $exclude: [] }]
+
+    keys:
+      qwerty: |-
+        `/` (helix: normal)
 
   - commands: |-
       [".select.vertically", { direction: -1, by: "halfPage", shift: "extend" }]
@@ -3024,6 +3065,13 @@ anonymous:
     keys:
       qwerty: |-
         `y` (helix: select)
+
+  - commands: |-
+      [".selections.split", { regexFlags: "imu", $exclude: [] }]
+
+    keys:
+      qwerty: |-
+        `s-s` (helix: normal; helix: select)
 
   - title:
       en: Add the digit 0 to the counter

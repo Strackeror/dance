@@ -1751,10 +1751,16 @@ export function newRegExp(pattern: string | RegExp, flags: string = "") {
   const originalSource = pattern;
   let m;
 
-  while (m = /^\(\?([gimsuy]+)\)/.exec(pattern)) {
-    for (const ch of m[1]) {
+  while (m = /^\(\?([gimsuy]+)?(-[gimsuy]+)?\)/.exec(pattern)) {
+    for (const ch of m[1] ?? []) {
       if (!flags.includes(ch)) {
         flags += ch;
+      }
+    }
+
+    for (const ch of m[2] ?? []) {
+      if (flags.includes(ch)) {
+        flags = flags.replace(ch, "");
       }
     }
 
