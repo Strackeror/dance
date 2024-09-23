@@ -1454,6 +1454,11 @@
         "category": "Dance"
       },
       {
+        "command": "dance.seek.jumpLabel",
+        "title": "Jump to label",
+        "category": "Dance"
+      },
+      {
         "command": "dance.seek.leap",
         "title": "Leap forward",
         "category": "Dance"
@@ -2389,6 +2394,10 @@
         },
         {
           "command": "dance.seek.included.extend.backward",
+          "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.seek.jumpLabel",
           "when": "dance.mode == 'normal'"
         },
         {

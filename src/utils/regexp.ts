@@ -1686,28 +1686,16 @@ function isEscaped(text: string, offset: number) {
  */
 export function splitRange(text: string, re: RegExp) {
   const sections: [start: number, end: number][] = [];
-
-  for (let start = 0;;) {
-    re.lastIndex = 0;
-
-    const match = re.exec(text);
-
-    if (match === null || text.length === 0) {
-      sections.push([start, start + text.length]);
-
-      return sections;
-    }
-
-    sections.push([start, start + match.index]);
-
-    if (match[0].length === 0) {
-      text = text.slice(1);
-      start++;
-    } else {
-      text = text.slice(match.index + match[0].length);
-      start += match.index + match[0].length;
-    }
+  const matches = execRange(text, re);
+  let pos = 0;
+  for (const match of matches) {
+    sections.push([pos, match[0]]);
+    pos = match[1];
   }
+  if (pos < text.length) {
+    sections.push([pos, text.length]);
+  }
+  return sections;
 }
 
 /**
@@ -1715,27 +1703,16 @@ export function splitRange(text: string, re: RegExp) {
  * indices corresponding to each matched result.
  */
 export function execRange(text: string, re: RegExp) {
-  re.lastIndex = 0;
-
+  const regex = new RegExp(re, re.flags + (re.global ? "" : "g") + (re.hasIndices ? "" : "d"));
   const sections: [start: number, end: number, match: RegExpExecArray][] = [];
-  let diff = 0;
 
-  for (let match = re.exec(text); match !== null && text.length > 0; match = re.exec(text)) {
-    const start = match.index,
-          end = start + match[0].length;
-
-    sections.push([diff + start, diff + end, match]);
-
-    text = text.slice(end);
-    diff += end;
-    re.lastIndex = 0;
-
-    if (start === end) {
-      text = text.slice(1);
-      diff++;
+  let result: RegExpExecArray | null;
+  while (result = regex.exec(text)) {
+    if (result.index === regex.lastIndex) {
+      regex.lastIndex += 1;
     }
+    sections.push([...result.indices![0], result]);
   }
-
   return sections;
 }
 

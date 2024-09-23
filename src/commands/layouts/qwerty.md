@@ -87,9 +87,10 @@ selections are empty</td><td></td></tr>
 <tr><td><a href="../search.ts#L178"><code>search.previous.add</code></a></td><td>Add previous match</td><td><code>Shift+Alt+N</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="../search.ts#L108"><code>search.selection.smart</code></a></td><td>Search current selection (smart)</td><td><code>Shift+8</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>NumPad_Multiply</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#search.selection"><code>search.selection</code></a></td><td>Search current selection</td><td><code>Shift+Alt+8</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+NumPad_Multiply</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
-<tr><td rowspan=43><a href="#seek"><code>seek</code></a></td><td><a href="#seek.enclosing"><code>seek.enclosing</code></a></td><td>Select to next enclosing character</td><td><code>M</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td rowspan=44><a href="#seek"><code>seek</code></a></td><td><a href="#seek.enclosing"><code>seek.enclosing</code></a></td><td>Select to next enclosing character</td><td><code>M</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#seek.enclosingSurround"><code>seek.enclosingSurround</code></a></td><td>Select next enclosing character, the helix way
 This selects the end of the pair we're within, not the first pair to start after the cursor</td><td></td></tr>
+<tr><td><a href="#seek.jumpLabel"><code>seek.jumpLabel</code></a></td><td>Jump to label</td><td></td></tr>
 <tr><td><a href="#seek.leap"><code>seek.leap</code></a></td><td>Leap forward</td><td></td></tr>
 <tr><td><a href="#seek.object"><code>seek.object</code></a></td><td>Select object</td><td></td></tr>
 <tr><td><a href="#seek.seek"><code>seek.seek</code></a></td><td>Select to character (excluded)</td><td><code>T</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
@@ -1239,6 +1240,12 @@ Inspired by [`leap.nvim`](https://github.com/ggandor/leap.nvim).
 
 This command:
 - takes an argument `labels` of type `string`.
+
+<a name="seek.jumpLabel" />
+
+### [`seek.jumpLabel`](../seek.ts#L1035-L1038)
+
+Jump to label
 
 ## [`select`](../select.ts)
 

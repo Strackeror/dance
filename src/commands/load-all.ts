@@ -216,6 +216,7 @@ import {
 import {
   enclosing as seek_enclosing,
   enclosingSurround as seek_enclosingSurround,
+  jumpLabel as seek_jumpLabel,
   leap as seek_leap,
   object as seek_object,
   seek as seek,
@@ -494,6 +495,11 @@ export const commands: Commands = function () {
     "dance.seek.enclosingSurround": new CommandDescriptor(
       "dance.seek.enclosingSurround",
       (_, argument) => _.runAsync(async (_) => await seek_enclosingSurround(_, getShift(argument), argument["open"], argument["inner"], argument["pairs"])),
+      CommandDescriptor.Flags.RequiresActiveEditor,
+    ),
+    "dance.seek.jumpLabel": new CommandDescriptor(
+      "dance.seek.jumpLabel",
+      (_) => _.runAsync(async (_) => await seek_jumpLabel(_)),
       CommandDescriptor.Flags.RequiresActiveEditor,
     ),
     "dance.seek.leap": new CommandDescriptor(

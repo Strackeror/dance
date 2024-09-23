@@ -191,8 +191,8 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
             "a": { text: "to last buffer", command: "workbench.action.openPreviousRecentlyUsedEditorInGroup" },
             "n": { text: "to next buffer", command: "workbench.action.nextEditor" },
             "p": { text: "to previous buffer", command: "workbench.action.previousEditor" },
-            ".": { text: "to last buffer modification position", command: "dance.selections.restore", args: [{ register: " insert" }],
-            },
+            ".": { text: "to last buffer modification position", command: "dance.selections.restore", args: [{ register: " insert" }] },
+            "w": { text: "to two-letter label", command: "dance.seek.jumpLabel" },
           },
         },
 

@@ -1339,6 +1339,14 @@ seek.included.extend.backward:
       `s-a-f` (kakoune: normal)
       `s-f` (helix: select)
 
+seek.jumpLabel:
+  title:
+    en: Jump to label
+
+  doc:
+    en: |
+      Jump to label
+
 seek.leap:
   title:
     en: Leap forward
@@ -2033,12 +2041,12 @@ select.to.extend:
   title:
     en: Extend to
 
+  commands: |-
+    [".select.to", { shift: "extend", $exclude: [] }]
+
   keys:
     qwerty: |-
       `s-g` (kakoune: normal)
-
-  commands: |-
-    [".select.to", { shift: "extend", $exclude: [] }]
 
 select.to.jump:
   title:
@@ -2264,12 +2272,12 @@ selections.filter.regexp.inverse:
   title:
     en: Clear matching selections
 
+  commands: |-
+    [".selections.filter", { defaultExpression: "/", inverse: true, $exclude: [] }]
+
   keys:
     qwerty: |-
       `s-a-k` (core: normal; helix: select)
-
-  commands: |-
-    [".selections.filter", { defaultExpression: "/", inverse: true, $exclude: [] }]
 
 selections.hideIndices:
   title:
@@ -2468,6 +2476,10 @@ selections.rotate.contents:
   title:
     en: Rotate selections clockwise (contents only)
 
+  keys:
+    qwerty: |-
+      `a-)` (helix: normal; helix: select)
+
   doc:
     en: |
       Rotate selections clockwise (contents only).
@@ -2479,20 +2491,16 @@ selections.rotate.contents:
       | --------------------------------------------------- | ------------------ | ------------------------------------ | ---------------------------------------------------- |
       | Rotate selections counter-clockwise (contents only) | `contents.reverse` | `a-(` (helix: normal; helix: select) | `[".selections.rotate.contents", { reverse: true }]` |
 
-  keys:
-    qwerty: |-
-      `a-)` (helix: normal; helix: select)
-
 selections.rotate.contents.reverse:
   title:
     en: Rotate selections counter-clockwise (contents only)
 
+  commands: |-
+    [".selections.rotate.contents", { reverse: true }]
+
   keys:
     qwerty: |-
       `a-(` (helix: normal; helix: select)
-
-  commands: |-
-    [".selections.rotate.contents", { reverse: true }]
 
 selections.rotate.selections:
   title:
@@ -3025,25 +3033,11 @@ anonymous:
         `c-d` (core: normal; core: insert)
 
   - commands: |-
-      [".select.vertically", { direction: 1, by: "halfPage", shift: "jump" }]
-
-    keys:
-      qwerty: |-
-        `c-d` (core: normal; core: insert)
-
-  - commands: |-
       [".select.vertically", { direction: 1, by: "page" , shift: "extend" }]
 
     keys:
       qwerty: |-
         `c-f` (helix: select)
-
-  - commands: |-
-      [".select.vertically", { direction: 1, by: "page" , shift: "jump" }]
-
-    keys:
-      qwerty: |-
-        `c-f` (core: normal; core: insert)
 
   - commands: |-
       [".select.vertically", { direction: 1, by: "page" , shift: "jump" }]
@@ -3080,9 +3074,6 @@ anonymous:
       [".updateCount", { addDigits: 0 }]
 
     keys:
-      azerty: |-
-        `s-0` (core: normal)
-        `NumPad0` (core: normal)
       qwerty: |-
         `0` (core: normal; helix: select)
         `NumPad0` (core: normal; helix: select)
@@ -3094,9 +3085,6 @@ anonymous:
       [".updateCount", { addDigits: 1 }]
 
     keys:
-      azerty: |-
-        `s-1` (core: normal)
-        `NumPad1` (core: normal)
       qwerty: |-
         `1` (core: normal; helix: select)
         `NumPad1` (core: normal; helix: select)
@@ -3108,9 +3096,6 @@ anonymous:
       [".updateCount", { addDigits: 2 }]
 
     keys:
-      azerty: |-
-        `s-2` (core: normal)
-        `NumPad2` (core: normal)
       qwerty: |-
         `2` (core: normal; helix: select)
         `NumPad2` (core: normal; helix: select)
@@ -3122,9 +3107,6 @@ anonymous:
       [".updateCount", { addDigits: 3 }]
 
     keys:
-      azerty: |-
-        `s-3` (core: normal)
-        `NumPad3` (core: normal)
       qwerty: |-
         `3` (core: normal; helix: select)
         `NumPad3` (core: normal; helix: select)
@@ -3136,9 +3118,6 @@ anonymous:
       [".updateCount", { addDigits: 4 }]
 
     keys:
-      azerty: |-
-        `s-4` (core: normal)
-        `NumPad4` (core: normal)
       qwerty: |-
         `4` (core: normal; helix: select)
         `NumPad4` (core: normal; helix: select)
@@ -3150,9 +3129,6 @@ anonymous:
       [".updateCount", { addDigits: 5 }]
 
     keys:
-      azerty: |-
-        `s-5` (core: normal)
-        `NumPad5` (core: normal)
       qwerty: |-
         `5` (core: normal; helix: select)
         `NumPad5` (core: normal; helix: select)
@@ -3164,9 +3140,6 @@ anonymous:
       [".updateCount", { addDigits: 6 }]
 
     keys:
-      azerty: |-
-        `s-6` (core: normal)
-        `NumPad6` (core: normal)
       qwerty: |-
         `6` (core: normal; helix: select)
         `NumPad6` (core: normal; helix: select)
@@ -3178,9 +3151,6 @@ anonymous:
       [".updateCount", { addDigits: 7 }]
 
     keys:
-      azerty: |-
-        `s-7` (core: normal)
-        `NumPad7` (core: normal)
       qwerty: |-
         `7` (core: normal; helix: select)
         `NumPad7` (core: normal; helix: select)
@@ -3192,9 +3162,6 @@ anonymous:
       [".updateCount", { addDigits: 8 }]
 
     keys:
-      azerty: |-
-        `s-8` (core: normal)
-        `NumPad8` (core: normal)
       qwerty: |-
         `8` (core: normal; helix: select)
         `NumPad8` (core: normal; helix: select)
@@ -3206,9 +3173,6 @@ anonymous:
       [".updateCount", { addDigits: 9 }]
 
     keys:
-      azerty: |-
-        `s-9` (core: normal)
-        `NumPad9` (core: normal)
       qwerty: |-
         `9` (core: normal; helix: select)
         `NumPad9` (core: normal; helix: select)

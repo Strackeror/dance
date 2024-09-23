@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 
 import type { Argument, InputOr } from ".";
-import { closestSurroundedBy, command, Context, Direction, keypress, Lines, moveToExcluded, moveWhileBackward, moveWhileForward, Objects, Pair, pair, Positions, prompt, search, SelectionBehavior, Selections, Shift, surroundedBy, wordBoundary } from "../api";
+import { closestSurroundedBy, command, Context, Direction, firstVisibleLine, keypress, lastVisibleLine, Lines, moveToExcluded, moveWhileBackward, moveWhileForward, Objects, Pair, pair, Positions, prompt, search, SelectionBehavior, Selections, Shift, surroundedBy, wordBoundary } from "../api";
 import { CharSet } from "../utils/charset";
 import { ArgumentError, assert } from "../utils/errors";
 import { escapeForRegExp, execRange } from "../utils/regexp";
@@ -1009,4 +1009,82 @@ function shiftWhere(
 
     return Selections.shift(selection, result[where], shift, context);
   });
+}
+
+
+function decoration(label: string, fontSize: number): vscode.TextEditorDecorationType {
+  const width = fontSize + 6;
+  return vscode.window.createTextEditorDecorationType({
+    before: {
+      margin: `0 ${-width}px 0 0`,
+      width: `${width}px`,
+      backgroundColor: new vscode.ThemeColor("inputValidation.infoBackground"),
+      border: "solid 2px",
+      borderColor: new vscode.ThemeColor("inputValidation.infoBorder"),
+      contentText: label,
+
+    },
+    opacity: "0",
+  });
+}
+
+
+const labelLetters = "abcdefghijklmnopqrstuvwxyz".split(""),
+      labels = labelLetters.flatMap(c => labelLetters.map(c2 => c + c2));
+
+/**
+ * Jump to label
+ */
+export async function jumpLabel(_: Context) {
+  const start = Positions.lineStart(firstVisibleLine(_.editor));
+  const end = Positions.lineEnd(lastVisibleLine(_.editor));
+  const range = new vscode.Selection(start, end);
+  const current = _.editor.selection;
+  const fontSize = vscode.workspace.getConfiguration("editor").get<number>("fontSize")!;
+
+  let selections = Selections.selectWithin(/\b\w\w/, [range]);
+  if (!selections.length) {
+    return;
+  }
+
+  const selectionsBefore = selections.filter((sel) => sel.active.isBefore(current.active)).reverse();
+  const selectionsAfter = selections.filter((sel) => sel.active.isAfter(current.active));
+  selections = [];
+  for (let i = 0; i < selectionsBefore.length || i < selectionsAfter.length; ++i) {
+    if (i < selectionsBefore.length) {
+      selections.push(selectionsBefore[i]);
+    }
+    if (i < selectionsAfter.length) {
+      selections.push(selectionsAfter[i]);
+    }
+  }
+
+
+  type LabelledSelection = [string, vscode.Selection, vscode.TextEditorDecorationType];
+  let labelledSelections = selections.map((sel, i) =>
+    [labels[i], sel, decoration(labels[i], fontSize)] as LabelledSelection,
+  );
+  while (labelledSelections.length > 1) {
+    labelledSelections.forEach(([label, sel, decoration]) => {
+      _.editor.setDecorations(decoration, [sel]);
+    });
+    let key: string;
+    try {
+      key = await keypress(_);
+    } catch {
+      key = "NONE";
+    }
+    labelledSelections
+      .filter(([label]) => !label.startsWith(key))
+      .forEach(([,,decoration]) => {
+        decoration.dispose();
+      });
+    labelledSelections = labelledSelections
+      .filter(([label]) => label.startsWith(key))
+      .map(([label, ...rest]) => [label.slice(1), ...rest]);
+  }
+  labelledSelections.forEach(([,,decoration]) => decoration.dispose());
+  if (labelledSelections.length > 0) {
+    Selections.set(labelledSelections.map(n => n[1]));
+  }
 }
