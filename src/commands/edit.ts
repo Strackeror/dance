@@ -45,11 +45,14 @@ declare module "./edit";
  * | Copy and delete                    | `yank-delete`            | `d` (core: normal)                               | `[".selections.saveText", { +register }],                                            [".edit.insert", { register: "_", ... }]` |
  * | Copy, delete and switch to Insert  | `yank-delete-insert`     | `c` (core: normal; helix: select)                | `[".selections.saveText", { +register }], [".modes.set", { mode: "insert", +mode }], [".edit.insert", { register: "_", ... }]` |
  * | Copy and replace                   | `yank-replace`           | `s-r` (kakoune: normal)                          | `[".selections.saveText", { register: "tmp" }], [".edit.insert"], [".updateRegister", { copyFrom: "tmp", ... }]`               |
- * |                                    |                          | `s-r` (helix: select)                            | `[".edit.insert"], [".modes.set.normal"]`                                                                                        |
- * |                                    |                          | `a-d` (helix: select)                            | `[".edit.delete"], [".modes.set.normal"]`                                                                                        |
- * |                                    |                          | `d` (helix: select)                              | `[".edit.yank-delete"], [".modes.set.normal"]`                                                                                  |
- * |                                    |                          | `s-p` (helix: select)                            | `[".edit.paste.before"], [".modes.set.normal"]`                                                                                 |
- * |                                    |                          | `p` (helix: select)                              | `[".edit.paste.after"], [".modes.set.normal"]`                                                                                  |
+ *
+ * ####  Additional Keybinds
+ * | Title                              | Keybinding            | Commands                                        |
+ * |                                    | `s-r` (helix: select) | `[".edit.insert"], [".modes.set.normal"]`       |
+ * |                                    | `a-d` (helix: select) | `[".edit.delete"], [".modes.set.normal"]`       |
+ * |                                    | `d` (helix: select)   | `[".edit.yank-delete"], [".modes.set.normal"]`  |
+ * |                                    | `s-p` (helix: select) | `[".edit.paste.before"], [".modes.set.normal"]` |
+ * |                                    | `p` (helix: select)   | `[".edit.paste.after"], [".modes.set.normal"]`  |
  */
 export async function insert(
   _: Context,

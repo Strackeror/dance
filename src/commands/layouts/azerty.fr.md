@@ -20,8 +20,8 @@
 <tr><td><a href="#edit.deindent.withIncomplete"><code>edit.deindent.withIncomplete</code></a></td><td>Deindent selected lines (including incomplete indent)</td><td><code>Shift+,</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+,</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="../edit.ts#L43"><code>edit.delete</code></a></td><td>Delete</td><td><code>Alt+D</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="../edit.ts#L44"><code>edit.delete-insert</code></a></td><td>Delete and switch to Insert</td><td><code>Alt+C</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L412"><code>edit.newLine.above.insert</code></a></td><td>Insert new line above and switch to insert</td><td><code>Shift+O</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+O</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../edit.ts#L450"><code>edit.newLine.below.insert</code></a></td><td>Insert new line below and switch to insert</td><td><code>O</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>O</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L415"><code>edit.newLine.above.insert</code></a></td><td>Insert new line above and switch to insert</td><td><code>Shift+O</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+O</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../edit.ts#L453"><code>edit.newLine.below.insert</code></a></td><td>Insert new line below and switch to insert</td><td><code>O</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>O</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="../edit.ts#L36"><code>edit.paste.after</code></a></td><td>Paste after</td><td></td></tr>
 <tr><td><a href="../edit.ts#L38"><code>edit.paste.after.select</code></a></td><td>Paste after and select</td><td><code>P</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="../edit.ts#L35"><code>edit.paste.before</code></a></td><td>Paste before</td><td></td></tr>
@@ -256,7 +256,7 @@ See https://github.com/mawww/kakoune/blob/master/doc/pages/keys.asciidoc#changes
 
 <a name="edit.insert" />
 
-### [`edit.insert`](../edit.ts#L15-L66)
+### [`edit.insert`](../edit.ts#L15-L69)
 
 Insert contents of register.
 
@@ -289,11 +289,14 @@ Specify `all` to paste all contents next to each selection.
 | Copy and delete                    | `yank-delete`            | `d` (core: normal)                               | `[".selections.saveText", { +register }],                                            [".edit.insert", { register: "_", ... }]` |
 | Copy, delete and switch to Insert  | `yank-delete-insert`     | `c` (core: normal; helix: select)                | `[".selections.saveText", { +register }], [".modes.set", { mode: "insert", +mode }], [".edit.insert", { register: "_", ... }]` |
 | Copy and replace                   | `yank-replace`           | `s-r` (kakoune: normal)                          | `[".selections.saveText", { register: "tmp" }], [".edit.insert"], [".updateRegister", { copyFrom: "tmp", ... }]`               |
-|                                    |                          | `s-r` (helix: select)                            | `[".edit.insert"], [".modes.set.normal"]`                                                                                        |
-|                                    |                          | `a-d` (helix: select)                            | `[".edit.delete"], [".modes.set.normal"]`                                                                                        |
-|                                    |                          | `d` (helix: select)                              | `[".edit.yank-delete"], [".modes.set.normal"]`                                                                                  |
-|                                    |                          | `s-p` (helix: select)                            | `[".edit.paste.before"], [".modes.set.normal"]`                                                                                 |
-|                                    |                          | `p` (helix: select)                              | `[".edit.paste.after"], [".modes.set.normal"]`                                                                                  |
+
+####  Additional Keybinds
+| Title                              | Keybinding            | Commands                                        |
+|                                    | `s-r` (helix: select) | `[".edit.insert"], [".modes.set.normal"]`       |
+|                                    | `a-d` (helix: select) | `[".edit.delete"], [".modes.set.normal"]`       |
+|                                    | `d` (helix: select)   | `[".edit.yank-delete"], [".modes.set.normal"]`  |
+|                                    | `s-p` (helix: select) | `[".edit.paste.before"], [".modes.set.normal"]` |
+|                                    | `p` (helix: select)   | `[".edit.paste.after"], [".modes.set.normal"]`  |
 
 This command:
 - accepts a register (by default, it uses `dquote`).
@@ -310,7 +313,7 @@ Default keybinding: `s-a-r` (kakoune: normal)
 
 <a name="edit.join" />
 
-### [`edit.join`](../edit.ts#L138-L143)
+### [`edit.join`](../edit.ts#L141-L146)
 
 Join lines.
 
@@ -323,7 +326,7 @@ Default keybinding: `a-j` (kakoune: normal)
 
 <a name="edit.join.select" />
 
-### [`edit.join.select`](../edit.ts#L147-L152)
+### [`edit.join.select`](../edit.ts#L150-L155)
 
 Join lines and select inserted separators.
 
@@ -335,7 +338,7 @@ Default keybinding: `s-a-j` (core: normal; helix: select)
 
 <a name="edit.indent" />
 
-### [`edit.indent`](../edit.ts#L156-L164)
+### [`edit.indent`](../edit.ts#L159-L167)
 
 Indent selected lines.
 
@@ -350,7 +353,7 @@ Default keybinding: `>` (core: normal)
 
 <a name="edit.indent.withEmpty" />
 
-### [`edit.indent.withEmpty`](../edit.ts#L168-L173)
+### [`edit.indent.withEmpty`](../edit.ts#L171-L176)
 
 Indent selected lines (including empty lines).
 
@@ -362,7 +365,7 @@ Default keybinding: `a->` (kakoune: normal)
 
 <a name="edit.deindent" />
 
-### [`edit.deindent`](../edit.ts#L177-L182)
+### [`edit.deindent`](../edit.ts#L180-L185)
 
 Deindent selected lines.
 
@@ -374,7 +377,7 @@ Default keybinding: `a-<` (kakoune: normal)
 
 <a name="edit.deindent.withIncomplete" />
 
-### [`edit.deindent.withIncomplete`](../edit.ts#L186-L194)
+### [`edit.deindent.withIncomplete`](../edit.ts#L189-L197)
 
 Deindent selected lines (including incomplete indent).
 
@@ -389,7 +392,7 @@ Default keybinding: `<` (core: normal; helix: select)
 
 <a name="edit.case.toLower" />
 
-### [`edit.case.toLower`](../edit.ts#L198-L206)
+### [`edit.case.toLower`](../edit.ts#L201-L209)
 
 Transform to lower case.
 
@@ -402,7 +405,7 @@ Default keybinding: `` ` `` (core: normal)
 
 <a name="edit.case.toUpper" />
 
-### [`edit.case.toUpper`](../edit.ts#L210-L218)
+### [`edit.case.toUpper`](../edit.ts#L213-L221)
 
 Transform to upper case.
 
@@ -416,7 +419,7 @@ Default keybinding: `` s-` `` (kakoune: normal)
 
 <a name="edit.case.swap" />
 
-### [`edit.case.swap`](../edit.ts#L222-L230)
+### [`edit.case.swap`](../edit.ts#L225-L233)
 
 Swap case.
 
@@ -430,7 +433,7 @@ Default keybinding: `` a-` `` (kakoune: normal)
 
 <a name="edit.replaceCharacters" />
 
-### [`edit.replaceCharacters`](../edit.ts#L245-L257)
+### [`edit.replaceCharacters`](../edit.ts#L248-L260)
 
 Replace characters.
 
@@ -446,7 +449,7 @@ Default keybinding: `r` (core: normal)
 
 <a name="edit.align" />
 
-### [`edit.align`](../edit.ts#L300-L308)
+### [`edit.align`](../edit.ts#L303-L311)
 
 Align selections.
 
@@ -461,7 +464,7 @@ Default keybinding: `&` (core: normal)
 
 <a name="edit.copyIndentation" />
 
-### [`edit.copyIndentation`](../edit.ts#L358-L371)
+### [`edit.copyIndentation`](../edit.ts#L361-L374)
 
 Copy indentation.
 
@@ -476,7 +479,7 @@ Default keybinding: `a-&` (kakoune: normal)
 
 <a name="edit.newLine.above" />
 
-### [`edit.newLine.above`](../edit.ts#L400-L418)
+### [`edit.newLine.above`](../edit.ts#L403-L421)
 
 Insert new line above each selection.
 
@@ -498,7 +501,7 @@ Default keybinding: `s-a-o` (kakoune: normal)
 
 <a name="edit.newLine.below" />
 
-### [`edit.newLine.below`](../edit.ts#L438-L456)
+### [`edit.newLine.below`](../edit.ts#L441-L459)
 
 Insert new line below each selection.
 
@@ -520,7 +523,7 @@ Default keybinding: `a-o` (kakoune: normal)
 
 <a name="edit.surround" />
 
-### [`edit.surround`](../edit.ts#L571-L578)
+### [`edit.surround`](../edit.ts#L574-L581)
 
 Surround selections with the given pair
 
@@ -529,7 +532,7 @@ This command:
 
 <a name="edit.surroundReplace" />
 
-### [`edit.surroundReplace`](../edit.ts#L591-L600)
+### [`edit.surroundReplace`](../edit.ts#L594-L603)
 
 Replace the target pair with the given pair
 
