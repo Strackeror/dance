@@ -1261,7 +1261,7 @@ This command:
 
 <a name="seek.jumpLabel" />
 
-### [`seek.jumpLabel`](./seek.ts#L1035-L1038)
+### [`seek.jumpLabel`](./seek.ts#L1036-L1039)
 
 Jump to label
 

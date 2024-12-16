@@ -1018,6 +1018,7 @@ function decoration(label: string, fontSize: number): vscode.TextEditorDecoratio
     before: {
       margin: `0 ${-width}px 0 0`,
       width: `${width}px`,
+      color: new vscode.ThemeColor("inputValidation.infoForeground"),
       backgroundColor: new vscode.ThemeColor("inputValidation.infoBackground"),
       border: "solid 2px",
       borderColor: new vscode.ThemeColor("inputValidation.infoBorder"),
