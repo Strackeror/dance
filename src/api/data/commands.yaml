@@ -926,12 +926,12 @@ search:
 
       Helix searches
 
-      | Keybinding              | Command                                                                            |
-      | ----------------------- | ---------------------------------------------------------------                    |
-      | `/` (helix: normal)     | `[".search", {            primary: true,                regexFlags: "imu", ... }]` |
-      | `/` (helix: select)     | `[".search", { add: true, primary: true,                regexFlags: "imu", ... }]` |
-      | `?` (helix: normal)     | `[".search", {            primary: true, direction: -1, regexFlags: "imu", ... }]` |
-      | `?` (helix: select)     | `[".search", { add: true, primary: true, direction: -1, regexFlags: "imu", ... }]` |
+      | Keybinding              | Command                                                                      |
+      | ----------------------- | ---------------------------------------------------------------------------- |
+      | `/` (helix: normal)     | `[".search", {            primary: true,                smart: true, ... }]` |
+      | `/` (helix: select)     | `[".search", { add: true, primary: true,                smart: true, ... }]` |
+      | `?` (helix: normal)     | `[".search", {            primary: true, direction: -1, smart: true, ... }]` |
+      | `?` (helix: select)     | `[".search", { add: true, primary: true, direction: -1, smart: true, ... }]` |
 
 search.backward:
   title:
@@ -987,12 +987,12 @@ search.next:
 
       Helix keybindings
 
-      | Keybinding            | Command                                                                  |
-      | ----------------------| ------------------------------------------------------------------------ |
-      | `n` (helix: normal)   | `[".search.next", {                           regexFlags: "imu", ... }]` |
-      | `n` (helix: select)   | `[".search.next", {                add: true, regexFlags: "imu", ... }]` |
-      | `s-n` (helix: normal) | `[".search.next", { direction: -1           , regexFlags: "imu", ... }]` |
-      | `s-n` (helix: select) | `[".search.next", { direction: -1, add: true, regexFlags: "imu", ... }]` |
+      | Keybinding            | Command                                                            |
+      | ----------------------| ------------------------------------------------------------------ |
+      | `n` (helix: normal)   | `[".search.next", {                           smart: true, ... }]` |
+      | `n` (helix: select)   | `[".search.next", {                add: true, smart: true, ... }]` |
+      | `s-n` (helix: normal) | `[".search.next", { direction: -1           , smart: true, ... }]` |
+      | `s-n` (helix: select) | `[".search.next", { direction: -1, add: true, smart: true, ... }]` |
 
 search.next.add:
   title:
@@ -2591,9 +2591,9 @@ selections.select:
 
       Helix keybinding
 
-      | Keybinding                         | Command                                                                                                              |
-      | ---------------------------------- | -------                                                                                                              |
-      | `s` (helix: normal; helix: select) | `[".ifEmpty", { then: [[".seek.leap", { ... }]], otherwise: [[".selections.select", { regexFlags: "imu", ... }]] }]` |
+      | Keybinding                         | Command                                                                                                        |
+      | ---------------------------------- | -------                                                                                                        |
+      | `s` (helix: normal; helix: select) | `[".ifEmpty", { then: [[".seek.leap", { ... }]], otherwise: [[".selections.select", { smart: true, ... }]] }]` |
 
 selections.select.orLeap:
   title:
@@ -2635,9 +2635,9 @@ selections.split:
       Split selections.
 
 
-      | Keybinding                           | Command                                             |
-      | ------------------------------------ | -------                                             |
-      | `s-s` (helix: normal; helix: select) | `[".selections.split", { regexFlags: "imu", ... }]` |
+      | Keybinding                           | Command                                       |
+      | ------------------------------------ | -------                                       |
+      | `s-s` (helix: normal; helix: select) | `[".selections.split", { smart: true, ... }]` |
 
 selections.splitLines:
   title:
@@ -2814,9 +2814,7 @@ anonymous:
       qwerty: |-
         `<` (helix: select)
 
-  - 
-
-    commands: |-
+  - commands: |-
       [".edit.delete"], [".modes.set.normal"]
 
     keys:
@@ -2830,27 +2828,21 @@ anonymous:
       qwerty: |-
         `>` (helix: select)
 
-  - 
-
-    commands: |-
+  - commands: |-
       [".edit.insert"], [".modes.set.normal"]
 
     keys:
       qwerty: |-
         `s-r` (helix: select)
 
-  - 
-
-    commands: |-
+  - commands: |-
       [".edit.paste.after"], [".modes.set.normal"]
 
     keys:
       qwerty: |-
         `p` (helix: select)
 
-  - 
-
-    commands: |-
+  - commands: |-
       [".edit.paste.before"], [".modes.set.normal"]
 
     keys:
@@ -2864,9 +2856,7 @@ anonymous:
       qwerty: |-
         `r` (helix: select)
 
-  - 
-
-    commands: |-
+  - commands: |-
       [".edit.yank-delete"], [".modes.set.normal"]
 
     keys:
@@ -2874,7 +2864,7 @@ anonymous:
         `d` (helix: select)
 
   - commands: |-
-      [".ifEmpty", { then: [[".seek.leap", { $exclude: [] }]], otherwise: [[".selections.select", { regexFlags: "imu", $exclude: [] }]] }]
+      [".ifEmpty", { then: [[".seek.leap", { $exclude: [] }]], otherwise: [[".selections.select", { smart: true, $exclude: [] }]] }]
 
     keys:
       qwerty: |-
@@ -2948,56 +2938,56 @@ anonymous:
         `s-z` (helix: normal; helix: select)
 
   - commands: |-
-      [".search.next", { add: true, regexFlags: "imu", $exclude: [] }]
+      [".search.next", { add: true, smart: true, $exclude: [] }]
 
     keys:
       qwerty: |-
         `n` (helix: select)
 
   - commands: |-
-      [".search.next", { direction: -1 , regexFlags: "imu", $exclude: [] }]
+      [".search.next", { direction: -1 , smart: true, $exclude: [] }]
 
     keys:
       qwerty: |-
         `s-n` (helix: normal)
 
   - commands: |-
-      [".search.next", { direction: -1, add: true, regexFlags: "imu", $exclude: [] }]
+      [".search.next", { direction: -1, add: true, smart: true, $exclude: [] }]
 
     keys:
       qwerty: |-
         `s-n` (helix: select)
 
   - commands: |-
-      [".search.next", { regexFlags: "imu", $exclude: [] }]
+      [".search.next", { smart: true, $exclude: [] }]
 
     keys:
       qwerty: |-
         `n` (helix: normal)
 
   - commands: |-
-      [".search", { add: true, primary: true, direction: -1, regexFlags: "imu", $exclude: [] }]
+      [".search", { add: true, primary: true, direction: -1, smart: true, $exclude: [] }]
 
     keys:
       qwerty: |-
         `?` (helix: select)
 
   - commands: |-
-      [".search", { add: true, primary: true, regexFlags: "imu", $exclude: [] }]
+      [".search", { add: true, primary: true, smart: true, $exclude: [] }]
 
     keys:
       qwerty: |-
         `/` (helix: select)
 
   - commands: |-
-      [".search", { primary: true, direction: -1, regexFlags: "imu", $exclude: [] }]
+      [".search", { primary: true, direction: -1, smart: true, $exclude: [] }]
 
     keys:
       qwerty: |-
         `?` (helix: normal)
 
   - commands: |-
-      [".search", { primary: true, regexFlags: "imu", $exclude: [] }]
+      [".search", { primary: true, smart: true, $exclude: [] }]
 
     keys:
       qwerty: |-
@@ -3074,7 +3064,7 @@ anonymous:
         `y` (helix: select)
 
   - commands: |-
-      [".selections.split", { regexFlags: "imu", $exclude: [] }]
+      [".selections.split", { smart: true, $exclude: [] }]
 
     keys:
       qwerty: |-

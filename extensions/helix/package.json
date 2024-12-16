@@ -1591,7 +1591,7 @@
         "command": "dance.search",
         "args": {
           "primary": true,
-          "regexFlags": "imu",
+          "smart": true,
           "$exclude": []
         }
       },
@@ -1602,7 +1602,7 @@
         "args": {
           "add": true,
           "primary": true,
-          "regexFlags": "imu",
+          "smart": true,
           "$exclude": []
         }
       },
@@ -1613,7 +1613,7 @@
         "args": {
           "primary": true,
           "direction": -1,
-          "regexFlags": "imu",
+          "smart": true,
           "$exclude": []
         }
       },
@@ -1625,7 +1625,7 @@
           "add": true,
           "primary": true,
           "direction": -1,
-          "regexFlags": "imu",
+          "smart": true,
           "$exclude": []
         }
       },
@@ -1640,7 +1640,7 @@
         "when": "editorTextFocus && dance.mode == 'helix/normal'",
         "command": "dance.search.next",
         "args": {
-          "regexFlags": "imu",
+          "smart": true,
           "$exclude": []
         }
       },
@@ -1650,7 +1650,7 @@
         "command": "dance.search.next",
         "args": {
           "add": true,
-          "regexFlags": "imu",
+          "smart": true,
           "$exclude": []
         }
       },
@@ -1660,7 +1660,7 @@
         "command": "dance.search.next",
         "args": {
           "direction": -1,
-          "regexFlags": "imu",
+          "smart": true,
           "$exclude": []
         }
       },
@@ -1671,7 +1671,7 @@
         "args": {
           "direction": -1,
           "add": true,
-          "regexFlags": "imu",
+          "smart": true,
           "$exclude": []
         }
       },
@@ -2221,7 +2221,7 @@
             [
               ".selections.select",
               {
-                "regexFlags": "imu",
+                "smart": true,
                 "$exclude": []
               }
             ]
@@ -2245,7 +2245,7 @@
             [
               ".selections.select",
               {
-                "regexFlags": "imu",
+                "smart": true,
                 "$exclude": []
               }
             ]
@@ -2446,7 +2446,7 @@
         "when": "editorTextFocus && dance.mode == 'helix/normal'",
         "command": "dance.selections.split",
         "args": {
-          "regexFlags": "imu",
+          "smart": true,
           "$exclude": []
         }
       },
@@ -2455,7 +2455,7 @@
         "when": "editorTextFocus && dance.mode == 'helix/select'",
         "command": "dance.selections.split",
         "args": {
-          "regexFlags": "imu",
+          "smart": true,
           "$exclude": []
         }
       },

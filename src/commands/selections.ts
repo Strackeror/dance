@@ -375,9 +375,9 @@ export function filter(
  *
  * Helix keybinding
  *
- * | Keybinding                         | Command                                                                                                              |
- * | ---------------------------------- | -------                                                                                                              |
- * | `s` (helix: normal; helix: select) | `[".ifEmpty", { then: [[".seek.leap", { ... }]], otherwise: [[".selections.select", { regexFlags: "imu", ... }]] }]` |
+ * | Keybinding                         | Command                                                                                                        |
+ * | ---------------------------------- | -------                                                                                                        |
+ * | `s` (helix: normal; helix: select) | `[".ifEmpty", { then: [[".seek.leap", { ... }]], otherwise: [[".selections.select", { smart: true, ... }]] }]` |
  */
 export function select(
   _: Context,
@@ -385,6 +385,7 @@ export function select(
   interactive: Argument<boolean> = true,
   argument: { re?: string | RegExp },
   regexFlags: Argument<string> = "mu",
+  smart: Argument<boolean> = false,
 ) {
   assertIsFlags(regexFlags);
   return manipulateSelectionsInteractively(
@@ -395,7 +396,7 @@ export function select(
     promptRegexpOpts(regexFlags),
     (re, selections) => {
       if (typeof re === "string") {
-        re = newRegExp(re, regexFlags);
+        re = newRegExp(re, regexFlags, smart);
       }
 
       Selections.set(Selections.bottomToTop(Selections.selectWithin(re, selections)));
@@ -410,9 +411,9 @@ export function select(
  *
  * @keys `s-s` (kakoune: normal)
  *
- * | Keybinding                           | Command                                             |
- * | ------------------------------------ | -------                                             |
- * | `s-s` (helix: normal; helix: select) | `[".selections.split", { regexFlags: "imu", ... }]` |
+ * | Keybinding                           | Command                                       |
+ * | ------------------------------------ | -------                                       |
+ * | `s-s` (helix: normal; helix: select) | `[".selections.split", { smart: true, ... }]` |
  */
 export function split(
   _: Context,
@@ -421,6 +422,7 @@ export function split(
   interactive: Argument<boolean> = true,
   argument: { re?: string | RegExp },
   regexFlags: Argument<string> = "mu",
+  smart: Argument<boolean> = false,
 ) {
   assertIsFlags(regexFlags);
   return manipulateSelectionsInteractively(
@@ -431,7 +433,7 @@ export function split(
     promptRegexpOpts(regexFlags),
     (re, selections) => {
       if (typeof re === "string") {
-        re = newRegExp(re, regexFlags);
+        re = newRegExp(re, regexFlags, smart);
       }
 
       let split = Selections.split(re, selections);

@@ -1720,9 +1720,15 @@ export function execRange(text: string, re: RegExp) {
  * Internal version of `new RegExp` with support for flags specified with e.g.
  * `(?i)`.
  */
-export function newRegExp(pattern: string | RegExp, flags: string = "") {
+export function newRegExp(pattern: string | RegExp, flags: string = "", smart = false) {
   if (pattern instanceof RegExp) {
     pattern = pattern.source;
+  }
+
+  if (smart) {
+    if (!/[A-Z]/.test(pattern) && !flags.includes("i")) {
+      flags += "i";
+    }
   }
 
   const originalSource = pattern;

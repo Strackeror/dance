@@ -82,10 +82,10 @@ selections are empty</td><td></td></tr>
 <tr><td><a href="../search.ts#L22"><code>search.backward</code></a></td><td>Search backward</td><td><code>Alt+/</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="../search.ts#L23"><code>search.backward.extend</code></a></td><td>Search backward (extend)</td><td><code>Shift+Alt+/</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="../search.ts#L21"><code>search.extend</code></a></td><td>Search (extend)</td><td><code>Shift+/</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../search.ts#L176"><code>search.next.add</code></a></td><td>Add next match</td><td><code>Shift+N</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../search.ts#L177"><code>search.previous</code></a></td><td>Select previous match</td><td><code>Alt+N</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../search.ts#L178"><code>search.previous.add</code></a></td><td>Add previous match</td><td><code>Shift+Alt+N</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../search.ts#L108"><code>search.selection.smart</code></a></td><td>Search current selection (smart)</td><td><code>Shift+8</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>NumPad_Multiply</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../search.ts#L177"><code>search.next.add</code></a></td><td>Add next match</td><td><code>Shift+N</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../search.ts#L178"><code>search.previous</code></a></td><td>Select previous match</td><td><code>Alt+N</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../search.ts#L179"><code>search.previous.add</code></a></td><td>Add previous match</td><td><code>Shift+Alt+N</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../search.ts#L109"><code>search.selection.smart</code></a></td><td>Search current selection (smart)</td><td><code>Shift+8</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>NumPad_Multiply</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#search.selection"><code>search.selection</code></a></td><td>Search current selection</td><td><code>Shift+Alt+8</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+NumPad_Multiply</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td rowspan=44><a href="#seek"><code>seek</code></a></td><td><a href="#seek.enclosing"><code>seek.enclosing</code></a></td><td>Select to next enclosing character</td><td><code>M</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#seek.enclosingSurround"><code>seek.enclosingSurround</code></a></td><td>Select next enclosing character, the helix way
@@ -192,21 +192,21 @@ the document</td><td></td></tr>
 <tr><td><a href="#selections.select"><code>selections.select</code></a></td><td>Select within selections</td><td></td></tr>
 <tr><td><a href="../selections.ts#L324"><code>selections.clear.main</code></a></td><td>Clear main selections</td><td><code>Alt+,</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+,</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="../selections.ts#L323"><code>selections.clear.secondary</code></a></td><td>Clear secondary selections</td><td><code>,</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>,</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../selections.ts#L808"><code>selections.copy.above</code></a></td><td>Copy selections above</td><td><code>Shift+Alt+C</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+Alt+C</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../selections.ts#L660"><code>selections.faceBackward</code></a></td><td>Backward selections</td><td></td></tr>
-<tr><td><a href="../selections.ts#L659"><code>selections.faceForward</code></a></td><td>Forward selections</td><td><code>Shift+Alt+;</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../selections.ts#L810"><code>selections.copy.above</code></a></td><td>Copy selections above</td><td><code>Shift+Alt+C</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+Alt+C</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../selections.ts#L662"><code>selections.faceBackward</code></a></td><td>Backward selections</td><td></td></tr>
+<tr><td><a href="../selections.ts#L661"><code>selections.faceForward</code></a></td><td>Forward selections</td><td><code>Shift+Alt+;</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="../selections.ts#L321"><code>selections.filter.regexp</code></a></td><td>Keep matching selections</td><td><code>Alt+K</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+K</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="../selections.ts#L322"><code>selections.filter.regexp.inverse</code></a></td><td>Clear matching selections</td><td><code>Shift+Alt+K</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+Alt+K</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../selections.ts#L886"><code>selections.hideIndices</code></a></td><td>Hide selection indices</td><td></td></tr>
-<tr><td><a href="../selections.ts#L699"><code>selections.orderAscending</code></a></td><td>Order selections ascending</td><td></td></tr>
-<tr><td><a href="../selections.ts#L698"><code>selections.orderDescending</code></a></td><td>Order selections descending</td><td></td></tr>
+<tr><td><a href="../selections.ts#L888"><code>selections.hideIndices</code></a></td><td>Hide selection indices</td><td></td></tr>
+<tr><td><a href="../selections.ts#L701"><code>selections.orderAscending</code></a></td><td>Order selections ascending</td><td></td></tr>
+<tr><td><a href="../selections.ts#L700"><code>selections.orderDescending</code></a></td><td>Order selections descending</td><td></td></tr>
 <tr><td><a href="../selections.ts#L278"><code>selections.pipe.append</code></a></td><td>Pipe and append</td><td><code>Shift+1</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+1</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="../selections.ts#L279"><code>selections.pipe.prepend</code></a></td><td>Pipe and prepend</td><td><code>Shift+Alt+1</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+Alt+1</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="../selections.ts#L277"><code>selections.pipe.replace</code></a></td><td>Pipe and replace</td><td><code>Shift+\</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+\</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
-<tr><td><a href="../selections.ts#L613"><code>selections.reduce.edges</code></a></td><td>Reduce selections to their ends</td><td><code>Shift+Alt+S</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="../selections.ts#L615"><code>selections.reduce.edges</code></a></td><td>Reduce selections to their ends</td><td><code>Shift+Alt+S</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="../selections.ts#L374"><code>selections.select.orLeap</code></a></td><td>Leap or select</td><td><code>S</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
-<tr><td><a href="../selections.ts#L885"><code>selections.showIndices</code></a></td><td>Show selection indices</td><td></td></tr>
-<tr><td><a href="../selections.ts#L457"><code>selections.splitLines.orLeap.backward</code></a></td><td>Leap or select backward</td><td><code>Alt+S</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+S</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
+<tr><td><a href="../selections.ts#L887"><code>selections.showIndices</code></a></td><td>Show selection indices</td><td></td></tr>
+<tr><td><a href="../selections.ts#L459"><code>selections.splitLines.orLeap.backward</code></a></td><td>Leap or select backward</td><td><code>Alt+S</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Alt+S</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="#selections.sort"><code>selections.sort</code></a></td><td>Sort selections</td><td></td></tr>
 <tr><td><a href="#selections.split"><code>selections.split</code></a></td><td>Split selections</td><td><code>Shift+S</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
 <tr><td><a href="#selections.splitLines"><code>selections.splitLines</code></a></td><td>Split selections at line boundaries</td><td></td></tr>
@@ -986,7 +986,7 @@ Search for patterns and replace or add selections.
 
 <a name="search.search" />
 
-### [`search.search`](../search.ts#L14-L47)
+### [`search.search`](../search.ts#L14-L48)
 
 Search.
 
@@ -999,12 +999,12 @@ Search.
 
 Helix searches
 
-| Keybinding              | Command                                                                            |
-| ----------------------- | ---------------------------------------------------------------                    |
-| `/` (helix: normal)     | `[".search", {            primary: true,                regexFlags: "imu", ... }]` |
-| `/` (helix: select)     | `[".search", { add: true, primary: true,                regexFlags: "imu", ... }]` |
-| `?` (helix: normal)     | `[".search", {            primary: true, direction: -1, regexFlags: "imu", ... }]` |
-| `?` (helix: select)     | `[".search", { add: true, primary: true, direction: -1, regexFlags: "imu", ... }]` |
+| Keybinding              | Command                                                                      |
+| ----------------------- | ---------------------------------------------------------------------------- |
+| `/` (helix: normal)     | `[".search", {            primary: true,                smart: true, ... }]` |
+| `/` (helix: select)     | `[".search", { add: true, primary: true,                smart: true, ... }]` |
+| `?` (helix: normal)     | `[".search", {            primary: true, direction: -1, smart: true, ... }]` |
+| `?` (helix: select)     | `[".search", { add: true, primary: true, direction: -1, smart: true, ... }]` |
 
 This command:
 - accepts a register (by default, it uses `slash`).
@@ -1020,7 +1020,7 @@ Default keybinding: `/` (kakoune: normal)
 
 <a name="search.selection" />
 
-### [`search.selection`](../search.ts#L101-L116)
+### [`search.selection`](../search.ts#L102-L117)
 
 Search current selection.
 
@@ -1038,7 +1038,7 @@ Default keybinding: `a-*` (core: normal)
 
 <a name="search.next" />
 
-### [`search.next`](../search.ts#L169-L199)
+### [`search.next`](../search.ts#L170-L201)
 
 Select next match.
 
@@ -1051,12 +1051,12 @@ Select next match.
 
 Helix keybindings
 
-| Keybinding            | Command                                                                  |
-| ----------------------| ------------------------------------------------------------------------ |
-| `n` (helix: normal)   | `[".search.next", {                           regexFlags: "imu", ... }]` |
-| `n` (helix: select)   | `[".search.next", {                add: true, regexFlags: "imu", ... }]` |
-| `s-n` (helix: normal) | `[".search.next", { direction: -1           , regexFlags: "imu", ... }]` |
-| `s-n` (helix: select) | `[".search.next", { direction: -1, add: true, regexFlags: "imu", ... }]` |
+| Keybinding            | Command                                                            |
+| ----------------------| ------------------------------------------------------------------ |
+| `n` (helix: normal)   | `[".search.next", {                           smart: true, ... }]` |
+| `n` (helix: select)   | `[".search.next", {                add: true, smart: true, ... }]` |
+| `s-n` (helix: normal) | `[".search.next", { direction: -1           , smart: true, ... }]` |
+| `s-n` (helix: select) | `[".search.next", { direction: -1, add: true, smart: true, ... }]` |
 
 
 This command:
@@ -1623,7 +1623,7 @@ Default keybinding: `$` (core: normal; helix: select)
 
 <a name="selections.select" />
 
-### [`selections.select`](../selections.ts#L367-L388)
+### [`selections.select`](../selections.ts#L367-L389)
 
 Select within selections.
 
@@ -1635,37 +1635,39 @@ Select within selections.
 
 Helix keybinding
 
-| Keybinding                         | Command                                                                                                              |
-| ---------------------------------- | -------                                                                                                              |
-| `s` (helix: normal; helix: select) | `[".ifEmpty", { then: [[".seek.leap", { ... }]], otherwise: [[".selections.select", { regexFlags: "imu", ... }]] }]` |
+| Keybinding                         | Command                                                                                                        |
+| ---------------------------------- | -------                                                                                                        |
+| `s` (helix: normal; helix: select) | `[".ifEmpty", { then: [[".seek.leap", { ... }]], otherwise: [[".selections.select", { smart: true, ... }]] }]` |
 
 This command:
 - accepts an argument of type `{ re?: string | RegExp }`.
 - takes an argument `interactive` of type `boolean`.
 - takes an argument `regexFlags` of type `string`.
+- takes an argument `smart` of type `boolean`.
 
 <a name="selections.split" />
 
-### [`selections.split`](../selections.ts#L408-L424)
+### [`selections.split`](../selections.ts#L409-L426)
 
 Split selections.
 
 
-| Keybinding                           | Command                                             |
-| ------------------------------------ | -------                                             |
-| `s-s` (helix: normal; helix: select) | `[".selections.split", { regexFlags: "imu", ... }]` |
+| Keybinding                           | Command                                       |
+| ------------------------------------ | -------                                       |
+| `s-s` (helix: normal; helix: select) | `[".selections.split", { smart: true, ... }]` |
 
 This command:
 - accepts an argument of type `{ re?: string | RegExp }`.
 - takes an argument `excludeEmpty` of type `boolean`.
 - takes an argument `interactive` of type `boolean`.
 - takes an argument `regexFlags` of type `string`.
+- takes an argument `smart` of type `boolean`.
 
 Default keybinding: `s-s` (kakoune: normal)
 
 <a name="selections.splitLines" />
 
-### [`selections.splitLines`](../selections.ts#L450-L466)
+### [`selections.splitLines`](../selections.ts#L452-L468)
 
 Split selections at line boundaries.
 
@@ -1681,7 +1683,7 @@ This command:
 
 <a name="selections.expandToLines" />
 
-### [`selections.expandToLines`](../selections.ts#L509-L516)
+### [`selections.expandToLines`](../selections.ts#L511-L518)
 
 Expand to lines.
 
@@ -1694,7 +1696,7 @@ Default keybinding: `x` (kakoune: normal)
 
 <a name="selections.trimLines" />
 
-### [`selections.trimLines`](../selections.ts#L543-L550)
+### [`selections.trimLines`](../selections.ts#L545-L552)
 
 Trim lines.
 
@@ -1706,7 +1708,7 @@ Default keybinding: `a-x` (core: normal; helix: select)
 
 <a name="selections.trimWhitespace" />
 
-### [`selections.trimWhitespace`](../selections.ts#L575-L582)
+### [`selections.trimWhitespace`](../selections.ts#L577-L584)
 
 Trim whitespace.
 
@@ -1718,7 +1720,7 @@ Default keybinding: `_` (core: normal; helix: select)
 
 <a name="selections.reduce" />
 
-### [`selections.reduce`](../selections.ts#L601-L620)
+### [`selections.reduce`](../selections.ts#L603-L622)
 
 Reduce selections to their cursor.
 
@@ -1738,7 +1740,7 @@ Default keybinding: `;` (core: normal; helix: select)
 
 <a name="selections.changeDirection" />
 
-### [`selections.changeDirection`](../selections.ts#L647-L662)
+### [`selections.changeDirection`](../selections.ts#L649-L664)
 
 Change direction of selections.
 
@@ -1756,7 +1758,7 @@ Default keybinding: `a-;` (core: normal; helix: select)
 
 <a name="selections.changeOrder" />
 
-### [`selections.changeOrder`](../selections.ts#L687-L701)
+### [`selections.changeOrder`](../selections.ts#L689-L703)
 
 Reverse selections.
 
@@ -1770,7 +1772,7 @@ Reverse selections.
 
 <a name="selections.sort" />
 
-### [`selections.sort`](../selections.ts#L714-L726)
+### [`selections.sort`](../selections.ts#L716-L728)
 
 Sort selections.
 
@@ -1781,7 +1783,7 @@ This command:
 
 <a name="selections.copy" />
 
-### [`selections.copy`](../selections.ts#L799-L817)
+### [`selections.copy`](../selections.ts#L801-L819)
 
 Copy selections below.
 
@@ -1799,7 +1801,7 @@ Default keybinding: `s-c` (core: normal; helix: select)
 
 <a name="selections.merge" />
 
-### [`selections.merge`](../selections.ts#L851-L856)
+### [`selections.merge`](../selections.ts#L853-L858)
 
 Merge contiguous selections.
 
@@ -1809,13 +1811,13 @@ Default keybinding: `a-_` (kakoune: normal)
 
 <a name="selections.open" />
 
-### [`selections.open`](../selections.ts#L860-L863)
+### [`selections.open`](../selections.ts#L862-L865)
 
 Open selected file.
 
 <a name="selections.toggleIndices" />
 
-### [`selections.toggleIndices`](../selections.ts#L876-L893)
+### [`selections.toggleIndices`](../selections.ts#L878-L895)
 
 Toggle selection indices.
 

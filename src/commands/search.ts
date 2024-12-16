@@ -24,12 +24,12 @@ declare module "./search";
  *
  * Helix searches
  *
- * | Keybinding              | Command                                                                            |
- * | ----------------------- | ---------------------------------------------------------------                    |
- * | `/` (helix: normal)     | `[".search", {            primary: true,                regexFlags: "imu", ... }]` |
- * | `/` (helix: select)     | `[".search", { add: true, primary: true,                regexFlags: "imu", ... }]` |
- * | `?` (helix: normal)     | `[".search", {            primary: true, direction: -1, regexFlags: "imu", ... }]` |
- * | `?` (helix: select)     | `[".search", { add: true, primary: true, direction: -1, regexFlags: "imu", ... }]` |
+ * | Keybinding              | Command                                                                      |
+ * | ----------------------- | ---------------------------------------------------------------------------- |
+ * | `/` (helix: normal)     | `[".search", {            primary: true,                smart: true, ... }]` |
+ * | `/` (helix: select)     | `[".search", { add: true, primary: true,                smart: true, ... }]` |
+ * | `?` (helix: normal)     | `[".search", {            primary: true, direction: -1, smart: true, ... }]` |
+ * | `?` (helix: select)     | `[".search", { add: true, primary: true, direction: -1, smart: true, ... }]` |
  */
 export async function search(
   _: Context,
@@ -44,6 +44,7 @@ export async function search(
 
   argument: { re?: string | (RegExp & { originalSource?: string }) },
   regexFlags: Argument<string> = "mu",
+  smart: Argument<boolean>,
 ) {
   assertIsFlags(regexFlags);
   return manipulateSelectionsInteractively(_, "re", argument, interactive, {
@@ -51,7 +52,7 @@ export async function search(
     value: (await register.get())?.[0],
   }, async (re, selections) => {
     if (typeof re === "string") {
-      re = newRegExp(re, regexFlags);
+      re = newRegExp(re, regexFlags, smart);
     }
 
     register.set([re.originalSource ?? re.source]);
@@ -179,12 +180,12 @@ export function selection(
  *
  * Helix keybindings
  *
- * | Keybinding            | Command                                                                  |
- * | ----------------------| ------------------------------------------------------------------------ |
- * | `n` (helix: normal)   | `[".search.next", {                           regexFlags: "imu", ... }]` |
- * | `n` (helix: select)   | `[".search.next", {                add: true, regexFlags: "imu", ... }]` |
- * | `s-n` (helix: normal) | `[".search.next", { direction: -1           , regexFlags: "imu", ... }]` |
- * | `s-n` (helix: select) | `[".search.next", { direction: -1, add: true, regexFlags: "imu", ... }]` |
+ * | Keybinding            | Command                                                            |
+ * | ----------------------| ------------------------------------------------------------------ |
+ * | `n` (helix: normal)   | `[".search.next", {                           smart: true, ... }]` |
+ * | `n` (helix: select)   | `[".search.next", {                add: true, smart: true, ... }]` |
+ * | `s-n` (helix: normal) | `[".search.next", { direction: -1           , smart: true, ... }]` |
+ * | `s-n` (helix: select) | `[".search.next", { direction: -1, add: true, smart: true, ... }]` |
  *
  */
 export async function next(
@@ -196,6 +197,7 @@ export async function next(
   add: Argument<boolean> = false,
   direction: Direction = Direction.Forward,
   regexFlags: Argument<string> = "mu",
+  smart: Argument<boolean>,
 ) {
   const reStrs = await register.get();
 
@@ -205,7 +207,7 @@ export async function next(
 
   assertIsFlags(regexFlags);
 
-  const re = newRegExp(reStrs[0], regexFlags),
+  const re = newRegExp(reStrs[0], regexFlags, smart),
         allRegexpMatches = [] as RegExpMatchArray[],
         selections = _.selections.slice();
   let mainSelection = selections[0];
