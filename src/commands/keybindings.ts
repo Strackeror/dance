@@ -6,9 +6,11 @@ import type { Register } from "../state/registers";
 
 /**
  * Utilities for setting up keybindings.
- * | Title                       | Keybinding                                       | Command                            |
- * | --------------------------- | ------------------------------------------------ | ---------------------------------- |
- * | Open space menu             | `space` (helix: normal), `space` (helix: select) | `[".openMenu", { menu: "space" }]` |
+ * | Title                       | Keybinding                                       | Command                                    |
+ * | --------------------------- | ------------------------------------------------ | ------------------------------------------ |
+ * | Open space menu             | `space` (helix: normal), `space` (helix: select) | `[".openMenu", { menu: "space" }]`         |
+ * | Open left bracket menu      | `[` (helix: normal), `[` (helix: select)         | `[".openMenu", { menu: "left_bracket" }]`  |
+ * | Open right bracket menu     | `]` (helix: normal), `]` (helix: select)         | `[".openMenu", { menu: "right_bracket" }]` |
  */
 declare module "./keybindings";
 

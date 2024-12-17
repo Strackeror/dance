@@ -221,11 +221,26 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
             "/": { text: "Global search in workspace folder", command: "workbench.action.findInFiles" },
             "k": { text: "Show docs for item under cursor", command: "editor.action.showHover" },
             "r": { text: "Rename symbol", command: "editor.action.rename" },
+            "c": { text: "Comment/uncomment selections", command: "editor.action.commentLine" },
+            "C": { text: "Block comment/uncomment selections", command: "editor.action.blockComment" },
             "?": { text: "Open command palette", command: "workbench.action.showCommands" },
           },
         },
-
-        "window": {
+        right_bracket: {
+          title: "Right bracket",
+          items: {
+            "d": { text: "Goto next diagnostic", command: "editor.action.marker.next" },
+            "g": { text: "Goto next change", command: "workbench.action.editor.nextChange" },
+          },
+        },
+        left_bracket: {
+          title: "Left bracket",
+          items: {
+            "d": { text: "Goto previous diagnostic", command: "editor.action.marker.prev" },
+            "g": { text: "Goto previous change", command: "workbench.action.editor.previousChange" },
+          },
+        },
+        window: {
           "title": "View",
           "items": {
             w: { text: "Goto next window", command: "workbench.action.focusNextGroup" },

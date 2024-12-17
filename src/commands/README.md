@@ -679,13 +679,15 @@ Default keybinding: `escape` (kakoune: normal, recording)
 ## [`keybindings`](./keybindings.ts)
 
 Utilities for setting up keybindings.
-| Title                       | Keybinding                                       | Command                            |
-| --------------------------- | ------------------------------------------------ | ---------------------------------- |
-| Open space menu             | `space` (helix: normal), `space` (helix: select) | `[".openMenu", { menu: "space" }]` |
+| Title                       | Keybinding                                       | Command                                    |
+| --------------------------- | ------------------------------------------------ | ------------------------------------------ |
+| Open space menu             | `space` (helix: normal), `space` (helix: select) | `[".openMenu", { menu: "space" }]`         |
+| Open left bracket menu      | `[` (helix: normal), `[` (helix: select)         | `[".openMenu", { menu: "left_bracket" }]`  |
+| Open right bracket menu     | `]` (helix: normal), `]` (helix: select)         | `[".openMenu", { menu: "right_bracket" }]` |
 
 <a name="keybindings.setup" />
 
-### [`keybindings.setup`](./keybindings.ts#L15-L18)
+### [`keybindings.setup`](./keybindings.ts#L17-L20)
 
 Set up Dance keybindings.
 

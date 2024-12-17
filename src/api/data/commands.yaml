@@ -2550,7 +2550,8 @@ selections.save:
 selections.saveJoined:
   title:
     en: >-
-      Copy selections text, join them together with the given separator, in the order of appearance in
+      Copy selections text, join them together with the given separator, in the order of appearance
+      in
 
       the document
 
@@ -2885,6 +2886,17 @@ anonymous:
         `g` (helix: normal)
 
   - title:
+      en: Open left bracket menu
+
+    commands: |-
+      [".openMenu", { menu: "left_bracket" }]
+
+    keys:
+      qwerty: |-
+        `[` (helix: normal)
+        `[` (helix: select)
+
+  - title:
       en: Open match menu
 
     commands: |-
@@ -2903,6 +2915,17 @@ anonymous:
     keys:
       qwerty: |-
         `m` (helix: select)
+
+  - title:
+      en: Open right bracket menu
+
+    commands: |-
+      [".openMenu", { menu: "right_bracket" }]
+
+    keys:
+      qwerty: |-
+        `]` (helix: normal)
+        `]` (helix: select)
 
   - title:
       en: Open space menu
