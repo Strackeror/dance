@@ -1086,6 +1086,10 @@ export async function jumpLabel(_: Context) {
   }
   labelledSelections.forEach(([,,decoration]) => decoration.dispose());
   if (labelledSelections.length > 0) {
-    Selections.set(labelledSelections.map(n => n[1]));
+    Selections.set(
+      labelledSelections
+        .map(n => n[1])
+        .map((sel) => new vscode.Selection(sel.anchor, sel.anchor)),
+    );
   }
 }
