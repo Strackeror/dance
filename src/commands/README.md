@@ -78,7 +78,7 @@ selections are empty</td><td></td></tr>
 <tr><td><a href="#ignore"><code>ignore</code></a></td><td>Ignore key</td><td></td></tr>
 <tr><td><a href="#openMenu"><code>openMenu</code></a></td><td>Open menu</td><td></td></tr>
 <tr><td><a href="#run"><code>run</code></a></td><td>Run code</td><td></td></tr>
-<tr><td><a href="#selectRegister"><code>selectRegister</code></a></td><td>Select register for next command</td><td><code>Shift+'</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)</td></tr>
+<tr><td><a href="#selectRegister"><code>selectRegister</code></a></td><td>Select register for next command</td><td><code>Shift+'</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>Shift+'</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
 <tr><td><a href="#updateCount"><code>updateCount</code></a></td><td>Update Dance count</td><td></td></tr>
 <tr><td><a href="#updateRegister"><code>updateRegister</code></a></td><td>Update the contents of a register</td><td></td></tr>
 <tr><td rowspan=11><a href="#modes"><code>modes</code></a></td><td><a href="./modes.ts#L25"><code>modes.insert.after</code></a></td><td>Insert after</td><td><code>A</code> (<code>editorTextFocus && dance.mode == 'normal'</code>)<code>A</code> (<code>editorTextFocus && dance.mode == 'select'</code>)</td></tr>
@@ -852,7 +852,7 @@ current document.
 This command:
 - takes an input `register` of type `string | Register`.
 
-Default keybinding: `"` (core: normal)
+Default keybinding: `"` (core: normal; helix: select)
 
 <a name="updateRegister" />
 

@@ -2719,7 +2719,7 @@ selectRegister:
 
   keys:
     qwerty: |-
-      `"` (core: normal)
+      `"` (core: normal; helix: select)
 
   doc:
     en: |+
