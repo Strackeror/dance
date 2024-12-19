@@ -516,7 +516,7 @@
             },
             "b": {
               "text": "Open buffer picker",
-              "command": "workbench.action.showAllEditors"
+              "command": "workbench.action.showEditorsInGroup"
             },
             "s": {
               "text": "Open symbol picker",
@@ -691,7 +691,7 @@
             },
             "o": {
               "text": "Close windows except current",
-              "command": "workbench.action.editorLayoutSingle"
+              "command": "workbench.action.closeEditorsInOtherGroups"
             },
             "h": {
               "text": "Jump to the left split",

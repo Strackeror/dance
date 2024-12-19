@@ -200,7 +200,7 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
           title: "Space",
           items: {
             "f": { text: "Open file picker", command: "workbench.action.quickOpen" },
-            "b": { text: "Open buffer picker", command: "workbench.action.showAllEditors" },
+            "b": { text: "Open buffer picker", command: "workbench.action.showEditorsInGroup" },
             "s": { text: "Open symbol picker", command: "workbench.action.gotoSymbol" },
             "S": { text: "Open symbol picker", command: "workbench.action.showAllSymbols" },
             "d": { text: "Open diagnostic picker", command: "workbench.actions.view.problems" },
@@ -248,7 +248,7 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
             v: { text: "Vertical right split", command: "workbench.action.splitEditor" },
             t: { text: "Transpose splits", ...run("workbench.action.toggleEditorGroupLayout", "workbench.action.focusActiveEditorGroup") },
             q: { text: "Close window", command: "workbench.action.closeEditorsAndGroup" },
-            o: { text: "Close windows except current", command: "workbench.action.editorLayoutSingle" },
+            o: { text: "Close windows except current", command: "workbench.action.closeEditorsInOtherGroups" },
             h: { text: "Jump to the left split", command: "workbench.action.focusLeftGroup" },
             j: { text: "Jump to the split below", command: "workbench.action.focusBelowGroup" },
             k: { text: "Jump to the split above", command: "workbench.action.focusAboveGroup" },
