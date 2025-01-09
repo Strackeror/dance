@@ -1434,6 +1434,11 @@
         "category": "Dance"
       },
       {
+        "command": "dance.seek.goto.syntax.object",
+        "title": "Goto next object in direction",
+        "category": "Dance"
+      },
+      {
         "command": "dance.seek.included",
         "title": "Select to character (included)",
         "category": "Dance"
@@ -2379,6 +2384,10 @@
         {
           "command": "dance.seek.extend.backward",
           "when": "dance.mode == 'normal'"
+        },
+        {
+          "command": "dance.seek.goto.syntax.object",
+          "when": "dance.mode == 'normal' && tree-sitter.activeEditorIsSupported"
         },
         {
           "command": "dance.seek.included",

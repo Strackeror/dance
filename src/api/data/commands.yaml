@@ -1295,6 +1295,14 @@ seek.extend.backward:
       `s-a-t` (kakoune: normal)
       `s-t` (helix: select)
 
+seek.goto.syntax.object:
+  title:
+    en: Goto next object in direction
+
+  doc:
+    en: |
+      Goto next object in direction
+
 seek.included:
   title:
     en: Select to character (included)

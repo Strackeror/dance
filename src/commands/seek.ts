@@ -1,15 +1,14 @@
 import * as vscode from "vscode";
 
 import type { Argument, InputOr } from ".";
-import { closestSurroundedBy, command, Context, Direction, firstVisibleLine, keypress, lastVisibleLine, Lines, moveToExcluded, moveWhileBackward, moveWhileForward, Objects, Pair, pair, Positions, prompt, search, SelectionBehavior, Selections, Shift, surroundedBy, wordBoundary } from "../api";
+import { closestSurroundedBy, Context, Direction, firstVisibleLine, keypress, lastVisibleLine, Lines, moveToExcluded, moveWhileBackward, moveWhileForward, Objects, Pair, pair, Positions, prompt, SelectionBehavior, Selections, Shift, surroundedBy, wordBoundary } from "../api";
+import { PerEditorState } from "../state/editors";
 import { CharSet } from "../utils/charset";
 import { ArgumentError, assert } from "../utils/errors";
 import { escapeForRegExp, execRange } from "../utils/regexp";
 import * as TrackedSelection from "../utils/tracked-selection";
-import { Point, SyntaxNode, Tree, TreeSitter } from "../utils/tree-sitter";
-import { PerEditorState } from "../state/editors";
-import { selection } from "./search";
-import { selections } from "../api/registers";
+import { SyntaxNode, Tree, TreeSitter } from "../utils/tree-sitter";
+import { Query } from "../utils/tree-sitter-api";
 
 /**
  * Update selections based on the text surrounding them.
@@ -750,6 +749,71 @@ export function syntax_experimental(
     break;
   }
   }
+}
+
+
+function helix_capture_nodes(treesitter: TreeSitter, query: Query, node: SyntaxNode, object: string): vscode.Range[] {
+  return query.matches(node)
+    .map((match) => match.captures.filter(capture => capture.name === object))
+    .filter(matches => matches.length > 0)
+    .map((matches) => {
+      const start = matches[0].node.startPosition;
+      const end = matches.at(-1)?.node.endPosition!;
+      return new vscode.Range(treesitter.toPosition(start), treesitter.toPosition(end));
+    });
+}
+
+/**
+ * Goto next object in direction
+ */
+export async function goto_syntax_object(
+  _: Context,
+  treeSitter: TreeSitter,
+  object: Argument<string>,
+  direction: Argument<number>,
+) {
+  function max_by<T>(array: T[], cmp: (a: T, b: T) => number): T {
+    return array.reduce((a, b) => cmp(a, b) < 0 ? a : b);
+  }
+
+  const query = await treeSitter.textObjectQueryFor(_.document);
+  if (query === undefined) {
+    throw new Error("no textobject query available for current document");
+  }
+
+  await treeSitter.withDocumentTree(_.document, (tree)=> {
+    if (!query.captureNames.includes(object)) {
+      throw new Error(`Unknown textobject ${object}`);
+    }
+
+    const pos = Selections.current()[0].active;
+    const captures = helix_capture_nodes(treeSitter, query as any, tree.rootNode, object);
+    let node: vscode.Range | undefined;
+    if (direction === Direction.Forward) {
+      node = max_by(
+        captures.filter((node) => node.start.isAfter(pos)),
+        (a, b) => {
+          const cmp = a.start.compareTo(b.start);
+          if (cmp !== 0) {
+            return cmp;
+          }
+          return b.end.compareTo(a.end);
+        });
+    } else {
+      node = max_by(
+        captures.filter((node) => node.end.isBefore(pos)),
+        (a, b) => {
+          const cmp = b.end.compareTo(a.end);
+          if (cmp !== 0) {
+            return cmp;
+          }
+          return a.start.compareTo(b.start);
+        });
+    }
+    if (node !== undefined) {
+      Selections.set([new vscode.Selection(node.start, node.end)], _);
+    }
+  });
 }
 
 /**

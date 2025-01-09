@@ -231,6 +231,12 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
           items: {
             "d": { text: "Goto next diagnostic", command: "editor.action.marker.next" },
             "g": { text: "Goto next change", command: "workbench.action.editor.nextChange" },
+            "f": { text: "Goto next function", command: "dance.seek.goto.syntax.object", args: [{ direction: 1, object: "function.around" }] },
+            "t": { text: "Goto next class", command: "dance.seek.goto.syntax.object", args: [{ direction: 1, object: "class.around" }] },
+            "a": { text: "Goto next parameter", command: "dance.seek.goto.syntax.object", args: [{ direction: 1, object: "parameter.around" }] },
+            "c": { text: "Goto next comment", command: "dance.seek.goto.syntax.object", args: [{ direction: 1, object: "comment.around" }] },
+            "e": { text: "Goto next entry", command: "dance.seek.goto.syntax.object", args: [{ direction: 1, object: "entry.around" }] },
+            "T": { text: "Goto next test", command: "dance.seek.goto.syntax.object", args: [{ direction: 1, object: "test.around" }] },
           },
         },
         left_bracket: {
@@ -238,6 +244,12 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
           items: {
             "d": { text: "Goto previous diagnostic", command: "editor.action.marker.prev" },
             "g": { text: "Goto previous change", command: "workbench.action.editor.previousChange" },
+            "f": { text: "Goto previous function", command: "dance.seek.goto.syntax.object", args: [{ direction: -1, object: "function.around" }] },
+            "t": { text: "Goto previous class", command: "dance.seek.goto.syntax.object", args: [{ direction: -1, object: "class.around" }] },
+            "a": { text: "Goto previous parameter", command: "dance.seek.goto.syntax.object", args: [{ direction: -1, object: "parameter.around" }] },
+            "c": { text: "Goto previous comment", command: "dance.seek.goto.syntax.object", args: [{ direction: -1, object: "comment.around" }] },
+            "e": { text: "Goto previous entry", command: "dance.seek.goto.syntax.object", args: [{ direction: -1, object: "entry.around" }] },
+            "T": { text: "Goto previous test", command: "dance.seek.goto.syntax.object", args: [{ direction: -1, object: "test.around" }] },
           },
         },
         window: {
