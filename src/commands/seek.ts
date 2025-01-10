@@ -9,6 +9,7 @@ import { escapeForRegExp, execRange } from "../utils/regexp";
 import * as TrackedSelection from "../utils/tracked-selection";
 import { SyntaxNode, Tree, TreeSitter } from "../utils/tree-sitter";
 import { Query } from "../utils/tree-sitter-api";
+import { Point } from "web-tree-sitter";
 
 /**
  * Update selections based on the text surrounding them.
@@ -547,36 +548,29 @@ async function shiftTextObject(
       );
     }
 
-    // TODO(71): add helpers for checking if a VS Code Position is within a Tree
-    //   Sitter range without creating temporary objects
-    const captures = query.captures(documentTree.rootNode)
-      .filter((capture) => capture.name === textObjectName)
-      .map(({ node }) => [node, treeSitter.toRange(node)] as const);
-
+    const captures = helix_capture_nodes(
+      treeSitter, query as Query, documentTree.rootNode, textObjectName);
     return Selections.mapByIndex((_i, selection) => {
       const active = selection.active;
 
-      let smallestNode: SyntaxNode | undefined;
+      let smallestNode: vscode.Range | undefined;
       const smallestNodeLength = Number.MAX_SAFE_INTEGER;
 
-      for (const [node, nodeRange] of captures) {
+      for (const nodeRange of captures) {
         if (!nodeRange.contains(active)) {
           continue;
         }
 
-        const nodeLength = node.endIndex - node.startIndex;
-
+        const nodeLength = _.document.offsetAt(nodeRange.end) - _.document.offsetAt(nodeRange.start);
         if (nodeLength < smallestNodeLength && !nodeRange.isEqual(selection)) {
-          smallestNode = node;
+          smallestNode = nodeRange;
         }
       }
-
-      return smallestNode === undefined
-        ? selection
-        : Selections.fromStartEnd(
-          treeSitter.toPosition(smallestNode.startPosition),
-          treeSitter.toPosition(smallestNode.endPosition),
-          Selections.isStrictlyReversed(selection, _));
+      if (smallestNode === undefined) {
+        return selection;
+      }
+      return Selections.fromStartEnd(smallestNode.start, smallestNode.end,
+                                     Selections.isStrictlyReversed(selection, _));
     });
   });
 
@@ -752,8 +746,15 @@ export function syntax_experimental(
 }
 
 
-function helix_capture_nodes(treesitter: TreeSitter, query: Query, node: SyntaxNode, object: string): vscode.Range[] {
-  return query.matches(node)
+function helix_capture_nodes(
+  treesitter: TreeSitter,
+  query: Query,
+  node: SyntaxNode,
+  object: string,
+  startPoint?: Point,
+  endPoint?: Point,
+): vscode.Range[] {
+  return query.matches(node, { startPosition: startPoint, endPosition: endPoint })
     .map((match) => match.captures.filter(capture => capture.name === object))
     .filter(matches => matches.length > 0)
     .map((matches) => {
@@ -772,10 +773,6 @@ export async function goto_syntax_object(
   object: Argument<string>,
   direction: Argument<number>,
 ) {
-  function max_by<T>(array: T[], cmp: (a: T, b: T) => number): T {
-    return array.reduce((a, b) => cmp(a, b) < 0 ? a : b);
-  }
-
   const query = await treeSitter.textObjectQueryFor(_.document);
   if (query === undefined) {
     throw new Error("no textobject query available for current document");
@@ -787,28 +784,23 @@ export async function goto_syntax_object(
     }
 
     const pos = Selections.current()[0].active;
-    const captures = helix_capture_nodes(treeSitter, query as any, tree.rootNode, object);
     let node: vscode.Range | undefined;
     if (direction === Direction.Forward) {
-      node = max_by(
-        captures.filter((node) => node.start.isAfter(pos)),
-        (a, b) => {
-          const cmp = a.start.compareTo(b.start);
-          if (cmp !== 0) {
-            return cmp;
-          }
-          return b.end.compareTo(a.end);
-        });
+      const captures = helix_capture_nodes(
+        treeSitter, query as any, tree.rootNode,
+        object, treeSitter.fromPosition(pos));
+      const node = captures.find((range) => range.start.isAfter(pos));
+      if (node) {
+        Selections.set([new vscode.Selection(node.start, node.end)]);
+      }
     } else {
-      node = max_by(
-        captures.filter((node) => node.end.isBefore(pos)),
-        (a, b) => {
-          const cmp = b.end.compareTo(a.end);
-          if (cmp !== 0) {
-            return cmp;
-          }
-          return a.start.compareTo(b.start);
-        });
+      const captures = helix_capture_nodes(
+        treeSitter, query as any, tree.rootNode,
+        object, undefined, treeSitter.fromPosition(pos));
+      const node = captures.reverse().find((range) => range.end.isBefore(pos));
+      if (node) {
+        Selections.set([new vscode.Selection(node.end, node.start)]);
+      }
     }
     if (node !== undefined) {
       Selections.set([new vscode.Selection(node.start, node.end)], _);

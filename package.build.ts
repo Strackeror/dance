@@ -155,7 +155,7 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
     "typescript": "^4.8.4",
     "unexpected": "^13.0.0",
     "vsce": "^2.7.0",
-    "web-tree-sitter": "^0.20.8",
+    "web-tree-sitter": "^0.24.6",
     "yaml": "^2.1.1",
   },
 
