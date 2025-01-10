@@ -655,3 +655,25 @@ function promptInList(
     quickPick.show();
   });
 }
+
+export async function promptPalette(
+  items: readonly (readonly [string, string])[],
+  quickPickOptions: vscode.QuickPickOptions,
+  context = Context.WithoutActiveEditor.current,
+): Promise<number> {
+
+  const entries = Object.fromEntries(items.map(([label, _desc], i) => ([label, i])));
+
+  const result = await vscode.window.showQuickPick(
+    items.map(([label, description]) => ({
+        label,
+        description,
+      } satisfies vscode.QuickPickItem)),
+      { ...quickPickOptions },
+    context.cancellationToken,
+  );
+  if (result === undefined) {
+    throw new CancellationError(CancellationError.Reason.PressedEscape);
+  }
+  return entries[result.label];
+}

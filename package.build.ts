@@ -364,6 +364,9 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
               title: {
                 type: "string",
               },
+              palette: {
+                type: "boolean",
+              },
               items: {
                 type: "object",
                 additionalProperties: {

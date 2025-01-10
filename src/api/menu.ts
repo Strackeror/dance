@@ -1,11 +1,12 @@
 import * as vscode from "vscode";
 
 import { Context } from "./context";
-import { keypress, promptLocked, promptOne } from "./prompt";
+import { keypress, promptLocked, promptOne, promptPalette } from "./prompt";
 
 export interface Menu {
   readonly title?: string;
   readonly items: Menu.Items;
+  readonly palette?: boolean,
 }
 
 export declare namespace Menu {
@@ -40,6 +41,9 @@ export function validateMenu(menu: Menu) {
   if (menu.title !== undefined && typeof menu.title !== "string") {
     errors.push("menu title must be a string");
   }
+  if (menu.palette !== undefined && typeof menu.palette !== "boolean") {
+    errors.push("menu palette must be a boolean");
+  }
 
   for (const key in menu.items) {
     const item = menu.items[key],
@@ -62,6 +66,10 @@ export function validateMenu(menu: Menu) {
 
     if (key.length === 0) {
       errors.push(`item ${itemDisplay} must be a non-empty string key.`);
+      continue;
+    }
+
+    if (menu.palette) {
       continue;
     }
 
@@ -105,7 +113,9 @@ export async function showMenu(
 ) {
   const entries = Object.entries(menu.items);
   const items = entries.map((x) => [x[0], x[1].text] as const);
-  const choice = await promptOne(items, (quickPick) => quickPick.title = menu.title);
+  const choice = menu.palette
+    ? await promptPalette(items, { title: menu.title })
+    : await promptOne(items, (quickPick) => quickPick.title = menu.title);
 
   if (typeof choice === "string") {
     if (prefix !== undefined) {
@@ -186,6 +196,7 @@ export async function showMenuAfterDelay(
   } finally {
     cancellationTokenSource.dispose();
   }
+  return undefined;
 }
 
 /**

@@ -2880,6 +2880,13 @@ anonymous:
         `s` (helix: normal; helix: select)
 
   - commands: |-
+      [".openMenu", { menu: "command" }]
+
+    keys:
+      qwerty: |-
+        `s-;` (helix: normal; helix: select)
+
+  - commands: |-
       [".openMenu", { menu: "goto", pass: [{ shift: "extend" }] }]
 
     keys:
@@ -3216,4 +3223,4 @@ anonymous:
 
     keys:
       qwerty: |-
-        `s-;` (core: normal)
+        `s-;` (kakoune: normal)

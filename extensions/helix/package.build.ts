@@ -287,6 +287,16 @@ export const pkg = (modules: Builder.ParsedModule[]) => ({
             ) },
           },
         },
+        command: {
+          title: "Command",
+          palette: true,
+          items: {
+            "w": { text: "Write", command: "workbench.action.files.save" },
+            "bc": { text: "Close buffer", command: "workbench.action.closeActiveEditor" },
+            "bco": { text: "Close other buffers", command: "workbench.action.closeOtherEditors" },
+            "fmt": { text: "Format file", command: "editor.action.formatDocument" },
+          },
+        },
       },
     },
 

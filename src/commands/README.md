@@ -702,13 +702,14 @@ Miscellaneous commands that don't deserve their own category.
 By default, Dance also exports the following keybindings for existing
 commands:
 
-| Keybinding           | Command                                      |
-| -------------------- | -------------------------------------------- |
-| `s-;` (core: normal) | `["workbench.action.showCommands", { ... }]` |
+| Keybinding                           | Command                                      |
+| ------------------------------------ | -------------------------------------------- |
+| `s-;` (kakoune: normal)              | `["workbench.action.showCommands", { ... }]` |
+| `s-;` (helix: normal; helix: select) | `[".openMenu", { menu: "command" }]`         |
 
 <a name="cancel" />
 
-### [`cancel`](./misc.ts#L20-L25)
+### [`cancel`](./misc.ts#L21-L26)
 
 Cancel Dance operation.
 
@@ -721,7 +722,7 @@ Default keybinding: `escape` (core: normal, !recording, "!markersNavigationVisib
 
 <a name="ignore" />
 
-### [`ignore`](./misc.ts#L31-L34)
+### [`ignore`](./misc.ts#L32-L35)
 
 Ignore key.
 
@@ -730,7 +731,7 @@ This command:
 
 <a name="run" />
 
-### [`run`](./misc.ts#L40-L149)
+### [`run`](./misc.ts#L41-L150)
 
 Run code.
 
@@ -840,7 +841,7 @@ This command:
 
 <a name="selectRegister" />
 
-### [`selectRegister`](./misc.ts#L185-L199)
+### [`selectRegister`](./misc.ts#L186-L200)
 
 Select register for next command.
 
@@ -857,7 +858,7 @@ Default keybinding: `"` (core: normal; helix: select)
 
 <a name="updateRegister" />
 
-### [`updateRegister`](./misc.ts#L215-L226)
+### [`updateRegister`](./misc.ts#L216-L227)
 
 Update the contents of a register.
 
@@ -868,7 +869,7 @@ This command:
 
 <a name="updateCount" />
 
-### [`updateCount`](./misc.ts#L252-L281)
+### [`updateCount`](./misc.ts#L253-L282)
 
 Update Dance count.
 
@@ -897,7 +898,7 @@ This command:
 
 <a name="openMenu" />
 
-### [`openMenu`](./misc.ts#L309-L332)
+### [`openMenu`](./misc.ts#L310-L333)
 
 Open menu.
 
@@ -922,7 +923,7 @@ This command:
 
 <a name="changeInput" />
 
-### [`changeInput`](./misc.ts#L374-L388)
+### [`changeInput`](./misc.ts#L375-L389)
 
 Change current input.
 
@@ -939,7 +940,7 @@ This command:
 
 <a name="ifEmpty" />
 
-### [`ifEmpty`](./misc.ts#L398-L409)
+### [`ifEmpty`](./misc.ts#L399-L410)
 
 Executes one of the specified commands depending on whether the current
 selections are empty.
