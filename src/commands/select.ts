@@ -35,6 +35,27 @@ interface PreferredColumnsState {
 const preferredColumnsToken =
   PerEditorState.registerState<PreferredColumnsState>(/* isDisposable= */ false);
 
+export async function verticallyNative(
+  _: Context,
+  repetitions: number,
+  direction = Direction.Forward,
+  shift = Shift.Jump,
+) {
+
+  if (shift === Shift.Select) {
+    await vscode.commands.executeCommand("cursorMove", {
+      direction: "left", value: 0, select: false,
+    });
+  }
+
+  await vscode.commands.executeCommand("cursorMove", {
+    to: direction === Direction.Forward ? "down" : "up",
+    by: "wrappedLine",
+    value: repetitions,
+    select: shift !== Shift.Jump,
+  });
+}
+
 /**
  * Select vertically.
  *
@@ -75,154 +96,16 @@ export function vertically(
 ) {
   // Adjust repetitions if a `by` parameter is given.
   if (by !== undefined) {
-    const visibleRange = _.editor.visibleRanges[0];
-
+    const visibleRangeSize = _.editor.visibleRanges.reduce(
+      (acc, elem) => acc + elem.end.line - elem.start.line, 0,
+    );
     if (by === "page") {
-      repetitions *= visibleRange.end.line - visibleRange.start.line;
+      repetitions *= visibleRangeSize;
     } else if (by === "halfPage") {
-      repetitions *= ((visibleRange.end.line - visibleRange.start.line) / 2) | 0;
+      repetitions *= Math.floor(visibleRangeSize / 2);
     }
   }
-
-  const document = _.document,
-        isCharacterMode = _.selectionBehavior === SelectionBehavior.Character;
-
-  // TODO: test logic with tabs
-  const activeEnd = (selection: vscode.Selection) => {
-    const active = selection.active;
-
-    if (active === selection.end && Selections.endsWithLineBreak(selection)) {
-      return Lines.columns(active.line - 1, _.editor) + 1;
-    } else if (active === selection.start && isCharacterMode) {
-      return Lines.column(active.line, active.character, _.editor) + 1;
-    }
-
-    return Lines.column(active.line, active.character, _.editor);
-  };
-
-  // Get or create the `PreferredColumnsState` for this editor.
-  const editorState = _.getState();
-  let preferredColumnsState = editorState.get(preferredColumnsToken);
-
-  if (preferredColumnsState === undefined) {
-    // That disposable will be automatically disposed of when the selections in
-    // the editor change due to an action outside of the current command. When
-    // it is disposed, it will clear the preferred columns for this editor.
-    const disposable = _.extension
-      .createAutoDisposable()
-      .disposeOnEvent(editorState.onEditorWasClosed)
-      .addDisposable(vscode.window.onDidChangeTextEditorSelection((e) => {
-        if (editorState.editor !== e.textEditor) {
-          return;
-        }
-
-        const expectedSelections = preferredColumnsState!.expectedSelections;
-
-        if (e.selections.length === expectedSelections.length
-            && e.selections.every((sel, i) => sel.isEqual(expectedSelections[i]))) {
-          return;
-        }
-
-        editorState.store(preferredColumnsToken, undefined);
-        disposable.dispose();
-      }));
-
-    editorState.store(
-      preferredColumnsToken,
-      preferredColumnsState = {
-        disposable,
-        expectedSelections: [],
-        preferredColumns: selections.map((sel) => activeEnd(sel)),
-      },
-    );
-  }
-
-  const newSelections = Selections.mapByIndex((i, selection) => {
-    // TODO: handle tab characters
-    const activeLine = isCharacterMode ? Selections.activeLine(selection) : selection.active.line,
-          targetLine = Lines.clamp(activeLine + direction * repetitions),
-          targetLineLength = Lines.columns(targetLine, _.editor);
-
-    if (targetLineLength === 0) {
-      let targetPosition = Positions.lineStart(targetLine);
-
-      if (isCharacterMode) {
-        if (shift === Shift.Jump
-            || (direction === Direction.Backward
-              ? selection.contains(targetPosition)
-              : !selection.contains(targetPosition) || targetPosition.isEqual(selection.active))) {
-          targetPosition = Positions.next(targetPosition, document) ?? targetPosition;
-        }
-
-        if (direction === Direction.Backward && shift === Shift.Extend
-            && Selections.isSingleCharacter(selection, document)) {
-          selection = new vscode.Selection(
-            Positions.next(selection.anchor, document) ?? selection.anchor, selection.active);
-        }
-      }
-
-      return Selections.shift(selection, targetPosition, shift);
-    }
-
-    let targetColumn: number;
-
-    const preferredColumns = preferredColumnsState!.preferredColumns,
-          preferredColumn = i < preferredColumns.length
-            ? preferredColumns[i]
-            : activeEnd(selection);
-
-    if (preferredColumn <= targetLineLength) {
-      targetColumn = preferredColumn;
-    } else if (isCharacterMode && !avoidEol) {
-      if (direction === Direction.Forward && targetLine + 1 < document.lineCount) {
-        if (shift === Shift.Extend) {
-          const targetPosition = selection.anchor.line <= targetLine
-            ? Positions.lineBreak(targetLine)
-            : Positions.lineEnd(targetLine);
-
-          return Selections.shift(selection, targetPosition, shift);
-        }
-
-        return Selections.shift(selection, new vscode.Position(targetLine + 1, 0), shift);
-      } else if (direction === Direction.Backward) {
-        // We may need to shift left in some cases.
-        if (shift === Shift.Extend && targetLine < selection.anchor.line) {
-          return Selections.shift(selection, Positions.lineEnd(targetLine), shift);
-        }
-        return Selections.shift(selection, Positions.lineBreak(targetLine), shift);
-      }
-
-      targetColumn = targetLineLength;
-    } else {
-      targetColumn = targetLineLength;
-    }
-
-    let newPosition = new vscode.Position(
-      targetLine,
-      Lines.character(targetLine, targetColumn, _.editor, /* roundUp= */ isCharacterMode),
-    );
-
-    if (isCharacterMode && shift !== Shift.Jump) {
-      const edge = shift === Shift.Extend ? selection.anchor : selection.active;
-
-      if (newPosition.isBefore(edge)) {
-        // Selection is going up or down above the cursor: we must account for
-        // the translation to character mode.
-        newPosition = Positions.previous(newPosition, document) ?? newPosition;
-      }
-    }
-
-    return Selections.shift(selection, newPosition, shift);
-  });
-
-  if (_.selectionBehavior === SelectionBehavior.Character) {
-    // TODO: if line contains tabs, we should shift left by tabSize
-    Selections.shiftEmptyLeft(newSelections, document);
-  }
-
-  Selections.set(newSelections);
-
-  preferredColumnsState.expectedSelections = unsafeSelections(editorState.editor);
+  return verticallyNative(_, repetitions, direction, shift);
 }
 
 /**
