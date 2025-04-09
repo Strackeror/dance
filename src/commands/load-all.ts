@@ -187,6 +187,7 @@ import {
 } from "./history";
 
 import {
+  addCommand as keybindings_addCommand,
   setup as keybindings_setup,
 } from "./keybindings";
 
@@ -442,6 +443,11 @@ export const commands: Commands = function () {
       "dance.ignore",
       (_) => _.runAsync(async (_) => await ignore()),
       CommandDescriptor.Flags.None,
+    ),
+    "dance.keybindings.addCommand": new CommandDescriptor(
+      "dance.keybindings.addCommand",
+      (_) => _.runAsync(async (_) => await keybindings_addCommand(_)),
+      CommandDescriptor.Flags.RequiresActiveEditor,
     ),
     "dance.keybindings.setup": new CommandDescriptor(
       "dance.keybindings.setup",

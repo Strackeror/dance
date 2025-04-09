@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 
 import type { RegisterOr } from ".";
-import { Context, prompt, promptMany, promptOne, todo } from "../api";
+import { Context, Menu, prompt, promptMany, promptOne, todo } from "../api";
 import type { Register } from "../state/registers";
 
 /**
@@ -38,4 +38,34 @@ export async function setup(_: Context, register: RegisterOr<"dquote", Register.
   todo();
 
   // TODO: ask whether remaining keybindings should be ignored.
+}
+
+
+/**
+ * Add a command to the command menu
+ */
+export async function addCommand(_: Context) {
+  const commands = await vscode.commands.getCommands();
+  const command = await vscode.window.showQuickPick(
+    commands,
+    { title: "Pick the action to create a command for" },
+  );
+  if (!command) {
+    return;
+  }
+
+  const name = await vscode.window.showInputBox({ title: "name of the command" });
+  if (!name) {
+    return;
+  }
+
+  const config = vscode.workspace.getConfiguration("dance", vscode.workspace.workspaceFile);
+  const menus = config.inspect<Record<string, Menu>>("menus")?.globalValue ?? {};
+  if (!menus["command"]) {
+    menus["command"] = { items: {} };
+  }
+  const command_menu = menus["command"];
+  command_menu.items[name] = { text: name, command };
+  config.update("menus", menus, true);
+
 }

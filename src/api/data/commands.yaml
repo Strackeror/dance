@@ -640,6 +640,14 @@ ignore:
     en: |
       Ignore key.
 
+keybindings.addCommand:
+  title:
+    en: Add a command to the command menu
+
+  doc:
+    en: |
+      Add a command to the command menu
+
 keybindings.setup:
   title:
     en: Set up Dance keybindings

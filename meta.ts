@@ -578,7 +578,7 @@ export function parseKeys(keys: string) {
 function getCommands(module: Omit<Builder.ParsedModule, "commands">) {
   const computeWhen = ({ enablement }: Builder.ParsedFunction | Builder.AdditionalCommand) => {
     // TODO: improve conditions
-    let when = "dance.mode == 'normal'";
+    let when = "dance.mode =~ /normal$/";
 
     if (enablement !== undefined) {
       when += " && " + enablement;
